@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".AuthActivity">
+
+    <TextView
+        android:id="@+id/main_info_text_view"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Введите ваш номер!" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_country_code"
+            android:background="@drawable/edit_text_code_stroke"
+            android:padding="8dp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="+996"
+            android:enabled="false"
+            android:inputType="none"
+            android:maxLength="4"
+            android:maxLines="1"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/edit_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_number_stroke"
+            android:padding="8dp"
+            android:hint="555123321"
+            android:inputType="number"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:textSize="25sp"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
+</LinearLayout>
