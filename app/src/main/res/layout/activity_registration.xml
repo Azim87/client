@@ -29,18 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_sex"
         android:layout_centerHorizontal="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
             <RadioButton
                 android:id="@+id/radio_button_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:checked="true"
                 android:text="муж" />
 
             <RadioButton
@@ -49,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="жен" />
-        </LinearLayout>
+
     </RadioGroup>
 
     <LinearLayout
@@ -67,13 +61,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_below="@+id/radio_sex"
-            android:text="возраст" />
+            android:text="Bозраст" />
 
         <EditText
             android:id="@+id/edit_text_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
+            android:maxLength="2"
+            android:inputType="number"
             android:maxLines="1"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_text_verify_sms_code_stroke"
@@ -103,13 +99,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
             android:maxLines="1"
+            android:maxLength="10"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_text_verify_sms_code_stroke"
             android:padding="8dp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_quit"
+        android:id="@+id/button_save_client"
+        android:background="@drawable/edit_text_verify_sms_code_stroke"
+        android:padding="10dp"
         android:layout_below="@+id/layout_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
