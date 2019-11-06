@@ -59,7 +59,7 @@
             android:id="@+id/text_view_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/radio_sex"
             android:text="Bозраст" />
 
@@ -89,7 +89,7 @@
             android:id="@+id/text_view_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/radio_sex"
             android:text="ФИО" />
 
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
             android:maxLines="1"
-            android:maxLength="10"
+            android:maxLength="20"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_text_verify_sms_code_stroke"
             android:padding="8dp" />

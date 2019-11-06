@@ -1,6 +1,5 @@
 package com.kubatov.client;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,20 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.kubatov.client.pojo.ClientPojo;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,34 +59,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         setTitle("Регистрация");
         ButterKnife.bind(this);
         initViewClicks();
-        initFireBase();
-    }
-
-    private void initFireBase() {
-        getClientAge();
-        getClientName();
-        getClientSex();
-        Map<String, Object> clients = new HashMap<>();
-        clients.put("image", clientImageUri);
-        clients.put("age", age);
-        clients.put("name", name);
-        clients.put("sex", sex);
-        mStorageReference = FirebaseStorage.getInstance().getReference();
-        FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
-        dataBase.collection("clients")
-                .add(clients)
-                .addOnSuccessListener(documentReference -> Toast.makeText(RegistrationActivity.this, "Save", Toast.LENGTH_SHORT).show()).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
-
-    private void initViewClicks() {
-        clientImageView.setOnClickListener(this);
-        saveClientInfoButton.setOnClickListener(this);
     }
 
     @Override
@@ -104,9 +69,46 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.button_save_client:
                 initFireBase();
+                saveToFireBase();
                 break;
             default:
         }
+    }
+
+    private void saveToFireBase() {
+        if (editTextAge.getText().toString().equals("")) {
+            editTextAge.setError("вы ее ввели возраст");
+        } else if (editTextName.getText().toString().equals("")) {
+            editTextName.setError("вы не ввели имя");
+            return;
+        } else {
+            MainActivity.startMainActivity(this);
+        }
+    }
+
+
+    private void initFireBase() {
+        getClientSex();
+        age = editTextAge.getText().toString().trim();
+        name = editTextName.getText().toString().trim();
+        Map<String, Object> clients = new HashMap<>();
+        clients.put("image", clientImageUri);
+        clients.put("age", age);
+        clients.put("name", name);
+        clients.put("sex", sex);
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+        FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
+        dataBase.collection("clients")
+                .add(clients)
+                .addOnSuccessListener(documentReference -> {
+                })
+                .addOnFailureListener(e -> {
+                });
+    }
+
+    private void initViewClicks() {
+        clientImageView.setOnClickListener(this);
+        saveClientInfoButton.setOnClickListener(this);
     }
 
     private void getClientImageFromStorage() {
@@ -120,8 +122,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_CLIENT_IMAGE_CODE &&
                 resultCode == RESULT_OK &&
-                data.getData() != null &&
-                data != null) {
+                data.getData() != null && data != null) {
             clientImageUri = data.getData();
             Glide.with(this).load(clientImageUri).into(clientImageView);
         }
@@ -131,13 +132,5 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         radioId = radioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(radioId);
         sex = radioButton.getText().toString();
-    }
-
-    private void getClientAge() {
-        age = editTextAge.getText().toString();
-    }
-
-    private void getClientName() {
-        name = editTextName.getText().toString().trim();
     }
 }

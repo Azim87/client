@@ -24,15 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int STATE_INITIALIZED = 1;
-    private static final int STATE_CODE_SENT = 2;
-    private static final int STATE_VERIFY_FAILED = 3;
-    private static final int STATE_VERIFY_SUCCESS = 4;
-    private static final int STATE_SIGNIN_FAILED = 5;
-    private static final int STATE_SIGNIN_SUCCESS = 6;
-
-
-    private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks changedCallbacks;
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
@@ -110,18 +101,17 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     if (task.isSuccessful()) {
 
                         FirebaseUser user = task.getResult().getUser();
-                        if (user != null){
+                        if (user != null) {
                             Toast.makeText(AuthActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
                             RegistrationActivity.start(this);
                             finish();
-                        }else {
+                        } else {
                             Toast.makeText(AuthActivity.this, "Пользователь не найден", Toast.LENGTH_SHORT).show();
                         }
 
-
-                        } else {
-                            Toast.makeText(AuthActivity.this, "Не успешно", Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(AuthActivity.this, "Не успешно", Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
@@ -139,7 +129,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         );
     }
 
-
     private void verifySmsCode() {
         String verificationSmsCode = mEditTextVerificationSmsCode.getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerification, verificationSmsCode);
@@ -154,7 +143,8 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             hideViewsOnSmsCodeSend();
         }
     }
-    private void hideViewsOnSmsCodeSend(){
+
+    private void hideViewsOnSmsCodeSend() {
         mProgressBar.setVisibility(View.GONE);
         mEditTextCode.setVisibility(View.GONE);
         mEditTextPhoneNumber.setVisibility(View.GONE);
