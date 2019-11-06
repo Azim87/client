@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Client</string>
+    <string name="main_text">Пожалуйста введите ваш номер</string>
+    <string name="country_code">+996</string>
+    <string name="phone_number">555123321</string>
+    <string name="save_button">Сохранить</string>
 </resources>

@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSplashScreenTime() {
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(1000, 1100) {
             @Override
             public void onTick(long millisUntilFinished) {
             }

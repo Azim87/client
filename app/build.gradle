@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -32,6 +33,7 @@ dependencies {
 
     /* butter knife */
     implementation 'com.jakewharton:butterknife:10.2.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 
     /* material design*/

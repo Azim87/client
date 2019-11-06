@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorSplash">#FFFFFF</color>
     <color name="colorEditTextStroke">#010850</color>
+    <color name="colorButtonSend">#00FFFFFF</color>
 </resources>
