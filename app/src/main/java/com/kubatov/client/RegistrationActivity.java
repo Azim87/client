@@ -1,13 +1,16 @@
 package com.kubatov.client;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,14 +35,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String AGE = "age";
+    private static final String NAME = "name";
+    private static final String GENDER = "sex";
+    private static final String IMAGE = "image";
+    private static final String IMAGE_TYPE = "image/*";
     private static final int PICK_CLIENT_IMAGE_CODE = 1;
     private Uri clientImageUri;
-    private String age;
-    private String name;
-    private RadioButton radioButton;
+    private String gender;
+
     private StorageReference mStorageReference;
-    private int radioId;
-    private String sex;
 
     @BindView(R.id.client_profile_image)
     ImageView clientImageView;
@@ -83,20 +92,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             return;
         } else {
             MainActivity.startMainActivity(this);
+            finish();
         }
     }
 
-
     private void initFireBase() {
         getClientSex();
-        age = editTextAge.getText().toString().trim();
-        name = editTextName.getText().toString().trim();
+        String age = editTextAge.getText().toString().trim();
+        String name = editTextName.getText().toString().trim();
         Map<String, Object> clients = new HashMap<>();
-        clients.put("image", clientImageUri);
-        clients.put("age", age);
-        clients.put("name", name);
-        clients.put("sex", sex);
-        mStorageReference = FirebaseStorage.getInstance().getReference();
+        clients.put(AGE, age);
+        clients.put(NAME, name);
+        clients.put(GENDER, gender);
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
         dataBase.collection("clients")
                 .add(clients)
@@ -104,6 +112,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 })
                 .addOnFailureListener(e -> {
                 });
+        uploadClientImageToStorage();
     }
 
     private void initViewClicks() {
@@ -112,8 +121,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void getClientImageFromStorage() {
-        Intent getImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getImageIntent.setType("image/*");
+        Intent getImageIntent = new Intent();
+        getImageIntent.setType(IMAGE_TYPE);
+        getImageIntent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(getImageIntent, PICK_CLIENT_IMAGE_CODE);
     }
 
@@ -129,8 +139,29 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void getClientSex() {
-        radioId = radioGroup.getCheckedRadioButtonId();
-        radioButton = findViewById(radioId);
-        sex = radioButton.getText().toString();
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = findViewById(radioId);
+        gender = radioButton.getText().toString();
+    }
+
+    private String clientImageExtension(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap typeMap = MimeTypeMap.getSingleton();
+        return typeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadClientImageToStorage(){
+        mStorageReference = FirebaseStorage.getInstance().getReference("avatar/");
+        if(clientImageUri != null){
+            StorageReference storageReference = mStorageReference.child(System.currentTimeMillis()
+                    + "." + clientImageExtension(clientImageUri));
+
+            storageReference.putFile(clientImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
+
+                    }).addOnFailureListener(e -> {
+                    });
+        }else {}
     }
 }

@@ -29,20 +29,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_sex"
         android:layout_centerHorizontal="true">
-            <RadioButton
-                android:id="@+id/radio_button_male"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:checked="true"
-                android:text="муж" />
 
-            <RadioButton
-                android:id="@+id/radio_button_female"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="жен" />
+        <RadioButton
+            android:id="@+id/radio_button_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:checked="true"
+            android:text="муж" />
+
+        <RadioButton
+            android:id="@+id/radio_button_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="жен" />
 
     </RadioGroup>
 
@@ -59,8 +60,8 @@
             android:id="@+id/text_view_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_below="@+id/radio_sex"
+            android:layout_marginBottom="10dp"
             android:text="Bозраст" />
 
         <EditText
@@ -68,11 +69,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
-            android:maxLength="2"
-            android:inputType="number"
-            android:maxLines="1"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_text_verify_sms_code_stroke"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1"
             android:padding="8dp" />
     </LinearLayout>
 
@@ -89,8 +90,8 @@
             android:id="@+id/text_view_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_below="@+id/radio_sex"
+            android:layout_marginBottom="10dp"
             android:text="ФИО" />
 
         <EditText
@@ -98,21 +99,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
-            android:maxLines="1"
-            android:maxLength="20"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_text_verify_sms_code_stroke"
+            android:maxLength="20"
+            android:maxLines="1"
             android:padding="8dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/button_save_client"
-        android:background="@drawable/edit_text_verify_sms_code_stroke"
-        android:padding="10dp"
-        android:layout_below="@+id/layout_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_name"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/edit_text_verify_sms_code_stroke"
+        android:padding="10dp"
         android:text="Сохранить" />
 </RelativeLayout>
