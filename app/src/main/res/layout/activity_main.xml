@@ -3,12 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/mainText"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Hello, World"
+        android:text="Страница временно не досупен по техническим причинам."
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <ImageView
+        android:layout_margin="20dp"
+        android:background="@drawable/ic_launcher_background"
+        android:layout_below="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

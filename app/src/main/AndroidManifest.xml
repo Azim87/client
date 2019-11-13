@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PhoneAuthActivity"></activity>
+        <activity android:name=".PhoneAuthActivity"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/ClientSplashScreen">

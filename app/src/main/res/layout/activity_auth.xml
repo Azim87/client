@@ -14,55 +14,25 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/edit_text_verify_sms_code"
-        android:layout_below="@+id/main_info_text_view"
-        style="@style/EditTextVerifySmsCode"
+        android:id="@+id/edit_text_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="TextFields" />
-
-    <LinearLayout
-        android:id="@+id/edit_text"
         android:layout_below="@+id/main_info_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            style="@style/EditTextCode"
-            android:id="@+id/edit_country_code"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/edit_text_phone_number"
-            style="@style/EditTextPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="TextFields" />
-    </LinearLayout>
+        tools:ignore="TextFields" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:visibility="invisible"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/main_info_text_view"
         android:layout_centerHorizontal="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/button_send"
-        android:layout_below="@+id/edit_text"
         style="@style/ButtonSendStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/button_verify_sms_code"
-        android:layout_below="@+id/edit_text_verify_sms_code"
-        android:layout_alignParentRight="true"
-        android:text="Verify"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_phone_number" />
 
 </RelativeLayout>

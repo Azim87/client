@@ -1,13 +1,18 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor" tools:targetApi="m">#FFF</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="ClientSplashScreen" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/main_logo_screen</item>
+        <item name="android:statusBarColor" tools:targetApi="m">#FFF</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="TextViewMain">
@@ -17,38 +22,19 @@
         <item name="android:text">@string/main_text</item>
     </style>
 
-    <style name="EditTextCode">
-        <item name="android:background">@drawable/edit_text_code_stroke</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:text">@string/country_code</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:inputType">number</item>
-        <item name="android:enabled">false</item>
-        <item name="android:maxLength">4</item>
-        <item name="android:maxLines">1</item>
-    </style>
-
     <style name="EditTextPhoneNumber">
-        <item name="android:background">@drawable/edit_text_number_stroke</item>
         <item name="android:padding">8dp</item>
-       <item name="android:hint">94825-04859</item>
         <item name="android:textSize">25sp</item>
         <item name="android:inputType">number</item>
         <item name="android:maxLength">9</item>
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="EditTextVerifySmsCode">
-        <item name="android:background">@drawable/edit_text_verify_sms_code_stroke</item>
-        <item name="android:textSize">25sp</item>
-        <item name="android:padding">8dp</item>
-    </style>
 
     <style name="ButtonSendStyle">
-        <item name="android:background">@drawable/edit_text_verify_sms_code_stroke</item>
         <item name="android:text">@string/save_button</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:padding">10dp</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_centerHorizontal">true</item>
     </style>
 </resources>

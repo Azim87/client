@@ -1,12 +1,13 @@
 package com.kubatov.client;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.executor.TaskExecutor;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,29 +22,26 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class VerifyCodeActivity extends AppCompatActivity implements View.OnClickListener {
+public class VerifyCodeActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks changedCallbacks;
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
 
-    @BindView(R.id.edit_country_code)
-    EditText mEditTextCode;
     @BindView(R.id.edit_text_phone_number)
-    EditText mEditTextPhoneNumber;
-    @BindView(R.id.edit_text_verify_sms_code)
-    EditText mEditTextVerificationSmsCode;
+    EditText mEditTextCode;
+
     @BindView(R.id.main_info_text_view)
     TextView mainTextView;
-    @BindView(R.id.button_send)
-    Button buttonSendSms;
-    @BindView(R.id.button_verify_sms_code)
-    Button buttonVerifySmsCode;
+
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, VerifyCodeActivity.class));
+    public static void start(Context context, String phoneNumber) {
+        Intent intent = new Intent(context, VerifyCodeActivity.class);
+        intent.putExtra("phonenumber", phoneNumber);
+        context.startActivity(intent);
     }
 
     @Override
@@ -51,72 +49,26 @@ public class VerifyCodeActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         ButterKnife.bind(this);
-        setTitle("Авторизация");
-        verification();
-        buttonSendSms.setOnClickListener(this);
-        buttonVerifySmsCode.setOnClickListener(this);
+        getPhoneNumber();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_send:
-                sendVerificationCode();
-                break;
-            case R.id.button_verify_sms_code:
+    private void getPhoneNumber() {
+        String phoneNumber = getIntent().getStringExtra("phonenumber");
+        Log.d("ololo", "getPhoneNumber: " + phoneNumber);
+        sendVerificationCode(phoneNumber);
+    }
 
-                mProgressBar.setVisibility(View.VISIBLE);
 
-                String code = mEditTextVerificationSmsCode.getText().toString().trim();
-                if (code.isEmpty() || code.length() < 6) {
-                    mEditTextVerificationSmsCode.setError("Enter valid code");
-                    mEditTextVerificationSmsCode.requestFocus();
-                    return;
-                }
-                verifyVerificationCode(code);
-                break;
+    @OnClick(R.id.button_send)
+    void signIn(View v) {
+        String code = mEditTextCode.getText().toString().trim();
+
+        if (code.isEmpty() || code.length() < 6) {
+            mEditTextCode.setError("Enter valid code");
+            mEditTextCode.requestFocus();
+            return;
         }
-    }
-
-    private void sendVerificationCode() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        String phoneNumber = mEditTextCode.getText().toString().trim() +
-                mEditTextPhoneNumber.getText().toString().trim();
-        hideViewsOnVerificationCode();
-
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,
-                60,
-                TimeUnit.SECONDS
-                , this,
-                changedCallbacks
-        );
-    }
-
-    private void verification() {
-        changedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                mVerification = phoneAuthCredential.getSmsCode();
-                if (mVerification != null) {
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    mEditTextVerificationSmsCode.setText(mVerification);
-                }
-                newUserSignIn(phoneAuthCredential);
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                e.fillInStackTrace();
-            }
-
-            @Override
-            public void onCodeSent(String verification, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(verification, forceResendingToken);
-                mVerification = verification;
-                mResendingToken = forceResendingToken;
-            }
-        };
+        verifyVerificationCode(code);
     }
 
     private void verifyVerificationCode(String code) {
@@ -128,7 +80,6 @@ public class VerifyCodeActivity extends AppCompatActivity implements View.OnClic
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-
                         RegistrationActivity.start(this);
                         finish();
                         Toast.makeText(VerifyCodeActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
@@ -138,19 +89,41 @@ public class VerifyCodeActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    private void hideViewsOnVerificationCode() {
-        if (mEditTextCode.getText() != null && mEditTextPhoneNumber.getText() != null) {
-            mainTextView.setText("Введите код который вы получили");
-            mEditTextVerificationSmsCode.setVisibility(View.VISIBLE);
-            buttonVerifySmsCode.setVisibility(View.VISIBLE);
-            hideViewsOnSmsCodeSend();
-        }
+    private void sendVerificationCode(String phoneNumber) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        verificationUser();
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                VerifyCodeActivity.this,
+                changedCallbacks
+        );
     }
 
-    private void hideViewsOnSmsCodeSend() {
-        mProgressBar.setVisibility(View.GONE);
-        mEditTextCode.setVisibility(View.GONE);
-        mEditTextPhoneNumber.setVisibility(View.GONE);
-        buttonSendSms.setVisibility(View.GONE);
+    private void verificationUser() {
+        changedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                String code = phoneAuthCredential.getSmsCode();
+                if (code != null) {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    mEditTextCode.setText(code);
+                }
+                newUserSignIn(phoneAuthCredential);
+            }
+
+            @Override
+            public void onCodeSent(String verification, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(verification, forceResendingToken);
+                mVerification = verification;
+                mResendingToken = forceResendingToken;
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Toast.makeText(VerifyCodeActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        };
     }
 }

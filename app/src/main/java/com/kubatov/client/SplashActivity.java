@@ -10,7 +10,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setSplashScreenTime();
+        setSplashScreenTime();
     }
 
     private void setSplashScreenTime() {
@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getRegistrationActivity() {
-   PhoneAuthActivity.start(this);
+        PhoneAuthActivity.start(this);
         finish();
     }
 }

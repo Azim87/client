@@ -70,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/edit_text_verify_sms_code_stroke"
             android:inputType="number"
             android:maxLength="2"
             android:maxLines="1"
@@ -100,7 +99,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_age"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/edit_text_verify_sms_code_stroke"
             android:maxLength="20"
             android:maxLines="1"
             android:padding="8dp" />
@@ -113,7 +111,6 @@
         android:layout_below="@+id/layout_name"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/edit_text_verify_sms_code_stroke"
         android:padding="10dp"
         android:text="Сохранить" />
 </RelativeLayout>
