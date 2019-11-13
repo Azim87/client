@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getRegistrationActivity() {
-        AuthActivity.start(this);
+        VerifyCodeActivity.start(this);
         finish();
     }
 }

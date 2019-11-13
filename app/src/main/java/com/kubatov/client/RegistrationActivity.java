@@ -144,15 +144,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         gender = radioButton.getText().toString();
     }
 
-    private String clientImageExtension(Uri uri){
+    private String clientImageExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap typeMap = MimeTypeMap.getSingleton();
         return typeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadClientImageToStorage(){
+    private void uploadClientImageToStorage() {
         mStorageReference = FirebaseStorage.getInstance().getReference("avatar/");
-        if(clientImageUri != null){
+        if (clientImageUri != null) {
             StorageReference storageReference = mStorageReference.child(System.currentTimeMillis()
                     + "." + clientImageExtension(clientImageUri));
 
@@ -161,7 +161,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
 
                     }).addOnFailureListener(e -> {
-                    });
-        }else {}
+                e.getLocalizedMessage();
+                Toast.makeText(this, "Не удалось сохранить фото!", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+        }
     }
 }

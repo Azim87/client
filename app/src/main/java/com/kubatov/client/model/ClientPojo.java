@@ -1,4 +1,4 @@
-package com.kubatov.client.pojo;
+package com.kubatov.client.model;
 
 public class ClientPojo {
     private String clientImageUrl;
