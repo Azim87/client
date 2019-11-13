@@ -28,8 +28,8 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/edit_country_code"
             style="@style/EditTextCode"
+            android:id="@+id/edit_country_code"
             android:layout_width="80dp"
             android:layout_height="wrap_content" />
 
