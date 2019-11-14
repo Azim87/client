@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             editTextName.setError("вы не ввели имя");
             return;
         } else {
-            MainActivity.startMainActivity(this);
+            MainActivity.start(this);
             finish();
         }
     }

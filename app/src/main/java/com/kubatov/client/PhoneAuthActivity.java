@@ -59,8 +59,8 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
     private void checkCurrentUser() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-           RegistrationActivity.start(this);
-           finish();
+            MainActivity.start(this);
+            finish();
         }
     }
 }

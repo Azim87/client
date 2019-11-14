@@ -1,7 +1,6 @@
 package com.kubatov.client;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.arch.core.executor.TaskExecutor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VerifyCodeActivity extends AppCompatActivity {
+    private static final String PHONE_NUMBER = "phonenumber";
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks changedCallbacks;
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
@@ -40,7 +40,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
 
     public static void start(Context context, String phoneNumber) {
         Intent intent = new Intent(context, VerifyCodeActivity.class);
-        intent.putExtra("phonenumber", phoneNumber);
+        intent.putExtra(PHONE_NUMBER, phoneNumber);
         context.startActivity(intent);
     }
 
@@ -53,7 +53,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     }
 
     private void getPhoneNumber() {
-        String phoneNumber = getIntent().getStringExtra("phonenumber");
+        String phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
         Log.d("ololo", "getPhoneNumber: " + phoneNumber);
         sendVerificationCode(phoneNumber);
     }
@@ -90,8 +90,8 @@ public class VerifyCodeActivity extends AppCompatActivity {
     }
 
     private void sendVerificationCode(String phoneNumber) {
-        mProgressBar.setVisibility(View.VISIBLE);
         verificationUser();
+        mProgressBar.setVisibility(View.VISIBLE);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
                 60,
