@@ -1,31 +1,20 @@
 package com.kubatov.client.model;
 
-public class ClientPojo {
+public class ClientUpload {
     private String clientImageUrl;
-    private String sex;
-    private String age;
+
     private String name;
 
-    public ClientPojo() {
+    public ClientUpload() {
     }
 
-    public ClientPojo(String clientImageUrl, String sex, String age, String name) {
+    public ClientUpload(String clientImageUrl, String name) {
         this.clientImageUrl = clientImageUrl;
-        this.sex = sex;
-        this.age = age;
         this.name = name;
     }
 
     public String getClientImageUrl() {
         return clientImageUrl;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public String getAge() {
-        return age;
     }
 
     public String getName() {
@@ -34,14 +23,6 @@ public class ClientPojo {
 
     public void setClientImageUrl(String clientImageUrl) {
         this.clientImageUrl = clientImageUrl;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
     }
 
     public void setName(String name) {

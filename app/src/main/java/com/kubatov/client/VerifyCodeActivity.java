@@ -54,7 +54,6 @@ public class VerifyCodeActivity extends AppCompatActivity {
 
     private void getPhoneNumber() {
         String phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
-        Log.d("ololo", "getPhoneNumber: " + phoneNumber);
         sendVerificationCode(phoneNumber);
     }
 
@@ -62,12 +61,11 @@ public class VerifyCodeActivity extends AppCompatActivity {
     @OnClick(R.id.button_send)
     void signIn(View v) {
         String code = mEditTextCode.getText().toString().trim();
-
-        if (code.isEmpty() || code.length() < 6) {
-            mEditTextCode.setError("Enter valid code");
-            mEditTextCode.requestFocus();
-            return;
-        }
+            if (code.isEmpty() || code.length() < 6) {
+                mEditTextCode.setError("Enter valid code");
+                mEditTextCode.requestFocus();
+                return;
+            }
         verifyVerificationCode(code);
     }
 
@@ -103,6 +101,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
 
     private void verificationUser() {
         changedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 String code = phoneAuthCredential.getSmsCode();

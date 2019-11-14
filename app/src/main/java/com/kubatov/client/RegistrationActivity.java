@@ -1,23 +1,24 @@
 package com.kubatov.client;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +26,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
@@ -34,16 +37,18 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity
+        implements View.OnClickListener {
+
     private static final String AGE = "age";
     private static final String NAME = "name";
     private static final String GENDER = "sex";
-    private static final String IMAGE = "image";
     private static final String IMAGE_TYPE = "image/*";
+    private static final String LOCATION = "avatar/";
     private static final int PICK_CLIENT_IMAGE_CODE = 1;
+
     private Uri clientImageUri;
     private String gender;
-
     private StorageReference mStorageReference;
 
     @BindView(R.id.client_profile_image)
@@ -56,6 +61,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     EditText editTextName;
     @BindView(R.id.button_save_client)
     Button saveClientInfoButton;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, RegistrationActivity.class));
@@ -151,20 +158,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void uploadClientImageToStorage() {
-        mStorageReference = FirebaseStorage.getInstance().getReference("avatar/");
+        mProgressBar.setVisibility(View.VISIBLE);
+        mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
             StorageReference storageReference = mStorageReference.child(System.currentTimeMillis()
                     + "." + clientImageExtension(clientImageUri));
 
             storageReference.putFile(clientImageUri)
                     .addOnSuccessListener(taskSnapshot -> {
+                        mProgressBar.setVisibility(View.GONE);
                         Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
-
                     }).addOnFailureListener(e -> {
                 e.getLocalizedMessage();
                 Toast.makeText(this, "Не удалось сохранить фото!", Toast.LENGTH_SHORT).show();
             });
-        } else {
         }
     }
 }
