@@ -18,8 +18,6 @@ import butterknife.OnClick;
 
 public class PhoneAuthActivity extends AppCompatActivity {
 
-    @BindView(R.id.editTextPhoneCode)
-    EditText mCodeEditText;
     @BindView(R.id.editTextPhone)
     EditText mPhoneEditText;
 
@@ -35,13 +33,13 @@ public class PhoneAuthActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.buttonContinue)
+    @OnClick(R.id.buttonRegistration)
     void sendNumber(View view) {
         getUserPhoneNumber();
     }
 
     private void getUserPhoneNumber() {
-        String phoneNumber = mCodeEditText.getText().toString().trim() + mPhoneEditText.getText().toString().trim();
+        String phoneNumber = mPhoneEditText.getText().toString().trim();
         if (phoneNumber.isEmpty() || phoneNumber.length() < 13) {
             mPhoneEditText.setError("Valid number is required");
             return;
