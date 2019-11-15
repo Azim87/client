@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Client</string>
-    <string name="main_text">Пожалуйста введите код который вы получили</string>
+    <string name="main_text">Подтвердите ваш номер телефона</string>
     <string name="country_code">+996</string>
     <string name="phone_number">555123321</string>
-    <string name="save_button">Сохранить</string>
+    <string name="back_button">НАЗАД</string>
+    <string name="forward_button">ДАЛЕЕ</string>
     <string name="sign_out">Sign out</string>
+    <string name="tel_text">номер телефона</string>
 </resources>

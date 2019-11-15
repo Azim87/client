@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -16,20 +15,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +66,8 @@ public class RegistrationActivity extends AppCompatActivity
         setContentView(R.layout.activity_registration);
         setTitle("Регистрация");
         ButterKnife.bind(this);
-        initViewClicks();
+        clientImageView.setOnClickListener(this);
+        saveClientInfoButton.setOnClickListener(this);
     }
 
     @Override
@@ -93,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity
 
     private void saveToFireBase() {
         if (editTextAge.getText().toString().equals("")) {
-            editTextAge.setError("вы ее ввели возраст");
+            editTextAge.setError("вы не ввели возраст");
         } else if (editTextName.getText().toString().equals("")) {
             editTextName.setError("вы не ввели имя");
             return;
@@ -120,11 +113,6 @@ public class RegistrationActivity extends AppCompatActivity
                 .addOnFailureListener(e -> {
                 });
         uploadClientImageToStorage();
-    }
-
-    private void initViewClicks() {
-        clientImageView.setOnClickListener(this);
-        saveClientInfoButton.setOnClickListener(this);
     }
 
     private void getClientImageFromStorage() {

@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:statusBarColor" tools:targetApi="m">#FFF</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowBackground">@color/colorBackButton</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -20,6 +21,9 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
         <item name="android:text">@string/main_text</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
     <style name="EditTextPhoneNumber">
@@ -31,10 +35,20 @@
     </style>
 
 
-    <style name="ButtonSendStyle">
-        <item name="android:text">@string/save_button</item>
-        <item name="android:layout_margin">8dp</item>
+    <style name="ButtonBackStyle">
+        <item name="android:text">@string/back_button</item>
         <item name="android:padding">10dp</item>
-        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textAlignment">center</item>
+
+    </style>
+
+    <style name="ButtonForwardStyle">
+        <item name="android:text">@string/forward_button</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/colorForwardButton</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

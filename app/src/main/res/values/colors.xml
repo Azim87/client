@@ -4,5 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorSplash">#FFFFFF</color>
-    <color name="colorButtonSend">#00FFFFFF</color>
+    <color name="colorEditText">#0F333333</color>
+    <color name="colorBackButton">#fff</color>
+    <color name="colorForwardButton">#00BCD4</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
 </resources>
