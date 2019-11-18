@@ -1,9 +1,11 @@
-package com.kubatov.client;
+package com.kubatov.client.ui.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+
+import com.kubatov.client.ui.auth.PhoneAuthActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.kubatov.client;
+package com.kubatov.client.ui.auth;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kubatov.client.R;
+import com.kubatov.client.ui.main.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;

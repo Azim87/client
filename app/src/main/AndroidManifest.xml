@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PhoneAuthActivity"/>
+        <activity android:name=".ui.auth.PhoneAuthActivity"/>
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/ClientSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VerifyCodeActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.auth.VerifyCodeActivity" />
+        <activity android:name=".ui.auth.RegistrationActivity" />
+        <activity android:name=".ui.main.MainActivity" />
     </application>
 
 </manifest>
