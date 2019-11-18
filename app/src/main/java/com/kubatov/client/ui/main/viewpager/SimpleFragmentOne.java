@@ -1,7 +1,9 @@
 package com.kubatov.client.ui.main.viewpager;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.kubatov.client.R;
@@ -9,15 +11,15 @@ import com.kubatov.client.core.CoreFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SimpleFragmentOne extends CoreFragment {
     private BottomSheetBehavior bottomSheetBehavior;
 
-
     @BindView(R.id.bottom_sheet)
     View bottom;
     @BindView(R.id.bottom_sheet_search)
-    ImageView searchImageView;
+    TextView searchImageView;
 
     @Override
     protected int getLayoutId() {
@@ -29,21 +31,21 @@ public class SimpleFragmentOne extends CoreFragment {
         ButterKnife.bind(this, view);
         bottomSheetBehavior = BottomSheetBehavior.from(bottom);
 
+    }
+    private boolean isClicked = true;
+    @OnClick(R.id.bottom_sheet_search)
+    void onOpenBottomSheetClick(){
 
-        searchImageView.setOnClickListener(new View.OnClickListener() {
-            boolean isClicked;
+        Log.d("ololo", "onClick: first click");
+        if (isClicked) {
+            Log.d("ololo", "onClick:  true");
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-            @Override
-            public void onClick(View v) {
-                if (isClicked) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-                } else {
-                    isClicked = false;
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-                isClicked = !isClicked;
-            }
-        });
+        } else {
+            isClicked = false;
+            Log.d("ololo", "onClick:  false");
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+        isClicked = !isClicked;
     }
 }
