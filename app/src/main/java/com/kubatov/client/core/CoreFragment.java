@@ -9,10 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.kubatov.client.App;
-
-import butterknife.ButterKnife;
-
 public abstract class CoreFragment extends Fragment {
     abstract protected int getLayoutId();
     abstract protected void setUpView(View view);

@@ -5,8 +5,7 @@ public class ClientUpload {
 
     private String name;
 
-    public ClientUpload() {
-    }
+
 
     public ClientUpload(String clientImageUrl, String name) {
         this.clientImageUrl = clientImageUrl;
