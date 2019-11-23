@@ -18,7 +18,7 @@ public class ClientRepository implements IClientRepository {
     @Override
     public void getDriversInfo(onClientCallback clientCallback) {
         if (mDriversRemoteData != null) {
-            mDriversRemoteData.getDriversData();
+            clientCallback.onSuccess();
         }
 
     }

@@ -4,6 +4,7 @@ public class Trip {
 
     private String date;
     private String from;
+    private String fromIndex;
     private String index;
     private String price;
     private String seats;
@@ -12,15 +13,25 @@ public class Trip {
     private String toIndex;
 
 
-    public Trip(String date, String from, String index, String price, String seats, String seatsIndex, String to, String toIndex) {
+    public Trip(){}
+    public Trip(String date, String from, String fromIndex, String index, String price, String seats, String seatsIndex, String to, String toIndex) {
         this.date = date;
         this.from = from;
+        this.fromIndex = fromIndex;
         this.index = index;
         this.price = price;
         this.seats = seats;
         this.seatsIndex = seatsIndex;
         this.to = to;
         this.toIndex = toIndex;
+    }
+
+    public String getFromIndex() {
+        return fromIndex;
+    }
+
+    public void setFromIndex(String fromIndex) {
+        this.fromIndex = fromIndex;
     }
 
     public String getDate() {
