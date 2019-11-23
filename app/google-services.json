@@ -1,21 +1,111 @@
 {
   "project_info": {
-    "project_number": "1068145423056",
-    "firebase_url": "https://client-a6173.firebaseio.com",
-    "project_id": "client-a6173",
-    "storage_bucket": "client-a6173.appspot.com"
+    "project_number": "892281713275",
+    "firebase_url": "https://vokzal-91b56.firebaseio.com",
+    "project_id": "vokzal-91b56",
+    "storage_bucket": "vokzal-91b56.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1068145423056:android:0cb35b4579011b0b9ae4d5",
+        "mobilesdk_app_id": "1:892281713275:android:c56a5e66d07fbf9527a8de",
+        "android_client_info": {
+          "package_name": "com.example.vokzal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892281713275-djnsdthps1oeeoifrh9uta8qtg1mucd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vokzal",
+            "certificate_hash": "5978d6540ab945b9300d81ba4e0ba996946d6415"
+          }
+        },
+        {
+          "client_id": "892281713275-h5ho0ekh6tkv9b9qsrppdo6t7kcef33d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vokzal",
+            "certificate_hash": "3779a98361fe6ec5777664b2ed76a2ee0ddcb449"
+          }
+        },
+        {
+          "client_id": "892281713275-0viq5e3lkeb9j9uqbhbnhoh71om7afsh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vokzal",
+            "certificate_hash": "94719788b1a65d69db5f3f94b298f41d9d236f6e"
+          }
+        },
+        {
+          "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ctyP5SOUD5oKUm1n3HJC83rMxS9Qx04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892281713275:android:e4c7f2976308da4027a8de",
+        "android_client_info": {
+          "package_name": "com.kubat.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892281713275-6boae9vo3rrhs1e3k0kro5rb60tage0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kubat.client",
+            "certificate_hash": "5978d6540ab945b9300d81ba4e0ba996946d6415"
+          }
+        },
+        {
+          "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ctyP5SOUD5oKUm1n3HJC83rMxS9Qx04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892281713275:android:88d44079bb50292827a8de",
         "android_client_info": {
           "package_name": "com.kubatov.client"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1068145423056-to5k3qcbm8mo4dqc80ndpktl3c0ekj4o.apps.googleusercontent.com",
+          "client_id": "892281713275-ij0jadsoi9c1tgi2afsvg1j29qggel6o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kubatov.client",
@@ -23,20 +113,20 @@
           }
         },
         {
-          "client_id": "1068145423056-1gu1nuihnto567j4ck86r29hnueigrih.apps.googleusercontent.com",
+          "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDcTznEMx69-azwpAWLjlq8MLtJyArNIKs"
+          "current_key": "AIzaSyB0ctyP5SOUD5oKUm1n3HJC83rMxS9Qx04"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1068145423056-1gu1nuihnto567j4ck86r29hnueigrih.apps.googleusercontent.com",
+              "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

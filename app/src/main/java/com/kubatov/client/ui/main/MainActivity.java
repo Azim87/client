@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.auth.PhoneAuthActivity;
 import com.kubatov.client.ui.main.viewpager.SimpleFragmentFour;
-import com.kubatov.client.ui.main.viewpager.SimpleFragmentOne;
+import com.kubatov.client.ui.fragmentOne.SimpleFragmentOne;
 import com.kubatov.client.ui.main.viewpager.SimpleFragmentThree;
 import com.kubatov.client.ui.main.viewpager.SimpleFragmentTwo;
 
