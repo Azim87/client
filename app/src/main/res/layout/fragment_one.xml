@@ -8,9 +8,9 @@
     tools:context=".ui.main.MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,9 +18,9 @@
 
             <TextView
                 android:id="@+id/bottom_sheet_search"
-                android:background="@color/colorForwardButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorForwardButton"
                 android:padding="20dp"
                 android:text="Поиск"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -41,21 +41,20 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="57dp"
                 android:layout_below="@id/textView3"
+                android:layout_marginTop="60dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_search" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="550dp"
-        app:behavior_hideable="true"
         android:background="@color/colorPrimary"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior" />
 

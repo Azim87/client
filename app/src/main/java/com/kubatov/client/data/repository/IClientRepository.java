@@ -1,13 +1,18 @@
 package com.kubatov.client.data.repository;
 
+
+import com.kubatov.client.model.Trip;
+
+import java.util.List;
+
 public interface IClientRepository {
 
-    void getDriversInfo(onClientCallback clientCallback);
+    void getTripsInfo(onClientCallback clientCallback);
 
     interface onClientCallback {
 
-        void onSuccess();
+        void onSuccess(List<Trip> tripList);
 
-        void inFailure(Exception e);
+        void onFailure(Exception e);
     }
 }

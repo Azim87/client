@@ -4,5 +4,5 @@ import com.kubatov.client.data.repository.IClientRepository;
 
 public interface IDriversRemoteData {
 
-    void getDriversData(IClientRepository.onClientCallback callback);
+    void getDriversTrips(IClientRepository.onClientCallback callback);
 }

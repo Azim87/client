@@ -2,22 +2,18 @@ package com.kubatov.client.ui.fragmentOne;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.core.CoreFragment;
+import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,17 +21,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SimpleFragmentOne extends CoreFragment {
-    private final static String TRIP = "trip";
     private boolean isClicked = true;
     private BottomSheetBehavior bottomSheetBehavior;
-    private List<Trip> tripList;
     private DriversRecyclerAdapter adapter;
-
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.bottom_sheet)
     View bottomSheet;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -47,28 +42,42 @@ public class SimpleFragmentOne extends CoreFragment {
     protected void setUpView(View view) {
         ButterKnife.bind(this, view);
         initRecyclerView();
+        refreshTrips();
+        getTripData();
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
     }
 
     private void initRecyclerView() {
-        tripList = new ArrayList<>();
         adapter = new DriversRecyclerAdapter();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(adapter);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(TRIP)
-                .get()
-                .addOnSuccessListener(snapshots -> {
-                    List<Trip> types = snapshots.toObjects(Trip.class);
-                    tripList.addAll(types);
-                    adapter.setTrip(tripList);
-                    Log.d("ololo", "onSuccess: " + tripList.get(0).getPrice());
-                }).addOnFailureListener(e -> Toast.makeText(getContext(), "Ошибка", Toast.LENGTH_SHORT).show());
     }
 
 
+    private void refreshTrips() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            SimpleFragmentOne.this.getTripData();
+            swipeRefreshLayout.setRefreshing(true);
+        });
+    }
+
+
+    private void getTripData() {
+        App.clientRepository.getTripsInfo(new IClientRepository.onClientCallback() {
+            @Override
+            public void onSuccess(List<Trip> tripList) {
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.setTrip(tripList);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("ololo", "Ошибка: -> " + e.getLocalizedMessage());
+            }
+        });
+    }
+
+    //region On Click
     @OnClick(R.id.bottom_sheet_search)
     void onOpenBottomSheetClick() {
         if (isClicked) {
@@ -83,4 +92,5 @@ public class SimpleFragmentOne extends CoreFragment {
         }
         isClicked = !isClicked;
     }
+    //endregion
 }

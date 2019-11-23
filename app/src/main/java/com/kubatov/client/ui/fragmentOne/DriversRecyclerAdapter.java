@@ -1,6 +1,5 @@
 package com.kubatov.client.ui.fragmentOne;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
         return new DriversViewHolder(view);
     }
 
-    public void setTrip(List<Trip> trip) {
+    void setTrip(List<Trip> trip) {
         mClient.clear();
         mClient.addAll(trip);
         notifyDataSetChanged();
@@ -37,19 +36,13 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
 
     @Override
     public void onBindViewHolder(@NonNull DriversViewHolder holder, int position) {
-        holder.view.setText("Цена: " + mClient.get(position).getPrice());
-        holder.view2.setText("Откуда " + mClient.get(position).getFrom());
-        holder.view3.setText("Куда"+ mClient.get(position).getTo());
-        holder.view4.setText("Когда " + mClient.get(position).getDate());
-        Log.d("ololo", "onBindViewHolder: " + mClient.get(position).getPrice());
-
+        holder.onBind(mClient.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mClient.size();
     }
-
 
     public class DriversViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.hello)
@@ -64,6 +57,13 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
         public DriversViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        private void onBind(Trip trip) {
+            view.setText("Date: " + trip.getDate());
+            view2.setText("From: " + trip.getFrom());
+            view3.setText("To: " + trip.getTo());
+            view4.setText("Price: " + trip.getPrice());
         }
     }
 }

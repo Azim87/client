@@ -3,6 +3,9 @@ package com.kubatov.client.data.repository;
 import androidx.annotation.Nullable;
 
 import com.kubatov.client.data.RemoteDriversDataSource.DriversRemoteData;
+import com.kubatov.client.model.Trip;
+
+import java.util.List;
 
 public class ClientRepository implements IClientRepository {
     @Nullable
@@ -11,14 +14,23 @@ public class ClientRepository implements IClientRepository {
 
     public ClientRepository(@Nullable DriversRemoteData driversRemoteData) {
         mDriversRemoteData = driversRemoteData;
-
-
     }
 
     @Override
-    public void getDriversInfo(onClientCallback clientCallback) {
+    public void getTripsInfo(onClientCallback clientCallback) {
         if (mDriversRemoteData != null) {
-            clientCallback.onSuccess();
+            mDriversRemoteData.getDriversTrips(new onClientCallback() {
+                @Override
+                public void onSuccess(List<Trip> tripList) {
+                    clientCallback.onSuccess(tripList);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    clientCallback.onFailure(new Exception("error"));
+                }
+            });
+
         }
 
     }
