@@ -4,13 +4,11 @@ import androidx.annotation.Nullable;
 
 import com.kubatov.client.data.RemoteDriversDataSource.DriversRemoteData;
 import com.kubatov.client.model.Trip;
-
 import java.util.List;
 
 public class ClientRepository implements IClientRepository {
     @Nullable
     private DriversRemoteData mDriversRemoteData;
-
 
     public ClientRepository(@Nullable DriversRemoteData driversRemoteData) {
         mDriversRemoteData = driversRemoteData;
@@ -30,8 +28,6 @@ public class ClientRepository implements IClientRepository {
                     clientCallback.onFailure(new Exception("error"));
                 }
             });
-
         }
-
     }
 }

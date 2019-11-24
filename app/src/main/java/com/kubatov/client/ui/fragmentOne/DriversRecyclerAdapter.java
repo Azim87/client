@@ -18,14 +18,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecyclerAdapter.DriversViewHolder> {
-
     private List<Trip> mClient = new ArrayList<>();
+    private OnTripItemClickListener mItemClickListener;
+
+    public DriversRecyclerAdapter(OnTripItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
 
     @NonNull
     @Override
     public DriversViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drivers_order, parent, false);
-        return new DriversViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trips, parent, false);
+        return new DriversViewHolder(view, mItemClickListener);
     }
 
     void setTrip(List<Trip> trip) {
@@ -44,26 +48,37 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
         return mClient.size();
     }
 
-    public class DriversViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.hello)
-        TextView view;
-        @BindView(R.id.hello2)
-        TextView view2;
-        @BindView(R.id.hello3)
-        TextView view3;
-        @BindView(R.id.hello4)
-        TextView view4;
+    public class DriversViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private OnTripItemClickListener mListener;
 
-        public DriversViewHolder(@NonNull View itemView) {
+        @BindView(R.id.text_view_to)
+        TextView mTextTo;
+        @BindView(R.id.text_view_from)
+        TextView mTextFrom;
+        @BindView(R.id.text_view_price)
+        TextView mTextPrice;
+        @BindView(R.id.text_view_date)
+        TextView mTextDate;
+
+        public DriversViewHolder(@NonNull View itemView, OnTripItemClickListener listener) {
             super(itemView);
+            mListener = listener;
+
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            mListener.onTripClick(position);
         }
 
         private void onBind(Trip trip) {
-            view.setText("Date: " + trip.getDate());
-            view2.setText("From: " + trip.getFrom());
-            view3.setText("To: " + trip.getTo());
-            view4.setText("Price: " + trip.getPrice());
+            mTextTo.setText("To -> " + trip.getTo());
+            mTextFrom.setText("From -> " + trip.getFrom());
+            mTextPrice.setText("Price -> " + trip.getPrice());
+            mTextDate.setText("Date -> " + trip.getDate());
         }
     }
 }

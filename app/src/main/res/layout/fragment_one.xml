@@ -22,7 +22,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorForwardButton"
                 android:padding="20dp"
-                android:text="Поиск"
+                android:text="Поиск машины"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

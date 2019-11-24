@@ -17,9 +17,9 @@ public class DriversRemoteData implements IDriversRemoteData {
         db.collection(TRIP)
                 .get()
                 .addOnSuccessListener(snapshots -> {
-                    List<Trip> types = snapshots.toObjects(Trip.class);
+                    List<Trip> trips = snapshots.toObjects(Trip.class);
                     tripList.clear();
-                    tripList.addAll(types);
+                    tripList.addAll(trips);
                     callback.onSuccess(tripList);
                 }).addOnFailureListener(e -> {
         });

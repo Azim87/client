@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SimpleFragmentOne extends CoreFragment {
+public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickListener {
     private boolean isClicked = true;
     private BottomSheetBehavior bottomSheetBehavior;
     private DriversRecyclerAdapter adapter;
@@ -31,7 +31,6 @@ public class SimpleFragmentOne extends CoreFragment {
     View bottomSheet;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-
 
     @Override
     protected int getLayoutId() {
@@ -48,11 +47,10 @@ public class SimpleFragmentOne extends CoreFragment {
     }
 
     private void initRecyclerView() {
-        adapter = new DriversRecyclerAdapter();
+        adapter = new DriversRecyclerAdapter(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(adapter);
     }
-
 
     private void refreshTrips() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -60,7 +58,6 @@ public class SimpleFragmentOne extends CoreFragment {
             swipeRefreshLayout.setRefreshing(true);
         });
     }
-
 
     private void getTripData() {
         App.clientRepository.getTripsInfo(new IClientRepository.onClientCallback() {
@@ -91,6 +88,11 @@ public class SimpleFragmentOne extends CoreFragment {
             Log.d("ololo", "onOpenBottomSheetClick: " + "close");
         }
         isClicked = !isClicked;
+    }
+
+    @Override
+    public void onTripClick(int position) {
+        Log.d("ololo", " on trip click: " + position);
     }
     //endregion
 }
