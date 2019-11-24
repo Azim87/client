@@ -13,6 +13,7 @@ import com.kubatov.client.R;
 import com.kubatov.client.core.CoreFragment;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
+import com.kubatov.client.ui.TripDetailsActivity.TripDetailsActivity;
 
 import java.util.List;
 
@@ -81,7 +82,6 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             Log.d("ololo", "onOpenBottomSheetClick: " + "open");
 
-
         } else {
             isClicked = false;
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -93,6 +93,7 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
     @Override
     public void onTripClick(int position) {
         Log.d("ololo", " on trip click: " + position);
+        TripDetailsActivity.start(getContext());
     }
     //endregion
 }
