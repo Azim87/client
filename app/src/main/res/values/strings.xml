@@ -9,4 +9,9 @@
     <string name="reg_button">РЕГИСТРАЦИЯ</string>
     <string name="sign_out">Sign out</string>
     <string name="tel_text">номер телефона</string>
+    <string name="trip_id">id</string>
+    <string name="trip_date">date</string>
+    <string name="trip_price">price</string>
+    <string name="trip_from">from</string>
+    <string name="trip_to">to</string>
 </resources>

@@ -14,7 +14,10 @@ import com.kubatov.client.core.CoreFragment;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.TripDetailsActivity.TripDetailsActivity;
+import com.kubatov.client.ui.fragmentOne.recycler.DriversRecyclerAdapter;
+import com.kubatov.client.ui.fragmentOne.recycler.OnTripItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,6 +28,7 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
     private boolean isClicked = true;
     private BottomSheetBehavior bottomSheetBehavior;
     private DriversRecyclerAdapter adapter;
+    private List<Trip> mTripList;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -42,9 +46,10 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
     protected void setUpView(View view) {
         ButterKnife.bind(this, view);
         initRecyclerView();
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mTripList = new ArrayList<>();
         refreshTrips();
         getTripData();
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
     }
 
     private void initRecyclerView() {
@@ -66,6 +71,7 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
             public void onSuccess(List<Trip> tripList) {
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.setTrip(tripList);
+                mTripList.addAll(tripList);
             }
 
             @Override
@@ -80,20 +86,31 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
     void onOpenBottomSheetClick() {
         if (isClicked) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            Log.d("ololo", "onOpenBottomSheetClick: " + "open");
-
         } else {
             isClicked = false;
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            Log.d("ololo", "onOpenBottomSheetClick: " + "close");
         }
         isClicked = !isClicked;
     }
 
     @Override
     public void onTripClick(int position) {
-        Log.d("ololo", " on trip click: " + position);
-        TripDetailsActivity.start(getContext());
+        Log.d("ololo", "onTripClick: " + mTripList.size());
+
+        Log.d("ololo", "onTripClick: " + " " + mTripList.get(position).getDate());
+        String tripDate = mTripList.get(position).getDate();
+        String tripTo = mTripList.get(position).getTo();
+        String tripFrom = mTripList.get(position).getFrom();
+        String tripPrice = mTripList.get(position).getPrice();
+        String tripSeats = mTripList.get(position).getSeats();
+
+        TripDetailsActivity.start(
+                getContext(),
+                tripDate,
+                tripTo,
+                tripFrom,
+                tripPrice,
+                tripSeats);
     }
     //endregion
 }

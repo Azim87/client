@@ -2,6 +2,7 @@ package com.kubatov.client.model;
 
 public class Trip {
 
+    private String id;
     private String date;
     private String from;
     private String fromIndex;
@@ -12,9 +13,12 @@ public class Trip {
     private String to;
     private String toIndex;
 
+    public Trip() {
 
-    public Trip(){}
-    public Trip(String date, String from, String fromIndex, String index, String price, String seats, String seatsIndex, String to, String toIndex) {
+    }
+
+    public Trip(String id, String date, String from, String fromIndex, String index, String price, String seats, String seatsIndex, String to, String toIndex) {
+        this.id = id;
         this.date = date;
         this.from = from;
         this.fromIndex = fromIndex;
@@ -24,6 +28,14 @@ public class Trip {
         this.seatsIndex = seatsIndex;
         this.to = to;
         this.toIndex = toIndex;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFromIndex() {

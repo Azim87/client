@@ -22,8 +22,8 @@
                 android:id="@+id/trip_image"
                 android:src="@drawable/ic_launcher_background"
                 android:layout_marginEnd="20dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
 
             <TextView
                 android:id="@+id/text_view_to"
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Hello, World" />
+                android:text="@string/trip_to" />
 
             <TextView
                 android:id="@+id/text_view_from"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_view_to"
                 android:layout_gravity="center"
-                android:text="Hello, World" />
+                android:text="@string/trip_from" />
 
             <TextView
                 android:id="@+id/text_view_price"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_view_from"
                 android:layout_gravity="center"
-                android:text="Hello, World" />
+                android:text="@string/trip_price" />
 
             <TextView
                 android:id="@+id/text_view_date"
@@ -58,7 +58,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_view_price"
                 android:layout_gravity="center"
-                android:text="Hello, World" />
+                android:text="@string/trip_date" />
+
+            <TextView
+                android:id="@+id/text_view_id"
+                android:layout_toEndOf="@+id/trip_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_date"
+                android:layout_gravity="center"
+                android:text="@string/trip_id" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.kubatov.client.ui.fragmentOne;
+package com.kubatov.client.ui.fragmentOne.recycler;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +32,7 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
         return new DriversViewHolder(view, mItemClickListener);
     }
 
-    void setTrip(List<Trip> trip) {
+    public void setTrip(List<Trip> trip) {
         mClient.clear();
         mClient.addAll(trip);
         notifyDataSetChanged();
@@ -51,20 +51,16 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
     public class DriversViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnTripItemClickListener mListener;
 
-        @BindView(R.id.text_view_to)
-        TextView mTextTo;
-        @BindView(R.id.text_view_from)
-        TextView mTextFrom;
-        @BindView(R.id.text_view_price)
-        TextView mTextPrice;
-        @BindView(R.id.text_view_date)
-        TextView mTextDate;
+        @BindView(R.id.text_view_to) TextView mTextTo;
+        @BindView(R.id.text_view_from) TextView mTextFrom;
+        @BindView(R.id.text_view_price) TextView mTextPrice;
+        @BindView(R.id.text_view_date) TextView mTextDate;
+        @BindView(R.id.text_view_id) TextView mTextId;
 
         public DriversViewHolder(@NonNull View itemView, OnTripItemClickListener listener) {
             super(itemView);
-            mListener = listener;
-
             ButterKnife.bind(this, itemView);
+            mListener = listener;
             itemView.setOnClickListener(this);
         }
 
@@ -79,6 +75,7 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
             mTextFrom.setText("From -> " + trip.getFrom());
             mTextPrice.setText("Price -> " + trip.getPrice());
             mTextDate.setText("Date -> " + trip.getDate());
+            mTextId.setText(trip.getId());
         }
     }
 }
