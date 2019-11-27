@@ -3,11 +3,16 @@ package com.kubatov.client.ui.fragmentOne.recycler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.model.Trip;
 
@@ -51,11 +56,11 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
     public class DriversViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnTripItemClickListener mListener;
 
+        @BindView(R.id.trip_image) ImageView carImageView;
         @BindView(R.id.text_view_to) TextView mTextTo;
         @BindView(R.id.text_view_from) TextView mTextFrom;
         @BindView(R.id.text_view_price) TextView mTextPrice;
         @BindView(R.id.text_view_date) TextView mTextDate;
-        @BindView(R.id.text_view_id) TextView mTextId;
 
         public DriversViewHolder(@NonNull View itemView, OnTripItemClickListener listener) {
             super(itemView);
@@ -75,7 +80,11 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
             mTextFrom.setText("From -> " + trip.getFrom());
             mTextPrice.setText("Price -> " + trip.getPrice());
             mTextDate.setText("Date -> " + trip.getDate());
-            mTextId.setText(trip.getId());
+            Glide.with(App.instance)
+                    .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                    .load(trip.getCarImage())
+                    .into(carImageView);
+
         }
     }
 }

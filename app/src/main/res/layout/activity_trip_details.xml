@@ -1,22 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.TripDetailsActivity.TripDetailsActivity">
 
-    <ImageView
-        android:id="@+id/trip_details_main_img"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/colorPrimary"
-        android:src="@drawable/ic_launcher_background" />
-
-    <TextView
-        android:id="@+id/trip_text"
-        android:padding="12dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/trip_details_main_img"
-        android:text="trip from -> to" />
+        android:layout_marginBottom="15dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="15dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/trip_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <!--region Trip Views-->
+    <TextView
+        android:id="@+id/trip_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card"
+        android:layout_toStartOf="@+id/date"
+        android:padding="12dp"
+        android:text="день поездки" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/card"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="21.02.19" />
+
+    <TextView
+        android:id="@+id/trip_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_date"
+        android:padding="12dp"
+        android:text="из г." />
+
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_date"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="город" />
+
+    <TextView
+        android:id="@+id/trip_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_from"
+        android:padding="12dp"
+        android:text="в г." />
+
+    <TextView
+        android:id="@+id/to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_from"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="город" />
+
+    <TextView
+        android:id="@+id/trip_seats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_to"
+        android:padding="12dp"
+        android:text="количество мест" />
+
+    <TextView
+        android:id="@+id/seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_to"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="место" />
+
+    <TextView
+        android:id="@+id/trip_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_seats"
+        android:padding="12dp"
+        android:text="цена поездки" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_seats"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="цена" />
+
+    <TextView
+        android:id="@+id/trip_car_model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_price"
+        android:padding="12dp"
+        android:text="модель машины" />
+
+    <TextView
+        android:id="@+id/car_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_price"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="модель машины" />
+
+    <TextView
+        android:id="@+id/trip_drivers_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_car_model"
+        android:padding="12dp"
+        android:text="имя водителя" />
+
+    <TextView
+        android:id="@+id/drivers_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_car_model"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:text="имя" />
+
+    <Button
+        android:id="@+id/trip_book_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/trip_book_button_style"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Забронировать"
+        android:textColor="@color/colorWhite" />
+    <!--endregion-->
+
 </RelativeLayout>

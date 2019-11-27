@@ -1,5 +1,7 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
@@ -11,8 +13,10 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
     private List<Trip> tripList = new ArrayList<>();
 
+
+    //region Read trip data from fireBase dataBase
     @Override
-    public void getDriversTrips(IClientRepository.onClientCallback callback) {
+    public void getDriversTrips(IClientRepository.onClientCallback tripCallback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(TRIP)
                 .get()
@@ -20,8 +24,9 @@ public class DriversRemoteData implements IDriversRemoteData {
                     List<Trip> trips = snapshots.toObjects(Trip.class);
                     tripList.clear();
                     tripList.addAll(trips);
-                    callback.onSuccess(tripList);
+                    tripCallback.onSuccess(tripList);
                 }).addOnFailureListener(e -> {
         });
     }
+    //endregion
 }

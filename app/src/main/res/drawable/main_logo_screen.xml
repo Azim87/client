@@ -4,6 +4,6 @@
     <item>
         <bitmap
             android:gravity="center_vertical|center_horizontal"
-            android:src="@drawable/ic_taxi_icon_splash" />
+            android:src="@drawable/ic_splash_icon" />
     </item>
 </layer-list>
