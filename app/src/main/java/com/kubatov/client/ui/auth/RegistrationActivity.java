@@ -164,12 +164,9 @@ public class RegistrationActivity extends AppCompatActivity
             storageReference.putFile(clientImageUri)
                     .addOnSuccessListener(taskSnapshot -> {
                         mProgressBar.setVisibility(View.GONE);
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                if (uri != null){
-                                    profileImageUri = uri.toString();
-                                }
+                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            if (uri != null){
+                                profileImageUri = uri.toString();
                             }
                         });
                         Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();

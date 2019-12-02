@@ -4,14 +4,7 @@
         android:id="@+id/bottom_nav_1"
         android:icon="@drawable/ic_trip"
         android:title="Поездки" />
-    <item
-        android:id="@+id/bottom_nav_2"
-        android:icon="@drawable/ic_trip"
-        android:title="Two" />
-    <item
-        android:id="@+id/bottom_nav_3"
-        android:icon="@drawable/ic_exit"
-        android:title="Three" />
+
     <item
         android:id="@+id/bottom_nav_4"
         android:icon="@drawable/ic_profile"

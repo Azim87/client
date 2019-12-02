@@ -1,5 +1,6 @@
 package com.kubatov.client.ui.profile;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,13 +44,18 @@ public class profileFragment extends CoreFragment {
             @Override
             public void onSuccess(List<ClientUpload> clientUploads) {
                 if (!clientUploads.isEmpty()) {
-                    Glide.with(clientsProfileImageView.getContext()).load(clientUploads.get(0).getProfileImage()).into(clientsProfileImageView);
+                    if (clientUploads.get(0).getProfileImage() == null){
+                        clientsProfileImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_profile_img));
+                    }else{
+                        Glide.with(clientsProfileImageView.getContext()).load(clientUploads.get(0).getProfileImage()).into(clientsProfileImageView);
+                    }
                     clientsName.setText(clientUploads.get(0).getName());
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
+                Log.d("ololo", "onFailure: " + e.getLocalizedMessage());
             }
         });
     }
@@ -58,7 +64,7 @@ public class profileFragment extends CoreFragment {
     void logOff(View view) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().signOut();
-            PhoneAuthActivity.start(App.instance);
         }
+        PhoneAuthActivity.start(getContext());
     }
 }

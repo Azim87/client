@@ -1,7 +1,5 @@
 package com.kubatov.client.ui.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,10 +31,10 @@ public class VerifyCodeActivity extends AppCompatActivity {
 
     @BindView(R.id.edit_text_phone_number)
     EditText mEditTextCode;
-
     @BindView(R.id.main_info_text_view)
     TextView mainTextView;
-
+    @BindView(R.id.button_back)
+    TextView backTextView;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
@@ -57,16 +57,20 @@ public class VerifyCodeActivity extends AppCompatActivity {
         sendVerificationCode(phoneNumber);
     }
 
-
     @OnClick(R.id.button_send)
     void signIn(View v) {
         String code = mEditTextCode.getText().toString().trim();
-            if (code.isEmpty() || code.length() < 6) {
-                mEditTextCode.setError("Enter valid code");
-                mEditTextCode.requestFocus();
-                return;
-            }
+        if (code.isEmpty() || code.length() < 6) {
+            mEditTextCode.setError("Смс код должен быть больше 6ти симфолов.");
+            mEditTextCode.requestFocus();
+            return;
+        }
         verifyVerificationCode(code);
+    }
+
+    @OnClick(R.id.button_back) void onBackPressed(View view){
+        PhoneAuthActivity.start(this);
+        finish();
     }
 
     private void verifyVerificationCode(String code) {

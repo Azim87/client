@@ -13,8 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kubatov.client.R;
-import com.kubatov.client.ui.main.viewpager.SimpleFragmentThree;
-import com.kubatov.client.ui.main.viewpager.SimpleFragmentTwo;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
 
@@ -65,14 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.bottom_nav_1:
                     viewPager.setCurrentItem(0);
                     new tripFragment();
-                break;
-                case R.id.bottom_nav_2:
-                    viewPager.setCurrentItem(1);
-                    new SimpleFragmentTwo();
-                    break;
-                case R.id.bottom_nav_3:
-                    viewPager.setCurrentItem(2);
-                    new SimpleFragmentThree();
                     break;
                 case R.id.bottom_nav_4:
                     viewPager.setCurrentItem(3);
@@ -82,11 +72,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
-    private List<Fragment> sendFragment(){
+
+    private List<Fragment> sendFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new tripFragment());
-        fragmentList.add(new SimpleFragmentTwo());
-        fragmentList.add(new SimpleFragmentThree());
         fragmentList.add(new profileFragment());
         return fragmentList;
     }

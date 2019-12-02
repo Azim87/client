@@ -174,7 +174,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.call_to_driver)
     void callToDriver(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             intent.setPackage("com.android.phone");
         }else{
             intent.setPackage("com.android.server.telecom");
