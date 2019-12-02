@@ -65,7 +65,6 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     public static void start(
             Context context,
-            String tripImg,
             String tripDate,
             String tripTo,
             String tripFrom,
@@ -76,7 +75,6 @@ public class TripDetailsActivity extends AppCompatActivity {
             String tripDriversName,
             List<String> imageList) {
         Intent intent = new Intent(context, TripDetailsActivity.class);
-        intent.putExtra(TRIP_IMG, tripImg);
         intent.putExtra(TRIP_DATE, tripDate);
         intent.putExtra(TRIP_TO, tripTo);
         intent.putExtra(TRIP_FROM, tripFrom);
@@ -93,22 +91,18 @@ public class TripDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
-        adapter = new TripAdapter();
         ButterKnife.bind(this);
+        adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
     }
 
     private void initViewPager() {
         tripImgViewPager.setAdapter(adapter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-        }
     }
 
     private void getDetailedTripInfo() {
         Intent intent = getIntent();
-        String tripImg = intent.getStringExtra(TRIP_IMG);
         String tripDate = intent.getStringExtra(TRIP_DATE);
         String tripTo = intent.getStringExtra(TRIP_TO);
         String tripFrom = intent.getStringExtra(TRIP_FROM);
@@ -120,10 +114,10 @@ public class TripDetailsActivity extends AppCompatActivity {
         ArrayList<String> img = intent.getStringArrayListExtra("img");
         Log.d("ololo", "getDetailedTripInfo: " + img);
         adapter.setImageList(img);
-        DisplayTripDetailsInfo(tripImg, tripDate, tripTo, tripFrom, tripPrice, tripSeats, tripCarModel, tripCarMark, tripDriversName);
+        DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripSeats, tripCarModel, tripCarMark, tripDriversName);
     }
 
-    private void DisplayTripDetailsInfo(String tripImg, String tripDate, String tripTo, String tripFrom,
+    private void DisplayTripDetailsInfo(String tripDate, String tripTo, String tripFrom,
                                         String tripPrice, String tripSeats, String tripCarModel, String tripCarMark, String tripDriversName) {
         textViewDate.setText("День поездки:");
         textDate.setText(tripDate);

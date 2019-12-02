@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -37,14 +40,16 @@ public class RegistrationActivity extends AppCompatActivity
     private static final String AGE = "age";
     private static final String NAME = "name";
     private static final String GENDER = "sex";
+    private static final String PROFILE = "profileImage";
     private static final String IMAGE_TYPE = "image/*";
     private static final String LOCATION = "avatar/";
     private static final int PICK_CLIENT_IMAGE_CODE = 1;
 
     private Uri clientImageUri;
     private String gender;
-    private StorageReference mStorageReference;
+    private String profileImageUri = null;
 
+    private  Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
     ImageView clientImageView;
     @BindView(R.id.radio_sex)
@@ -102,19 +107,20 @@ public class RegistrationActivity extends AppCompatActivity
         getClientSex();
         String age = editTextAge.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
-        Map<String, Object> clients = new HashMap<>();
+
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
+        clients.put(PROFILE, profileImageUri);
+        String phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
-        dataBase.collection("clients")
-                .add(clients)
-                .addOnSuccessListener(documentReference -> {
-                })
-                .addOnFailureListener(e -> {
-                });
-        uploadClientImageToStorage();
+        dataBase
+                .collection("clients")
+                .document(phoneNumber)
+                .set(clients)
+                .addOnSuccessListener(documentReference -> {})
+                .addOnFailureListener(e -> {});
     }
 
     private void getClientImageFromStorage() {
@@ -132,6 +138,7 @@ public class RegistrationActivity extends AppCompatActivity
                 data.getData() != null && data != null) {
             clientImageUri = data.getData();
             Glide.with(this).load(clientImageUri).into(clientImageView);
+            uploadClientImageToStorage();
         }
     }
 
@@ -149,7 +156,7 @@ public class RegistrationActivity extends AppCompatActivity
 
     private void uploadClientImageToStorage() {
         mProgressBar.setVisibility(View.VISIBLE);
-        mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
+        StorageReference mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
             StorageReference storageReference = mStorageReference.child(System.currentTimeMillis()
                     + "." + clientImageExtension(clientImageUri));
@@ -157,6 +164,14 @@ public class RegistrationActivity extends AppCompatActivity
             storageReference.putFile(clientImageUri)
                     .addOnSuccessListener(taskSnapshot -> {
                         mProgressBar.setVisibility(View.GONE);
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                if (uri != null){
+                                    profileImageUri = uri.toString();
+                                }
+                            }
+                        });
                         Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
                     }).addOnFailureListener(e -> {
                 e.getLocalizedMessage();

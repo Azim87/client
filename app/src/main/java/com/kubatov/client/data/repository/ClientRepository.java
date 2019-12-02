@@ -3,6 +3,7 @@ package com.kubatov.client.data.repository;
 import androidx.annotation.Nullable;
 
 import com.kubatov.client.data.RemoteDriversDataSource.DriversRemoteData;
+import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 
 import java.util.List;
@@ -30,5 +31,20 @@ public class ClientRepository implements IClientRepository {
                 }
             });
         }
+    }
+
+    @Override
+    public void getClientInfo(clientCallback clientCallback) {
+        mDriversRemoteData.getClientsInfo(new clientCallback() {
+            @Override
+            public void onSuccess(List<ClientUpload> clientUploads) {
+                clientCallback.onSuccess(clientUploads);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                clientCallback.onFailure(new Exception("error"));
+            }
+        });
     }
 }

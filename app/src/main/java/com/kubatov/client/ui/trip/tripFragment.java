@@ -1,4 +1,4 @@
-package com.kubatov.client.ui.fragmentOne;
+package com.kubatov.client.ui.trip;
 
 import android.util.Log;
 import android.view.View;
@@ -15,9 +15,8 @@ import com.kubatov.client.core.CoreFragment;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.TripDetailsActivity.TripDetailsActivity;
-import com.kubatov.client.ui.TripDetailsActivity.adapter.TripAdapter;
-import com.kubatov.client.ui.fragmentOne.recycler.DriversRecyclerAdapter;
-import com.kubatov.client.ui.fragmentOne.recycler.OnTripItemClickListener;
+import com.kubatov.client.ui.trip.recycler.DriversRecyclerAdapter;
+import com.kubatov.client.ui.trip.recycler.OnTripItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickListener {
+public class tripFragment extends CoreFragment implements OnTripItemClickListener {
     private boolean isClicked = true;
     private BottomSheetBehavior bottomSheetBehavior;
     private DriversRecyclerAdapter adapter;
@@ -65,7 +64,7 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
 
     private void refreshTrips() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            SimpleFragmentOne.this.getTripData();
+            tripFragment.this.getTripData();
             swipeRefreshLayout.setRefreshing(true);
         });
     }
@@ -82,6 +81,7 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
 
             @Override
             public void onFailure(Exception e) {
+                Log.d("aaaaa", "onFailure: " + e.getLocalizedMessage());
             }
         });
     }
@@ -105,7 +105,6 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
         String tripFrom = mTripList.get(position).getFrom();
         String tripPrice = mTripList.get(position).getPrice();
         String tripSeats = mTripList.get(position).getSeats();
-        String tripImg = mTripList.get(position).getCarImage();
         String tripCarModel = mTripList.get(position).getCarModel();
         String tripCarMark = mTripList.get(position).getCarMark();
         String tripDriversName = mTripList.get(position).getName();
@@ -117,7 +116,6 @@ public class SimpleFragmentOne extends CoreFragment implements OnTripItemClickLi
 
         TripDetailsActivity.start(
                 getContext(),
-                tripImg,
                 tripDate,
                 tripTo,
                 tripFrom,

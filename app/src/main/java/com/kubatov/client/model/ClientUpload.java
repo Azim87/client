@@ -1,30 +1,22 @@
 package com.kubatov.client.model;
 
 public class ClientUpload {
-    private String clientImageUrl;
+    private String profileImage;
 
     private String name;
 
-
+    public ClientUpload(){}
 
     public ClientUpload(String clientImageUrl, String name) {
-        this.clientImageUrl = clientImageUrl;
+        this.profileImage = profileImage;
         this.name = name;
     }
 
-    public String getClientImageUrl() {
-        return clientImageUrl;
+    public String getProfileImage(){
+        return profileImage;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setClientImageUrl(String clientImageUrl) {
-        this.clientImageUrl = clientImageUrl;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

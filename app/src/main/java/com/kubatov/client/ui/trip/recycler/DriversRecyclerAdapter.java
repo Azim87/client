@@ -1,4 +1,4 @@
-package com.kubatov.client.ui.fragmentOne.recycler;
+package com.kubatov.client.ui.trip.recycler;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.kubatov.client.App;
 import com.kubatov.client.R;

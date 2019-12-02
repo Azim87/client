@@ -6,23 +6,17 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.kubatov.client.R;
-import com.kubatov.client.ui.auth.PhoneAuthActivity;
-import com.kubatov.client.ui.main.viewpager.SimpleFragmentFour;
-import com.kubatov.client.ui.fragmentOne.SimpleFragmentOne;
 import com.kubatov.client.ui.main.viewpager.SimpleFragmentThree;
 import com.kubatov.client.ui.main.viewpager.SimpleFragmentTwo;
+import com.kubatov.client.ui.profile.profileFragment;
+import com.kubatov.client.ui.trip.tripFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.bottom_nav_1:
                     viewPager.setCurrentItem(0);
-                    new SimpleFragmentOne();
-                    break;
+                    new tripFragment();
+                break;
                 case R.id.bottom_nav_2:
                     viewPager.setCurrentItem(1);
                     new SimpleFragmentTwo();
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.bottom_nav_4:
                     viewPager.setCurrentItem(3);
-                    new SimpleFragmentFour();
+                    new profileFragment();
                     break;
             }
             return false;
@@ -90,27 +84,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private List<Fragment> sendFragment(){
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new SimpleFragmentOne());
+        fragmentList.add(new tripFragment());
         fragmentList.add(new SimpleFragmentTwo());
         fragmentList.add(new SimpleFragmentThree());
-        fragmentList.add(new SimpleFragmentFour());
+        fragmentList.add(new profileFragment());
         return fragmentList;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_sign_out) {
-            FirebaseAuth.getInstance().signOut();
-            PhoneAuthActivity.start(this);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
