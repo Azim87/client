@@ -1,5 +1,6 @@
 package com.kubatov.client.ui.trip.recycler;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,6 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
                     .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
                     .load(trip.getCarImage())
                     .into(carImageView);
-
         }
     }
 }

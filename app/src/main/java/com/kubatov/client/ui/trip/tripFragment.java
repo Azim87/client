@@ -108,6 +108,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         String tripCarModel = mTripList.get(position).getCarModel();
         String tripCarMark = mTripList.get(position).getCarMark();
         String tripDriversName = mTripList.get(position).getName();
+        String tripDriverNumber = mTripList.get(position).getPhoneNumber();
+
 
         List<String> imageList = new ArrayList<>();
         imageList.add(mTripList.get(position).getCarImage());
@@ -124,6 +126,7 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 tripCarModel,
                 tripCarMark,
                 tripDriversName,
+                tripDriverNumber,
                 imageList);
     }
     //endregion

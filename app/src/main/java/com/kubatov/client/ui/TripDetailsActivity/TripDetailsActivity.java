@@ -1,15 +1,26 @@
 package com.kubatov.client.ui.TripDetailsActivity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.TripDetailsActivity.adapter.TripAdapter;
 
@@ -18,9 +29,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TripDetailsActivity extends AppCompatActivity {
-    private final static String TRIP_IMG = "img";
+    private final static String IMG = "img";
     private final static String TRIP_DATE = "date";
     private final static String TRIP_TO = "to";
     private final static String TRIP_FROM = "from";
@@ -29,6 +41,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private final static String TRIP_CAR_MODEL = "model";
     private final static String TRIP_CAR_MARK = "mark";
     private final static String TRIP_DRIVERS_NAME = "name";
+    private final static String TRIP_DRIVERS_NUMBER = "number";
 
     @BindView(R.id.trip_date)
     TextView textViewDate;
@@ -60,8 +73,11 @@ public class TripDetailsActivity extends AppCompatActivity {
     TextView textDriversName;
     @BindView(R.id.trip_view_pager)
     ViewPager tripImgViewPager;
+    @BindView(R.id.call_to_driver)
+    FloatingActionButton callToDriverButton;
 
     private TripAdapter adapter;
+    private  String tripDriversNumber;
 
     public static void start(
             Context context,
@@ -73,6 +89,7 @@ public class TripDetailsActivity extends AppCompatActivity {
             String tripCarModel,
             String tripCarMark,
             String tripDriversName,
+            String tripDriversNumber,
             List<String> imageList) {
         Intent intent = new Intent(context, TripDetailsActivity.class);
         intent.putExtra(TRIP_DATE, tripDate);
@@ -83,7 +100,8 @@ public class TripDetailsActivity extends AppCompatActivity {
         intent.putExtra(TRIP_CAR_MODEL, tripCarModel);
         intent.putExtra(TRIP_CAR_MARK, tripCarMark);
         intent.putExtra(TRIP_DRIVERS_NAME, tripDriversName);
-        intent.putStringArrayListExtra("img", (ArrayList<String>) imageList);
+        intent.putExtra(TRIP_DRIVERS_NUMBER, tripDriversNumber);
+        intent.putStringArrayListExtra(IMG, (ArrayList<String>) imageList);
         context.startActivity(intent);
     }
 
@@ -95,6 +113,21 @@ public class TripDetailsActivity extends AppCompatActivity {
         adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
+        getPermission();
+    }
+
+    private void getPermission() {
+        Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                    }
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {}
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {}
+                }).check();
     }
 
     private void initViewPager() {
@@ -111,14 +144,16 @@ public class TripDetailsActivity extends AppCompatActivity {
         String tripCarModel = intent.getStringExtra(TRIP_CAR_MODEL);
         String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
         String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
-        ArrayList<String> img = intent.getStringArrayListExtra("img");
-        Log.d("ololo", "getDetailedTripInfo: " + img);
+        tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
+        ArrayList<String> img = intent.getStringArrayListExtra(IMG);
+
         adapter.setImageList(img);
         DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripSeats, tripCarModel, tripCarMark, tripDriversName);
     }
 
     private void DisplayTripDetailsInfo(String tripDate, String tripTo, String tripFrom,
-                                        String tripPrice, String tripSeats, String tripCarModel, String tripCarMark, String tripDriversName) {
+                                        String tripPrice, String tripSeats, String tripCarModel,
+                                        String tripCarMark, String tripDriversName) {
         textViewDate.setText("День поездки:");
         textDate.setText(tripDate);
         textViewFrom.setText("из города -> ");
@@ -133,5 +168,18 @@ public class TripDetailsActivity extends AppCompatActivity {
         textCarModel.setText(tripCarMark + " " + tripCarModel);
         textViewDriversName.setText("имя водителья: ");
         textDriversName.setText(tripDriversName);
+    }
+
+    @SuppressLint("MissingPermission")
+    @OnClick(R.id.call_to_driver)
+    void callToDriver(View view) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            intent.setPackage("com.android.phone");
+        }else{
+            intent.setPackage("com.android.server.telecom");
+        }
+        intent.setData(Uri.parse("tel:"+ tripDriversNumber));
+        startActivity(intent);
     }
 }

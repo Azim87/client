@@ -15,14 +15,15 @@ public class Trip {
     private String carYear;
     private String rating;
     private boolean homeTohome;
+    private String phoneNumber;
 
     //region Constructor
     public Trip() {
     }
 
     public Trip(String date, String from, String price, String seats, String to, String carImage,
-                String carImage2, String carImage3, String name, String carModel,  String carMark,
-                String carYear, String rating, boolean homeTohome) {
+                String carImage2, String carImage3, String name, String carModel, String carMark,
+                String carYear, String rating, boolean homeTohome, String phoneNumber) {
         this.date = date;
         this.from = from;
         this.price = price;
@@ -37,6 +38,7 @@ public class Trip {
         this.carYear = carYear;
         this.rating = rating;
         this.homeTohome = homeTohome;
+        this.phoneNumber = phoneNumber;
     }
     //endregion
 
@@ -152,6 +154,14 @@ public class Trip {
 
     public void setHomeTohome(boolean homeTohome) {
         this.homeTohome = homeTohome;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     //endregion

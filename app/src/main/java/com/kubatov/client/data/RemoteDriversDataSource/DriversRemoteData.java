@@ -2,9 +2,11 @@ package com.kubatov.client.data.RemoteDriversDataSource;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
+import com.kubatov.client.model.DocumentId;
 import com.kubatov.client.model.Trip;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String CLIENT = "clients";
     private List<Trip> tripList = new ArrayList<>();
     private List<ClientUpload> clientUploads = new ArrayList<>();
+    private List<DocumentId> documentId = new ArrayList<>();
 
 
     //region Read trip data from fireBase dataBase
@@ -28,11 +31,17 @@ public class DriversRemoteData implements IDriversRemoteData {
                     tripList.clear();
                     tripList.addAll(trips);
                     tripCallback.onSuccess(tripList);
+
+                    for (int i = 0; i < snapshots.getDocuments().size(); i++) {
+                        tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
+
+                        Log.d("ololo", "getDriversTrips: " + tripList.get(i).getPhoneNumber());
+                    }
                 }).addOnFailureListener(e -> {
         });
     }
-    //endregion
 
+    //endregion
 
     @Override
     public void getClientsInfo(IClientRepository.clientCallback clientCallback) {
