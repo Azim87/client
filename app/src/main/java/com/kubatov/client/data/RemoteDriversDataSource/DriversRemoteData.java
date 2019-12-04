@@ -1,24 +1,22 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
-import android.content.Intent;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
-import com.kubatov.client.model.DocumentId;
 import com.kubatov.client.model.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
     private final static String CLIENT = "clients";
     private List<Trip> tripList = new ArrayList<>();
+
 
     //region Read trip data from fireBase dataBase
     @Override
@@ -31,11 +29,8 @@ public class DriversRemoteData implements IDriversRemoteData {
                     tripList.clear();
                     tripList.addAll(trips);
                     tripCallback.onSuccess(tripList);
-
                     for (int i = 0; i < snapshots.getDocuments().size(); i++) {
                         tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
-
-                        Log.d("ololo", "getDriversTrips: " + tripList.get(i).getPhoneNumber());
                     }
                 }).addOnFailureListener(e -> {
         });
@@ -45,8 +40,8 @@ public class DriversRemoteData implements IDriversRemoteData {
 
     @Override
     public void getClientsInfo(IClientRepository.clientCallback clientCallback) {
-        FirebaseFirestore data = FirebaseFirestore.getInstance();
         String clientNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+        FirebaseFirestore data = FirebaseFirestore.getInstance();
         data.collection(CLIENT)
                 .document(clientNumber)
                 .get()
@@ -54,5 +49,19 @@ public class DriversRemoteData implements IDriversRemoteData {
                     ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
                     clientCallback.onSuccess(clientUpload);
                 });
+    }
+
+    @Override
+    public void sendChatMessage(Map<String, Object> chatMap) {
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection("chat")
+                .add(chatMap)
+                .addOnSuccessListener(documentReference -> {
+                }).addOnFailureListener(e -> {
+                    //:TODO fail message
+                });
+
+
     }
 }

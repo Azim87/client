@@ -42,7 +42,7 @@ public class profileFragment extends CoreFragment {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
-                Glide.with(App.instance).load(clientUploads.getProfileImage()).into(clientsProfileImageView);
+                Glide.with(clientsProfileImageView.getContext()).load(clientUploads.getProfileImage()).into(clientsProfileImageView);
                 clientsName.setText(clientUploads.getName());
             }
 
@@ -60,7 +60,6 @@ public class profileFragment extends CoreFragment {
             PhoneAuthActivity.start(getContext());
             getActivity().finish();
         }
-
     }
 
     @OnClick(R.id.image_view_edit)

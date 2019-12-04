@@ -1,6 +1,5 @@
 package com.kubatov.client.ui.chat;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
-
     private List<Chat> mChat = new ArrayList<>();
     private String myNumber;
 
@@ -36,17 +34,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         mChat.clear();
         mChat.addAll(chatList);
         notifyDataSetChanged();
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         holder.onBind(mChat.get(position));
-
     }
 
     @Override
-    public int getItemCount() { return mChat.size();
+    public int getItemCount() {
+        return mChat.size();
     }
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
@@ -77,7 +74,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             }
         }
 
-        private void setData(Chat chat){
+        private void setData(Chat chat) {
             textViewClient.setText(chat.getMessage());
             textViewDriver.setText(chat.getMessage());
         }

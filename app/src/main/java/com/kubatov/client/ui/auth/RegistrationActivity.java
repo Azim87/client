@@ -81,7 +81,7 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
         clientImageView.setOnClickListener(this);
         saveClientInfoButton.setOnClickListener(this);
-        getStateFromShared();
+        //getStateFromShared();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity
         getClientSex();
         String age = editTextAge.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
-        saveStateToShared(name, age);
+        //saveStateToShared(name, age);
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
@@ -132,25 +132,9 @@ public class RegistrationActivity extends AppCompatActivity
                 .collection("clients")
                 .document(phoneNumber)
                 .set(clients)
-                .addOnSuccessListener(documentReference -> {
-                })
+                .addOnSuccessListener(documentReference -> {})
                 .addOnFailureListener(e -> {
                 });
-    }
-
-    private void saveStateToShared(String name, String age) {
-        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("name", name);
-        editor.putString("age", age);
-        editor.apply();
-    }
-
-    private void getStateFromShared() {
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String name = prefs.getString("name", null);
-        String age = prefs.getString("age", null);
-        editTextAge.setText(age);
-        editTextName.setText(name);
     }
 
     private void getClientImageFromStorage() {

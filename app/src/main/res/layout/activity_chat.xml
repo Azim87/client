@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.chat.ChatActivity">
@@ -18,8 +19,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/chat_button_style"
         android:hint="Отправить сообщение "
+        android:padding="13dp"
+        android:textColorHint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/send_message"
         app:layout_constraintStart_toStartOf="parent" />
@@ -28,12 +34,12 @@
         android:id="@+id/send_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:padding="5dp"
-        android:visibility="gone"
-        android:layout_margin="8dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/chat_button_style"
+        android:padding="6dp"
         android:src="@drawable/ic_send_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_chat"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_chat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

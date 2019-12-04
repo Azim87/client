@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,6 +141,11 @@ public class TripDetailsActivity extends AppCompatActivity {
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
 
+        SharedPreferences.Editor editor = getSharedPreferences("olo", MODE_PRIVATE).edit();
+        editor.putString("numbers", tripDriversNumber);
+        Log.d("dddd", "getDetailedTripInfo: " + tripDriversNumber);
+        editor.apply();
+
         adapter.setImageList(img);
         DisplayTripDetailsInfo(tripDate,
                 tripTo,
@@ -180,22 +186,18 @@ public class TripDetailsActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     @OnClick(R.id.call_to_driver)
     void callToDriver(View view) {
-
         Dexter.withActivity(TripDetailsActivity.this).withPermission(Manifest.permission.CALL_PHONE)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         makeACall();
                     }
-
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         if (response.isPermanentlyDenied()) {
                             showSettingsDialog();
                         }
-
                     }
-
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
                         token.continuePermissionRequest();

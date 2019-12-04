@@ -7,6 +7,7 @@ import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClientRepository implements IClientRepository {
     @Nullable
@@ -46,5 +47,10 @@ public class ClientRepository implements IClientRepository {
                 clientCallback.onFailure(new Exception("error"));
             }
         });
+    }
+
+    @Override
+    public void sendChatMessage(Map<String, Object> chatMap) {
+        mDriversRemoteData.sendChatMessage(chatMap);
     }
 }

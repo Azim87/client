@@ -134,8 +134,6 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         String tripCarMark = mTripList.get(position).getCarMark();
         String tripDriversName = mTripList.get(position).getName();
         String tripDriverNumber = mTripList.get(position).getPhoneNumber();
-
-
         List<String> imageList = new ArrayList<>();
         imageList.add(mTripList.get(position).getCarImage());
         imageList.add(mTripList.get(position).getCarImage1());
