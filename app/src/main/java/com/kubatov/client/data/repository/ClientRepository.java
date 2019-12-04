@@ -37,7 +37,7 @@ public class ClientRepository implements IClientRepository {
     public void getClientInfo(clientCallback clientCallback) {
         mDriversRemoteData.getClientsInfo(new clientCallback() {
             @Override
-            public void onSuccess(List<ClientUpload> clientUploads) {
+            public void onSuccess(ClientUpload clientUploads) {
                 clientCallback.onSuccess(clientUploads);
             }
 

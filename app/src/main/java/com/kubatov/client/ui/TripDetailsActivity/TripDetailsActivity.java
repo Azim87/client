@@ -27,7 +27,6 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.TripDetailsActivity.adapter.TripAdapter;
 import com.kubatov.client.ui.chat.ChatActivity;
-import com.kubatov.client.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,23 +122,6 @@ public class TripDetailsActivity extends AppCompatActivity {
         initViewPager();
     }
 
-   /* private void getPermission() {
-        Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                    }
-                }).check();
-    }*/
-
     private void initViewPager() {
         tripImgViewPager.setAdapter(adapter);
     }
@@ -156,11 +138,6 @@ public class TripDetailsActivity extends AppCompatActivity {
         String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
         String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
-
-        SharedPreferences.Editor editor = getSharedPreferences("olo", MODE_PRIVATE).edit();
-        editor.putString("numbers", tripDriversNumber);
-        editor.apply();
-
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
 
         adapter.setImageList(img);

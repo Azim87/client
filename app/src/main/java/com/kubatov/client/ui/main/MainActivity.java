@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setUpViewPager();
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null){
-            RegistrationActivity.start(this);
             finish();
+            RegistrationActivity.start(this);
         }
     }
 

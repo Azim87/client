@@ -1,6 +1,5 @@
 package com.kubatov.client.ui.profile;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,8 +13,6 @@ import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.ui.auth.PhoneAuthActivity;
 import com.kubatov.client.ui.auth.RegistrationActivity;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,18 +37,18 @@ public class profileFragment extends CoreFragment {
         getProfileData();
     }
 
+
     private void getProfileData() {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
-            public void onSuccess(List<ClientUpload> clientUploads) {
-                Glide.with(clientsProfileImageView.getContext()).load(clientUploads.get(1).getProfileImage()).into(clientsProfileImageView);
-                clientsName.setText(clientUploads.get(1).getName());
-
+            public void onSuccess(ClientUpload clientUploads) {
+                Glide.with(App.instance).load(clientUploads.getProfileImage()).into(clientsProfileImageView);
+                clientsName.setText(clientUploads.getName());
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.d("ololo", "onFailure: " + e.getLocalizedMessage());
+
             }
         });
     }

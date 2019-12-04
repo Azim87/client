@@ -20,7 +20,7 @@ public interface IClientRepository {
 
     interface clientCallback {
 
-        void onSuccess(List<ClientUpload> clientUploads);
+        void onSuccess(ClientUpload clientUploads);
 
         void onFailure(Exception e);
     }

@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         ChatAdapter adapter = new ChatAdapter();
         mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mChatRecyclerView.setAdapter(adapter);
-        adapter.setChatList(mChat);
+        adapter.setChatList(mChat, mNumber);
     }
 
     private void getCurrentUserNumber() {
@@ -98,11 +98,10 @@ public class ChatActivity extends AppCompatActivity {
 
     @OnClick(R.id.send_message)
     void sentMessage(View view) {
-
         Log.d("ololo", "sentMessage: " );
-        /*if(mEditMessage.getText().equals("")){
+        if(mEditMessage.getText().equals("")){
             mEditMessage.getText().clear();
-        }*/
+        }
         getMessage();
     }
 }

@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private List<Chat> mChat = new ArrayList<>();
-    private String mNumber;
+    private String myNumber;
 
     @NonNull
     @Override
@@ -31,8 +31,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return new ChatViewHolder(view);
     }
 
-    public void setChatList(List<Chat> chatList) {
-
+    public void setChatList(List<Chat> chatList, String number) {
+        myNumber = number;
         mChat.clear();
         mChat.addAll(chatList);
         notifyDataSetChanged();
@@ -66,15 +66,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
 
         public void onBind(Chat chat) {
-
-            if (chat.getMessage() == chat.getMessageFrom()) {
-                relativeLayoutClient.setVisibility(View.VISIBLE);
+            if (myNumber == chat.getMessageTo()) {
+                relativeLayoutClient.setVisibility(View.INVISIBLE);
                 relativeLayoutDriver.setVisibility(View.VISIBLE);
                 setData(chat);
-            } else if (chat.getMessage() == chat.getMessageTo()) {
+            } else if (myNumber == chat.getMessageFrom()) {
                 setData(chat);
                 relativeLayoutClient.setVisibility(View.VISIBLE);
-                relativeLayoutDriver.setVisibility(View.VISIBLE);
+                relativeLayoutDriver.setVisibility(View.INVISIBLE);
             }
         }
 

@@ -4,8 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -28,6 +30,8 @@ import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +53,7 @@ public class RegistrationActivity extends AppCompatActivity
     private Uri clientImageUri;
     private String gender;
     private String profileImageUri;
+    private StorageReference mStorageReference;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
@@ -138,7 +143,6 @@ public class RegistrationActivity extends AppCompatActivity
         editor.putString("name", name);
         editor.putString("age", age);
         editor.apply();
-        Log.d("ololo", "saveStateToShared: " + age + " " + name);
     }
 
     private void getStateFromShared() {
@@ -147,8 +151,6 @@ public class RegistrationActivity extends AppCompatActivity
         String age = prefs.getString("age", null);
         editTextAge.setText(age);
         editTextName.setText(name);
-
-        Log.d("ololo", "getStateFromShared: " + age + " " + name);
     }
 
     private void getClientImageFromStorage() {
@@ -163,9 +165,22 @@ public class RegistrationActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_CLIENT_IMAGE_CODE && resultCode == RESULT_OK &&
                 data.getData() != null && data != null) {
+
             clientImageUri = data.getData();
             Glide.with(this).load(clientImageUri).into(clientImageView);
-            uploadClientImageToStorage();
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
+            bitmap.recycle();
+            byte[] byteArray = bao.toByteArray();
+            uploadClientImageToStorage(byteArray);
         }
     }
 
@@ -181,22 +196,22 @@ public class RegistrationActivity extends AppCompatActivity
         return typeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadClientImageToStorage() {
+    private void uploadClientImageToStorage(byte[] byteArray) {
         mProgressBar.setVisibility(View.VISIBLE);
-        StorageReference mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
+        mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
-            StorageReference storageReference = mStorageReference.child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()+ "." + clientImageExtension(clientImageUri));
+            String number = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            StorageReference storageReference = mStorageReference.child(number + "." + clientImageExtension(clientImageUri));
 
-            storageReference.putFile(clientImageUri)
+            storageReference.putBytes(byteArray)
                     .addOnSuccessListener(taskSnapshot -> {
                         mProgressBar.setVisibility(View.GONE);
                         saveClientInfoButton.setVisibility(View.GONE);
-                        storageReference.getDownloadUrl().addOnSuccessListener(uri ->{
-                            if (uri != null){
-                            profileImageUri = uri.toString();
-                        }
+                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            if (uri != null) {
+                                profileImageUri = uri.toString();
+                            }
                         });
-
                         saveClientInfoButton.setVisibility(View.VISIBLE);
                         Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
                     }).addOnFailureListener(e -> {

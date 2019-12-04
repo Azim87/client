@@ -1,7 +1,10 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
+import android.content.Intent;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kubatov.client.data.repository.IClientRepository;
@@ -16,9 +19,6 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
     private final static String CLIENT = "clients";
     private List<Trip> tripList = new ArrayList<>();
-    private List<ClientUpload> clientUploads = new ArrayList<>();
-    private List<DocumentId> documentId = new ArrayList<>();
-
 
     //region Read trip data from fireBase dataBase
     @Override
@@ -46,14 +46,13 @@ public class DriversRemoteData implements IDriversRemoteData {
     @Override
     public void getClientsInfo(IClientRepository.clientCallback clientCallback) {
         FirebaseFirestore data = FirebaseFirestore.getInstance();
+        String clientNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         data.collection(CLIENT)
+                .document(clientNumber)
                 .get()
-                .addOnSuccessListener(snapshots -> {
-                    List<ClientUpload> clients = snapshots.toObjects(ClientUpload.class);
-                    clientUploads.clear();
-                    clientUploads.addAll(clients);
-                    clientCallback.onSuccess(clientUploads);
-                }).addOnFailureListener(e -> {
-        });
+                .addOnSuccessListener(snapshot -> {
+                    ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
+                    clientCallback.onSuccess(clientUpload);
+                });
     }
 }
