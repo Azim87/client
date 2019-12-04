@@ -12,7 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kubatov.client.R;
+import com.kubatov.client.ui.auth.RegistrationActivity;
+import com.kubatov.client.ui.auth.VerifyCodeActivity;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
 
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+            RegistrationActivity.start(this);
+            finish();
+        }
     }
 
     private void setUpViewPager() {

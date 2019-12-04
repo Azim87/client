@@ -13,6 +13,7 @@ import com.kubatov.client.core.CoreFragment;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.ui.auth.PhoneAuthActivity;
+import com.kubatov.client.ui.auth.RegistrationActivity;
 
 import java.util.List;
 
@@ -43,14 +44,9 @@ public class profileFragment extends CoreFragment {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(List<ClientUpload> clientUploads) {
-                if (!clientUploads.isEmpty()) {
-                    if (clientUploads.get(0).getProfileImage() == null){
-                        clientsProfileImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_default_profile_img));
-                    }else{
-                        Glide.with(clientsProfileImageView.getContext()).load(clientUploads.get(0).getProfileImage()).into(clientsProfileImageView);
-                    }
-                    clientsName.setText(clientUploads.get(0).getName());
-                }
+                Glide.with(clientsProfileImageView.getContext()).load(clientUploads.get(1).getProfileImage()).into(clientsProfileImageView);
+                clientsName.setText(clientUploads.get(1).getName());
+
             }
 
             @Override
@@ -64,7 +60,15 @@ public class profileFragment extends CoreFragment {
     void logOff(View view) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().signOut();
+            PhoneAuthActivity.start(getContext());
+            getActivity().finish();
         }
-        PhoneAuthActivity.start(getContext());
+
+    }
+
+    @OnClick(R.id.image_view_edit)
+    void editProfile(View view) {
+        RegistrationActivity.start(getContext());
+        getActivity().finish();
     }
 }

@@ -5,10 +5,11 @@ public class Trip {
     private String from;
     private String price;
     private String seats;
+    private String carSeats;
     private String to;
     private String carImage;
+    private String carImage1;
     private String carImage2;
-    private String carImage3;
     private String name;
     private String carModel;
     private String carMark;
@@ -21,17 +22,18 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(String date, String from, String price, String seats, String to, String carImage,
-                String carImage2, String carImage3, String name, String carModel, String carMark,
+    public Trip(String date, String from, String price, String seats, String carSeats, String to, String carImage,
+                String carImage1, String carImage2, String name, String carModel, String carMark,
                 String carYear, String rating, boolean homeTohome, String phoneNumber) {
         this.date = date;
         this.from = from;
         this.price = price;
         this.seats = seats;
+        this.carSeats = carSeats;
         this.to = to;
         this.carImage = carImage;
+        this.carImage1 = carImage1;
         this.carImage2 = carImage2;
-        this.carImage3 = carImage3;
         this.name = name;
         this.carModel = carModel;
         this.carMark = carMark;
@@ -43,6 +45,14 @@ public class Trip {
     //endregion
 
     //region Setters and Getters
+
+    public String getCarSeats() {
+        return carSeats;
+    }
+
+    public void setCarSeats(String carSeats) {
+        this.carSeats = carSeats;
+    }
 
     public String getDate() {
         return date;
@@ -100,20 +110,20 @@ public class Trip {
         this.carImage = carImage;
     }
 
+    public String getCarImage1() {
+        return carImage1;
+    }
+
+    public void setCarImage1(String carImage1) {
+        this.carImage1 = carImage1;
+    }
+
     public String getCarImage2() {
         return carImage2;
     }
 
     public void setCarImage2(String carImage2) {
         this.carImage2 = carImage2;
-    }
-
-    public String getCarImage3() {
-        return carImage3;
-    }
-
-    public void setCarImage3(String carImage3) {
-        this.carImage3 = carImage3;
     }
 
     public String getName() {

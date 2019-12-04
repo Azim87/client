@@ -2,8 +2,10 @@ package com.kubatov.client.ui.trip;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -39,6 +41,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.bottom_sheet_icon)
+    ImageView bottomSheetIcon;
 
     @Override
     protected int getLayoutId() {
@@ -91,11 +95,31 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     void onOpenBottomSheetClick() {
         if (isClicked) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         } else {
             isClicked = false;
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
         isClicked = !isClicked;
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int newstate) {
+                switch (newstate){
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        bottomSheetIcon.setImageResource(R.drawable.ic_keyboard_arrow_down_white);
+                        break;
+
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        bottomSheetIcon.setImageResource(R.drawable.ic_keyboard_arrow_up_white);
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
     }
 
     @Override
@@ -104,7 +128,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         String tripTo = mTripList.get(position).getTo();
         String tripFrom = mTripList.get(position).getFrom();
         String tripPrice = mTripList.get(position).getPrice();
-        String tripSeats = mTripList.get(position).getSeats();
+        String tripAllSeats = mTripList.get(position).getSeats();
+        String tripAvailSeats = mTripList.get(position).getCarSeats();
         String tripCarModel = mTripList.get(position).getCarModel();
         String tripCarMark = mTripList.get(position).getCarMark();
         String tripDriversName = mTripList.get(position).getName();
@@ -113,8 +138,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
 
         List<String> imageList = new ArrayList<>();
         imageList.add(mTripList.get(position).getCarImage());
+        imageList.add(mTripList.get(position).getCarImage1());
         imageList.add(mTripList.get(position).getCarImage2());
-        imageList.add(mTripList.get(position).getCarImage3());
 
         TripDetailsActivity.start(
                 getContext(),
@@ -122,7 +147,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 tripTo,
                 tripFrom,
                 tripPrice,
-                tripSeats,
+                tripAllSeats,
+                tripAvailSeats,
                 tripCarModel,
                 tripCarMark,
                 tripDriversName,
