@@ -13,6 +13,7 @@ import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.ui.auth.PhoneAuthActivity;
 import com.kubatov.client.ui.auth.RegistrationActivity;
+import com.kubatov.client.util.ShowToast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,18 +38,19 @@ public class profileFragment extends CoreFragment {
         getProfileData();
     }
 
-
     private void getProfileData() {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
-                Glide.with(clientsProfileImageView.getContext()).load(clientUploads.getProfileImage()).into(clientsProfileImageView);
                 clientsName.setText(clientUploads.getName());
+                Glide.with(clientsProfileImageView.getContext())
+                        .load(clientUploads.getProfileImage())
+                        .into(clientsProfileImageView);
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                ShowToast.me(e.getMessage());
             }
         });
     }

@@ -16,9 +16,10 @@ import com.kubatov.client.R;
 import com.kubatov.client.core.CoreFragment;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.Trip;
-import com.kubatov.client.ui.TripDetailsActivity.TripDetailsActivity;
+import com.kubatov.client.ui.tripdetails.TripDetailsActivity;
 import com.kubatov.client.ui.trip.recycler.DriversRecyclerAdapter;
 import com.kubatov.client.ui.trip.recycler.OnTripItemClickListener;
+import com.kubatov.client.util.ShowToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
 
             @Override
             public void onFailure(Exception e) {
-                Log.d("aaaaa", "onFailure: " + e.getLocalizedMessage());
+                ShowToast.me(e.getMessage());
             }
         });
     }
@@ -114,11 +115,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                         break;
                 }
             }
-
             @Override
-            public void onSlide(@NonNull View view, float v) {
-
-            }
+            public void onSlide(@NonNull View view, float v) {}
         });
     }
 
@@ -139,19 +137,9 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         imageList.add(mTripList.get(position).getCarImage1());
         imageList.add(mTripList.get(position).getCarImage2());
 
-        TripDetailsActivity.start(
-                getContext(),
-                tripDate,
-                tripTo,
-                tripFrom,
-                tripPrice,
-                tripAllSeats,
-                tripAvailSeats,
-                tripCarModel,
-                tripCarMark,
-                tripDriversName,
-                tripDriverNumber,
-                imageList);
+        TripDetailsActivity.start(getContext(), tripDate, tripTo, tripFrom,
+                tripPrice, tripAllSeats, tripAvailSeats, tripCarModel, tripCarMark,
+                tripDriversName, tripDriverNumber, imageList);
     }
     //endregion
 }

@@ -1,18 +1,14 @@
-package com.kubatov.client.ui.TripDetailsActivity;
+package com.kubatov.client.ui.tripdetails;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +22,9 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.R;
-import com.kubatov.client.ui.TripDetailsActivity.adapter.TripAdapter;
 import com.kubatov.client.ui.chat.ChatActivity;
+import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
+import com.kubatov.client.util.SharedHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +32,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.kubatov.client.util.Constants.DRIVER_NUMBERS;
+import static com.kubatov.client.util.Constants.SHARED_KEY;
 
 public class TripDetailsActivity extends AppCompatActivity {
     private final static String IMG = "img";
@@ -48,6 +48,8 @@ public class TripDetailsActivity extends AppCompatActivity {
     private final static String TRIP_CAR_MARK = "mark";
     private final static String TRIP_DRIVERS_NAME = "name";
     public final static String TRIP_DRIVERS_NUMBER = "number";
+    private TripAdapter adapter;
+    private String tripDriversNumber;
 
     @BindView(R.id.trip_date)
     TextView textViewDate;
@@ -82,22 +84,10 @@ public class TripDetailsActivity extends AppCompatActivity {
     @BindView(R.id.call_to_driver)
     FloatingActionButton callToDriverButton;
 
-    private TripAdapter adapter;
-    private String tripDriversNumber;
-
     public static void start(
-            Context context,
-            String tripDate,
-            String tripTo,
-            String tripFrom,
-            String tripPrice,
-            String tripAllSeats,
-            String tripAvailSeats,
-            String tripCarModel,
-            String tripCarMark,
-            String tripDriversName,
-            String tripDriversNumber,
-            List<String> imageList) {
+            Context context, String tripDate, String tripTo, String tripFrom,
+            String tripPrice, String tripAllSeats, String tripAvailSeats, String tripCarModel,
+            String tripCarMark, String tripDriversName, String tripDriversNumber, List<String> imageList) {
         Intent intent = new Intent(context, TripDetailsActivity.class);
         intent.putExtra(TRIP_DATE, tripDate);
         intent.putExtra(TRIP_TO, tripTo);
@@ -141,32 +131,17 @@ public class TripDetailsActivity extends AppCompatActivity {
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
 
-        SharedPreferences.Editor editor = getSharedPreferences("olo", MODE_PRIVATE).edit();
-        editor.putString("numbers", tripDriversNumber);
-        Log.d("dddd", "getDetailedTripInfo: " + tripDriversNumber);
-        editor.apply();
+        SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, tripDriversNumber);
 
         adapter.setImageList(img);
-        DisplayTripDetailsInfo(tripDate,
-                tripTo,
-                tripFrom,
-                tripPrice,
-                tripAllSeats,
-                tripAvailSeats,
-                tripCarModel,
-                tripCarMark,
-                tripDriversName);
+        DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailSeats,
+                tripCarModel, tripCarMark, tripDriversName);
     }
 
-    private void DisplayTripDetailsInfo(String tripDate,
-                                        String tripTo,
-                                        String tripFrom,
-                                        String tripPrice,
-                                        String tripSeats,
-                                        String tripAvailSeats,
-                                        String tripCarModel,
-                                        String tripCarMark,
-                                        String tripDriversName) {
+    private void DisplayTripDetailsInfo(String tripDate, String tripTo, String tripFrom,
+                                        String tripPrice, String tripSeats, String tripAvailSeats,
+                                        String tripCarModel, String tripCarMark, String tripDriversName) {
+
         textViewDate.setText("День поездки:");
         textDate.setText(tripDate);
         textViewFrom.setText("из города -> ");
@@ -208,16 +183,13 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private void showSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(TripDetailsActivity.this);
-        builder.setTitle("Need Permissions");
-        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
-        builder.setPositiveButton("GOTO SETTINGS", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                openSettings();
-            }
+        builder.setTitle("Требуется разрешеня");
+        builder.setMessage("Для корректной работы требуется разрещения. Разрешите доступ в Настройках.");
+        builder.setPositiveButton("В НАСТРОЙКИ", (dialog, which) -> {
+            dialog.cancel();
+            openSettings();
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
         builder.show();
 
     }

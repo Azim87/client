@@ -48,14 +48,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.text_message_1)
-        TextView textViewClient;
-        @BindView(R.id.text_message_2)
-        TextView textViewDriver;
-        @BindView(R.id.container_1)
-        RelativeLayout relativeLayoutClient;
-        @BindView(R.id.container_2)
-        RelativeLayout relativeLayoutDriver;
+        @BindView(R.id.text_message_1) TextView textViewClient;
+        @BindView(R.id.text_message_2) TextView textViewDriver;
+        @BindView(R.id.chat_time_1) TextView textViewClientTime;
+        @BindView(R.id.chat_time_2) TextView textViewDriverTime;
+        @BindView(R.id.container_1) RelativeLayout relativeLayoutClient;
+        @BindView(R.id.container_2) RelativeLayout relativeLayoutDriver;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,7 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                 relativeLayoutClient.setVisibility(View.INVISIBLE);
                 relativeLayoutDriver.setVisibility(View.VISIBLE);
                 setData(chat);
-            } else if (myNumber == chat.getMessageFrom()) {
+            } else {
                 setData(chat);
                 relativeLayoutClient.setVisibility(View.VISIBLE);
                 relativeLayoutDriver.setVisibility(View.INVISIBLE);
@@ -77,6 +75,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         private void setData(Chat chat) {
             textViewClient.setText(chat.getMessage());
             textViewDriver.setText(chat.getMessage());
+            textViewClientTime.setText(chat.getChatTime());
+            textViewDriverTime.setText(chat.getChatTime());
         }
     }
 }

@@ -17,10 +17,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class PhoneAuthActivity extends AppCompatActivity {
-
     @BindView(R.id.editTextPhone)
     EditText mPhoneEditText;
-
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, PhoneAuthActivity.class));
@@ -41,12 +39,11 @@ public class PhoneAuthActivity extends AppCompatActivity {
     private void getUserPhoneNumber() {
         String phoneNumber = mPhoneEditText.getText().toString().trim();
         if (phoneNumber.isEmpty() || phoneNumber.length() < 13) {
-            mPhoneEditText.setError("Valid number is required");
+            mPhoneEditText.setError("Номер должен быть не менее 13ти симфолов");
             return;
         }
         VerifyCodeActivity.start(this, phoneNumber);
         finish();
-
     }
 
     @Override

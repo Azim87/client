@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.chat.ChatActivity"></activity>
-        <activity android:name=".ui.TripDetailsActivity.TripDetailsActivity" />
+        <activity android:name=".ui.tripdetails.TripDetailsActivity" />
         <activity android:name=".ui.auth.PhoneAuthActivity" />
         <activity
             android:name=".ui.splash.SplashActivity"

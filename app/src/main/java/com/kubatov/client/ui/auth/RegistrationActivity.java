@@ -48,7 +48,7 @@ public class RegistrationActivity extends AppCompatActivity
     private static final String IMAGE_TYPE = "image/*";
     private static final String LOCATION = "avatar/";
     private static final int PICK_CLIENT_IMAGE_CODE = 1;
-    private static final String MY_PREFS_NAME = "name";
+    private static final String CLIENTS = "clients";
 
     private Uri clientImageUri;
     private String gender;
@@ -81,7 +81,6 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
         clientImageView.setOnClickListener(this);
         saveClientInfoButton.setOnClickListener(this);
-        //getStateFromShared();
     }
 
     @Override
@@ -92,9 +91,7 @@ public class RegistrationActivity extends AppCompatActivity
                 break;
             case R.id.button_save_client:
                 saveToFireBase();
-
                 break;
-            default:
         }
     }
 
@@ -120,7 +117,6 @@ public class RegistrationActivity extends AppCompatActivity
         getClientSex();
         String age = editTextAge.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
-        //saveStateToShared(name, age);
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
@@ -129,7 +125,7 @@ public class RegistrationActivity extends AppCompatActivity
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
         dataBase
-                .collection("clients")
+                .collection(CLIENTS)
                 .document(phoneNumber)
                 .set(clients)
                 .addOnSuccessListener(documentReference -> {})
@@ -186,7 +182,6 @@ public class RegistrationActivity extends AppCompatActivity
         if (clientImageUri != null) {
             String number = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
             StorageReference storageReference = mStorageReference.child(number + "." + clientImageExtension(clientImageUri));
-
             storageReference.putBytes(byteArray)
                     .addOnSuccessListener(taskSnapshot -> {
                         mProgressBar.setVisibility(View.GONE);

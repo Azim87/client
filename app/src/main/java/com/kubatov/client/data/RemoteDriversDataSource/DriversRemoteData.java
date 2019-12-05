@@ -2,11 +2,13 @@ package com.kubatov.client.data.RemoteDriversDataSource;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
+import com.kubatov.client.ui.chat.model.Chat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,9 @@ import java.util.Map;
 
 public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
+    private final static String CHAT = "chat";
     private final static String CLIENT = "clients";
     private List<Trip> tripList = new ArrayList<>();
-
 
     //region Read trip data from fireBase dataBase
     @Override
@@ -24,7 +26,7 @@ public class DriversRemoteData implements IDriversRemoteData {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(TRIP)
                 .get()
-                .addOnSuccessListener(snapshots -> {
+                .addOnSuccessListener((QuerySnapshot snapshots) -> {
                     List<Trip> trips = snapshots.toObjects(Trip.class);
                     tripList.clear();
                     tripList.addAll(trips);
@@ -35,9 +37,9 @@ public class DriversRemoteData implements IDriversRemoteData {
                 }).addOnFailureListener(e -> {
         });
     }
-
     //endregion
 
+    //region ClientInfo
     @Override
     public void getClientsInfo(IClientRepository.clientCallback clientCallback) {
         String clientNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
@@ -50,18 +52,29 @@ public class DriversRemoteData implements IDriversRemoteData {
                     clientCallback.onSuccess(clientUpload);
                 });
     }
+    //endregion
 
+    //region Chat
     @Override
     public void sendChatMessage(Map<String, Object> chatMap) {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection("chat")
+        database.collection(CHAT)
                 .add(chatMap)
                 .addOnSuccessListener(documentReference -> {
                 }).addOnFailureListener(e -> {
-                    //:TODO fail message
                 });
-
-
     }
+
+    @Override
+    public void getChatMessage(IClientRepository.chatCallback chatCallback) {
+        FirebaseFirestore chatData = FirebaseFirestore.getInstance();
+        chatData.collection(CHAT)
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    List<Chat> chat = snapshots.toObjects(Chat.class);
+                    chatCallback.onSuccess(chat);
+                }).addOnFailureListener(e -> chatCallback.onFailure(e));
+    }
+    //endregion
 }

@@ -13,6 +13,7 @@ public interface IClientRepository {
     void getTripsInfo(onClientCallback clientCallback);
     void getClientInfo(clientCallback clientCallback);
     void sendChatMessage(Map<String, Object> chatMap);
+    void getChatMessage(chatCallback chatCallback);
 
     interface onClientCallback {
         void onSuccess(List<Trip> tripList);

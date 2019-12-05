@@ -1,13 +1,17 @@
 package com.kubatov.client.ui.chat.model;
 
-public class Chat {
+import java.io.Serializable;
+
+public class Chat implements Serializable {
 
     private String message;
     private String messageFrom;
     private String messageTo;
-    private long chatTime;
+    private String chatTime;
 
-    public Chat(String message, String messageFrom, String messageTo, long chatTime) {
+    public Chat(){}
+
+    public Chat(String message, String messageFrom, String messageTo, String chatTime) {
         this.message = message;
         this.messageFrom = messageFrom;
         this.messageTo = messageTo;
@@ -38,11 +42,11 @@ public class Chat {
         this.messageTo = messageTo;
     }
 
-    public long getChatTime() {
+    public String getChatTime() {
         return chatTime;
     }
 
-    public void setChatTime(long chatTime) {
+    public void setChatTime(String chatTime) {
         this.chatTime = chatTime;
     }
 }

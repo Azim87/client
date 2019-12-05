@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.kubatov.client.data.RemoteDriversDataSource.DriversRemoteData;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
+import com.kubatov.client.ui.chat.model.Chat;
 
 import java.util.List;
 import java.util.Map;
@@ -52,5 +53,20 @@ public class ClientRepository implements IClientRepository {
     @Override
     public void sendChatMessage(Map<String, Object> chatMap) {
         mDriversRemoteData.sendChatMessage(chatMap);
+    }
+
+    @Override
+    public void getChatMessage(chatCallback chatCallback) {
+        mDriversRemoteData.getChatMessage(new chatCallback() {
+            @Override
+            public void onSuccess(List<Chat> chatList) {
+                chatCallback.onSuccess(chatList);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                chatCallback.onFailure(e);
+            }
+        });
     }
 }

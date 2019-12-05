@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     new tripFragment();
                     break;
                 case R.id.bottom_nav_4:
-                    viewPager.setCurrentItem(3);
+                    viewPager.setCurrentItem(1);
                     new profileFragment();
                     break;
             }
