@@ -2,6 +2,7 @@ package com.kubatov.client.data.RemoteDriversDataSource;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -69,7 +70,7 @@ public class DriversRemoteData implements IDriversRemoteData {
     @Override
     public void getChatMessage(IClientRepository.chatCallback chatCallback) {
         FirebaseFirestore chatData = FirebaseFirestore.getInstance();
-        chatData.collection(CHAT)
+        chatData.collection(CHAT).orderBy("chatTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(snapshots -> {
                     List<Chat> chat = snapshots.toObjects(Chat.class);

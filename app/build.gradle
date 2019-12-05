@@ -50,4 +50,7 @@ dependencies {
 
     /* dexter permission*/
     implementation 'com.karumi:dexter:6.0.0'
+
+    /* view pager dots indicator*/
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 }

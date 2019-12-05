@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kubatov.client.R;
@@ -52,8 +53,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         @BindView(R.id.text_message_2) TextView textViewDriver;
         @BindView(R.id.chat_time_1) TextView textViewClientTime;
         @BindView(R.id.chat_time_2) TextView textViewDriverTime;
-        @BindView(R.id.container_1) RelativeLayout relativeLayoutClient;
-        @BindView(R.id.container_2) RelativeLayout relativeLayoutDriver;
+        @BindView(R.id.container_1) ConstraintLayout constraintLayoutClient;
+        @BindView(R.id.container_2) ConstraintLayout constraintLayoutDriver;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,13 +63,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         public void onBind(Chat chat) {
             if (myNumber == chat.getMessageTo()) {
-                relativeLayoutClient.setVisibility(View.INVISIBLE);
-                relativeLayoutDriver.setVisibility(View.VISIBLE);
+                constraintLayoutClient.setVisibility(View.INVISIBLE);
+                constraintLayoutDriver.setVisibility(View.VISIBLE);
                 setData(chat);
             } else {
                 setData(chat);
-                relativeLayoutClient.setVisibility(View.VISIBLE);
-                relativeLayoutDriver.setVisibility(View.INVISIBLE);
+                constraintLayoutClient.setVisibility(View.VISIBLE);
+                constraintLayoutDriver.setVisibility(View.INVISIBLE);
             }
         }
 

@@ -25,6 +25,7 @@ import com.kubatov.client.R;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.SharedHelper;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,8 @@ public class TripDetailsActivity extends AppCompatActivity {
     ViewPager tripImgViewPager;
     @BindView(R.id.call_to_driver)
     FloatingActionButton callToDriverButton;
+    @BindView(R.id.worm_dots_indicator)
+    WormDotsIndicator wormDotsIndicator;
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -115,6 +118,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private void initViewPager() {
         tripImgViewPager.setAdapter(adapter);
+        wormDotsIndicator.setViewPager(tripImgViewPager);
     }
 
     private void getDetailedTripInfo() {
