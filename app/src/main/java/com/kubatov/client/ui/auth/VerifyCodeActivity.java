@@ -55,6 +55,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         ButterKnife.bind(this);
+        firebaseAuth = FirebaseAuth.getInstance();
         getPhoneNumber();
     }
 
@@ -88,8 +89,8 @@ public class VerifyCodeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                       RegistrationActivity.start(this);
-                       finish();
+                        finish();
+                        MainActivity.start(this);
                         Toast.makeText(VerifyCodeActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(VerifyCodeActivity.this, "Не успешно", Toast.LENGTH_SHORT).show();

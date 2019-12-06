@@ -25,10 +25,9 @@
             android:paddingBottom="4dp"
             android:text="Сообщение"
             android:textColor="@color/colorWhite"
-            android:textSize="19sp"
-            app:layout_constraintBottom_toBottomOf="@+id/container_1"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/chat_time_1"
-            app:layout_constraintTop_toTopOf="@id/container_1" />
+            app:layout_constraintBottom_toBottomOf="@+id/container_1"/>
 
         <TextView
             android:id="@+id/chat_time_1"
@@ -36,11 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:paddingEnd="7dp"
-            android:paddingBottom="6dp"
             android:text="12:33"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@id/container_1"
-            app:layout_constraintEnd_toEndOf="@id/container_1" />
+            android:paddingBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/text_message_1"
+            app:layout_constraintEnd_toEndOf="@id/container_1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,10 +61,11 @@
             android:layout_gravity="end"
             android:paddingLeft="7dp"
             android:paddingEnd="9dp"
-            android:paddingBottom="4dp"
             android:text="Сообщение"
+            android:paddingBottom="4dp"
             android:textColor="@color/colorWhite"
-            android:textSize="19sp"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/container_2"
             app:layout_constraintStart_toEndOf="@+id/chat_time_2" />
 
         <TextView
@@ -73,12 +73,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="7dp"
-            android:paddingBottom="6dp"
             android:text="12:33"
             android:textSize="13sp"
+            android:paddingBottom="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_message_2"
             app:layout_constraintEnd_toEndOf="@+id/text_message_2"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/text_message_2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.auth.RegistrationActivity;
-import com.kubatov.client.ui.auth.VerifyCodeActivity;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
 
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
+    private FirebaseAuth mAuth;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -39,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+        if (mAuth != null) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
+        }else {
             RegistrationActivity.start(this);
         }
     }

@@ -216,5 +216,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.text_view_chat)
     void openChatActivity(View view) {
         ChatActivity.start(this);
+        finish();
     }
 }
