@@ -69,4 +69,9 @@ public class ClientRepository implements IClientRepository {
             }
         });
     }
+
+    @Override
+    public void getTripBookData(Map<String, Object> tripMap) {
+        mDriversRemoteData.getTripBookData(tripMap);
+    }
 }

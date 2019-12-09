@@ -1,15 +1,10 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
-import android.util.Log;
-
-import androidx.annotation.Nullable;
-
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.data.repository.IClientRepository;
@@ -33,16 +28,13 @@ public class DriversRemoteData implements IDriversRemoteData {
     public void getDriversTrips(IClientRepository.onClientCallback tripCallback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(TRIP)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
-                        List<Trip> trips = snapshots.toObjects(Trip.class);
-                        tripList.clear();
-                        tripList.addAll(trips);
-                        tripCallback.onSuccess(tripList);
-                        for (int i = 0; i < snapshots.getDocuments().size(); i++) {
-                            tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
-                        }
+                .addSnapshotListener((snapshots, e) -> {
+                    List<Trip> trips = snapshots.toObjects(Trip.class);
+                    tripList.clear();
+                    tripList.addAll(trips);
+                    tripCallback.onSuccess(tripList);
+                    for (int i = 0; i < snapshots.getDocuments().size(); i++) {
+                        tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
                     }
                 });
 
@@ -57,9 +49,12 @@ public class DriversRemoteData implements IDriversRemoteData {
         data.collection(CLIENT)
                 .document(clientNumber)
                 .get()
-                .addOnSuccessListener(snapshot -> {
-                    ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
-                    clientCallback.onSuccess(clientUpload);
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot snapshot) {
+                        ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
+                        clientCallback.onSuccess(clientUpload);
+                    }
                 });
     }
     //endregion
@@ -80,14 +75,24 @@ public class DriversRemoteData implements IDriversRemoteData {
     public void getChatMessage(IClientRepository.chatCallback chatCallback) {
         FirebaseFirestore chatData = FirebaseFirestore.getInstance();
         chatData
-                .collection("chat")
+                .collection(CHAT)
                 .orderBy(CHAT_TIME, Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshots, e) -> {
-                    assert snapshots != null;
                     List<Chat> chat = snapshots.toObjects(Chat.class);
                     chatCallback.onSuccess(chat);
-                    Log.e("ololo", "getChatMessage: " + chat.size() );
                 });
     }
-    //endregion
+
+    @Override
+    public void getTripBookData(Map<String, Object> tripBook) {
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database
+                .collection("Book")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
+                .set(tripBook)
+                .addOnSuccessListener(documentReference -> {
+                }).addOnFailureListener(e -> {
+        });
+    }
 }

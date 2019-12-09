@@ -9,7 +9,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 

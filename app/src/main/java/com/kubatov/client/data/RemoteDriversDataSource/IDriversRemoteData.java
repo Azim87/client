@@ -9,4 +9,5 @@ public interface IDriversRemoteData {
     void getClientsInfo(IClientRepository.clientCallback clientCallback);
     void sendChatMessage(Map<String, Object> chat);
     void getChatMessage(IClientRepository.chatCallback chatCallback);
+    void getTripBookData(Map<String, Object> trip);
 }

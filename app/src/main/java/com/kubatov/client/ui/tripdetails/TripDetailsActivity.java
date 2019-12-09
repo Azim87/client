@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,14 +23,18 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.SharedHelper;
+import com.kubatov.client.util.ShowToast;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,41 +57,27 @@ public class TripDetailsActivity extends AppCompatActivity {
     public final static String TRIP_DRIVERS_NUMBER = "number";
     private TripAdapter adapter;
     private String tripDriversNumber;
+    private Map<String, Object> tripMap = new HashMap<>();
 
-    @BindView(R.id.trip_date)
-    TextView textViewDate;
-    @BindView(R.id.date)
-    TextView textDate;
-    @BindView(R.id.trip_from)
-    TextView textViewFrom;
-    @BindView(R.id.from)
-    TextView textFrom;
-    @BindView(R.id.trip_to)
-    TextView textViewTo;
-    @BindView(R.id.to)
-    TextView textTo;
-    @BindView(R.id.trip_price)
-    TextView textViewPrice;
-    @BindView(R.id.price)
-    TextView textPrice;
-    @BindView(R.id.trip_seats)
-    TextView textViewSeats;
-    @BindView(R.id.seats)
-    TextView textSeats;
-    @BindView(R.id.trip_car_model)
-    TextView textViewCarModel;
-    @BindView(R.id.car_model)
-    TextView textCarModel;
-    @BindView(R.id.trip_drivers_name)
-    TextView textViewDriversName;
-    @BindView(R.id.drivers_name)
-    TextView textDriversName;
-    @BindView(R.id.trip_view_pager)
-    ViewPager tripImgViewPager;
-    @BindView(R.id.call_to_driver)
-    FloatingActionButton callToDriverButton;
-    @BindView(R.id.worm_dots_indicator)
-    WormDotsIndicator wormDotsIndicator;
+    @BindView(R.id.trip_date) TextView textViewDate;
+    @BindView(R.id.date) TextView textDate;
+    @BindView(R.id.trip_from) TextView textViewFrom;
+    @BindView(R.id.from) TextView textFrom;
+    @BindView(R.id.trip_to) TextView textViewTo;
+    @BindView(R.id.to) TextView textTo;
+    @BindView(R.id.trip_price) TextView textViewPrice;
+    @BindView(R.id.price) TextView textPrice;
+    @BindView(R.id.trip_seats) TextView textViewSeats;
+    @BindView(R.id.seats) TextView textSeats;
+    @BindView(R.id.trip_car_model) TextView textViewCarModel;
+    @BindView(R.id.car_model) TextView textCarModel;
+    @BindView(R.id.trip_drivers_name) TextView textViewDriversName;
+    @BindView(R.id.drivers_name) TextView textDriversName;
+    @BindView(R.id.trip_view_pager) ViewPager tripImgViewPager;
+    @BindView(R.id.call_to_driver) FloatingActionButton callToDriverButton;
+    @BindView(R.id.worm_dots_indicator) WormDotsIndicator wormDotsIndicator;
+    @BindView(R.id.worm_dots_indicator) EditText quantityEdit;
+    @BindView(R.id.worm_dots_indicator) Button bookTripButton;
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -133,10 +125,9 @@ public class TripDetailsActivity extends AppCompatActivity {
         String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
         String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
+        tripMap.put("driversNumber", tripDriversNumber);
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
-
         SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, tripDriversNumber);
-
         adapter.setImageList(img);
         DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailSeats,
                 tripCarModel, tripCarMark, tripDriversName);
@@ -171,12 +162,14 @@ public class TripDetailsActivity extends AppCompatActivity {
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         makeACall();
                     }
+
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         if (response.isPermanentlyDenied()) {
                             showSettingsDialog();
                         }
                     }
+
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
                         token.continuePermissionRequest();
@@ -195,7 +188,6 @@ public class TripDetailsActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
         builder.show();
-
     }
 
     private void openSettings() {
@@ -217,5 +209,14 @@ public class TripDetailsActivity extends AppCompatActivity {
     void openChatActivity(View view) {
         ChatActivity.start(this);
         finish();
+    }
+
+    @OnClick(R.id.trip_book_button)
+    void bookTripClick(View view) {
+        ShowToast.me("book trip");
+        App.clientRepository.getTripBookData(tripMap);
+    }
+    private void sendBookingInfo(){
+        String carSeats = quantityEdit.getText().toString().trim();
     }
 }
