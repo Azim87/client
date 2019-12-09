@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
+import com.kubatov.client.util.DateHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class RegistrationActivity extends AppCompatActivity
 
     private static final String AGE = "age";
     private static final String NAME = "name";
+    private static final String FAMILY_NAME = "familyName";
     private static final String GENDER = "sex";
     private static final String PROFILE = "profileImage";
     private static final String IMAGE_TYPE = "image/*";
@@ -54,6 +56,7 @@ public class RegistrationActivity extends AppCompatActivity
     private String gender;
     private String profileImageUri;
     private StorageReference mStorageReference;
+    private FirebaseAuth auth;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
@@ -64,6 +67,8 @@ public class RegistrationActivity extends AppCompatActivity
     EditText editTextAge;
     @BindView(R.id.edit_text_name)
     EditText editTextName;
+    @BindView(R.id.edit_text_family_name)
+    EditText editTextFamilyName;
     @BindView(R.id.button_save_client)
     Button saveClientInfoButton;
     @BindView(R.id.progress_bar)
@@ -91,6 +96,7 @@ public class RegistrationActivity extends AppCompatActivity
                 break;
             case R.id.button_save_client:
                 saveToFireBase();
+
                 break;
         }
     }
@@ -103,6 +109,7 @@ public class RegistrationActivity extends AppCompatActivity
             return;
         } else {
             initFireBase();
+
             MainActivity.start(this);
             finish();
         }
@@ -117,10 +124,14 @@ public class RegistrationActivity extends AppCompatActivity
         getClientSex();
         String age = editTextAge.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
+        String familyName = editTextFamilyName.getText().toString().trim();
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
+        clients.put(FAMILY_NAME, familyName);
         clients.put(PROFILE, profileImageUri);
+        long time = System.currentTimeMillis();
+        clients.put("registrationTime", DateHelper.convertToDate(String.valueOf(time)));
         String phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
@@ -149,18 +160,18 @@ public class RegistrationActivity extends AppCompatActivity
             clientImageUri = data.getData();
             Glide.with(this).load(clientImageUri).into(clientImageView);
 
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
-            bitmap.recycle();
-            byte[] byteArray = bao.toByteArray();
-            uploadClientImageToStorage(byteArray);
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
+                bitmap.recycle();
+                byte[] byteArray = bao.toByteArray();
+                uploadClientImageToStorage(byteArray);
         }
     }
 

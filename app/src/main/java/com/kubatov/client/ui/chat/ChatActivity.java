@@ -3,6 +3,7 @@ package com.kubatov.client.ui.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,8 +21,7 @@ import com.kubatov.client.util.DateHelper;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +35,14 @@ import static com.kubatov.client.util.Constants.SHARED_KEY;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String MESSAGE = "message";
-    private static final String MY_NUMBER = "myNumber";
-    private static final String DRIVER_NUMBER = "driverNumber";
+    private static final String MY_NUMBER = "messageFrom";
+    private static final String DRIVER_NUMBER = "messageTo";
     private static final String CHAT_TIME = "chatTime";
     private IClientRepository repository = App.clientRepository;
     private String mNumber;
     private ChatAdapter mAdapter;
     private Map<String, Object> chatMap = new HashMap<>();
+    private String driverNumber;
 
     @BindView(R.id.chat_recycler_view)
     RecyclerView mChatRecyclerView;
@@ -63,10 +64,12 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initRecycler();
         getChatMessage();
+        driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
+
     }
 
     private void initRecycler() {
-        LinearLayoutManager linearLayoutManager = new  LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         mChatRecyclerView.setLayoutManager(linearLayoutManager);
         mChatRecyclerView.setAdapter(mAdapter);
@@ -77,7 +80,15 @@ public class ChatActivity extends AppCompatActivity {
         repository.getChatMessage(new IClientRepository.chatCallback() {
             @Override
             public void onSuccess(List<Chat> chatList) {
-                mAdapter.setChatList(chatList, mNumber);
+                List<Chat> nChat = new ArrayList<>();
+                for (Chat chat : chatList) {
+                    if (chat.getMessageFrom().equals(mNumber) || chat.getMessageTo().equals(mNumber)) {
+                        if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
+                            nChat.add(chat);
+                        }
+                    }
+                }
+                mAdapter.setChatList(nChat, mNumber);
             }
 
             @Override
@@ -108,16 +119,17 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         /*GET DRIVERS NUMBERS FROM TRIP DETAILS ACTIVITY*/
-        String number = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
-        setMessageToChat(message, number);
+
+        setMessageToChat(message, driverNumber);
+
     }
 
-    private void setMessageToChat(String message, String number){
+    private void setMessageToChat(String message, String number) {
         long milliseconds = System.currentTimeMillis();
         chatMap.put(MESSAGE, message);
         chatMap.put(MY_NUMBER, mNumber);
         chatMap.put(DRIVER_NUMBER, number);
-        chatMap.put(CHAT_TIME, DateHelper.convertToHour(String.valueOf(milliseconds)));
+        chatMap.put(CHAT_TIME, milliseconds);
     }
 
     @OnClick(R.id.send_message)

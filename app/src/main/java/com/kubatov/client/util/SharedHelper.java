@@ -18,4 +18,11 @@ public class SharedHelper {
         SharedPreferences prefs = context.getSharedPreferences(sharedKey, MODE_PRIVATE);
         return prefs.getString(key, null);
     }
+
+    public static void saveState(Context context, String prefKey, boolean isFirstTime){
+        SharedPreferences preferences = context.getSharedPreferences(prefKey, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("booleanKey", isFirstTime);
+        editor.apply();
+    }
 }

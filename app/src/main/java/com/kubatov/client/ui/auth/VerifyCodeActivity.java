@@ -1,6 +1,5 @@
 package com.kubatov.client.ui.auth;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseException;
@@ -32,8 +30,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks changedCallbacks;
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String code;
 
     @BindView(R.id.edit_text_phone_number)
     EditText mEditTextCode;
@@ -55,7 +52,6 @@ public class VerifyCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         ButterKnife.bind(this);
-        firebaseAuth = FirebaseAuth.getInstance();
         getPhoneNumber();
     }
 
@@ -75,7 +71,8 @@ public class VerifyCodeActivity extends AppCompatActivity {
         verifyVerificationCode(code);
     }
 
-    @OnClick(R.id.button_back) void onBackPressed(View view){
+    @OnClick(R.id.button_back)
+    void onBackPressed(View view) {
         PhoneAuthActivity.start(this);
         finish();
     }
@@ -89,8 +86,9 @@ public class VerifyCodeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        finish();
-                        MainActivity.start(this);
+                            RegistrationActivity.start(this);
+                            finish();
+
                         Toast.makeText(VerifyCodeActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(VerifyCodeActivity.this, "Не успешно", Toast.LENGTH_SHORT).show();
@@ -116,7 +114,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                String code = phoneAuthCredential.getSmsCode();
+                code = phoneAuthCredential.getSmsCode();
                 if (code != null) {
                     mProgressBar.setVisibility(View.INVISIBLE);
                     mEditTextCode.setText(code);

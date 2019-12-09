@@ -10,4 +10,5 @@
     <color name="bottomNavigationBackground">#00BCD4</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorOfProfileViewLine">#686666</color>
 </resources>

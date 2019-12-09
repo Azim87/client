@@ -7,11 +7,11 @@ public class Chat implements Serializable {
     private String message;
     private String messageFrom;
     private String messageTo;
-    private String chatTime;
+    private Long chatTime;
 
     public Chat(){}
 
-    public Chat(String message, String messageFrom, String messageTo, String chatTime) {
+    public Chat(String message, String messageFrom, String messageTo, Long chatTime) {
         this.message = message;
         this.messageFrom = messageFrom;
         this.messageTo = messageTo;
@@ -42,11 +42,11 @@ public class Chat implements Serializable {
         this.messageTo = messageTo;
     }
 
-    public String getChatTime() {
+    public Long getChatTime() {
         return chatTime;
     }
 
-    public void setChatTime(String chatTime) {
+    public void setChatTime(Long chatTime) {
         this.chatTime = chatTime;
     }
 }

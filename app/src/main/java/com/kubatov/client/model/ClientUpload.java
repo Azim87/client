@@ -7,11 +7,28 @@ public class ClientUpload implements Serializable {
 
     private String name;
 
+    private String registrationTime;
+
+    private String familyName;
+
+    private String age;
+
     public ClientUpload(){}
 
-    public ClientUpload(String clientImageUrl, String name) {
+    public ClientUpload(String profileImage, String name, String registrationTime, String familyName, String age) {
         this.profileImage = profileImage;
         this.name = name;
+        this.registrationTime = registrationTime;
+        this.familyName = familyName;
+        this.age = age;
+    }
+
+    public String getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public void setRegistrationTime(String registrationTime) {
+        this.registrationTime = registrationTime;
     }
 
     public void setProfileImage(String profileImage) {
@@ -28,5 +45,13 @@ public class ClientUpload implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public String getAge() {
+        return age;
     }
 }

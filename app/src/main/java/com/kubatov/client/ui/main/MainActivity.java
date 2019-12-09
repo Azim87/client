@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.ui.profile.profileFragment;
@@ -25,38 +26,33 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
-    private FirebaseAuth mAuth;
 
-    public static void start(Context context) {
+    public static void start(Context context){
         context.startActivity(new Intent(context, MainActivity.class));
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
 
-        if (mAuth != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }else {
-            RegistrationActivity.start(this);
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            startActivity(new Intent(this, RegistrationActivity.class));
         }
     }
-
     private void setUpViewPager() {
         SimpleViewPagerAdapter pagerAdapter = new SimpleViewPagerAdapter(getSupportFragmentManager());
         pagerAdapter.setFragment(sendFragment());
         viewPager.setAdapter(pagerAdapter);
-
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

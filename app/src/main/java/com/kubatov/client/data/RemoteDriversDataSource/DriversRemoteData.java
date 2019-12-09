@@ -1,7 +1,13 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,6 +25,7 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
     private final static String CHAT = "chat";
     private final static String CLIENT = "clients";
+    private final static String CHAT_TIME = "chatTime";
     private List<Trip> tripList = new ArrayList<>();
 
     //region Read trip data from fireBase dataBase
@@ -26,17 +33,19 @@ public class DriversRemoteData implements IDriversRemoteData {
     public void getDriversTrips(IClientRepository.onClientCallback tripCallback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(TRIP)
-                .get()
-                .addOnSuccessListener((QuerySnapshot snapshots) -> {
-                    List<Trip> trips = snapshots.toObjects(Trip.class);
-                    tripList.clear();
-                    tripList.addAll(trips);
-                    tripCallback.onSuccess(tripList);
-                    for (int i = 0; i < snapshots.getDocuments().size(); i++) {
-                        tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                        List<Trip> trips = snapshots.toObjects(Trip.class);
+                        tripList.clear();
+                        tripList.addAll(trips);
+                        tripCallback.onSuccess(tripList);
+                        for (int i = 0; i < snapshots.getDocuments().size(); i++) {
+                            tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
+                        }
                     }
-                }).addOnFailureListener(e -> {
-        });
+                });
+
     }
     //endregion
 
@@ -64,18 +73,21 @@ public class DriversRemoteData implements IDriversRemoteData {
                 .add(chatMap)
                 .addOnSuccessListener(documentReference -> {
                 }).addOnFailureListener(e -> {
-                });
+        });
     }
 
     @Override
     public void getChatMessage(IClientRepository.chatCallback chatCallback) {
         FirebaseFirestore chatData = FirebaseFirestore.getInstance();
-        chatData.collection(CHAT).orderBy("chatTime", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(snapshots -> {
+        chatData
+                .collection("chat")
+                .orderBy(CHAT_TIME, Query.Direction.DESCENDING)
+                .addSnapshotListener((snapshots, e) -> {
+                    assert snapshots != null;
                     List<Chat> chat = snapshots.toObjects(Chat.class);
                     chatCallback.onSuccess(chat);
-                }).addOnFailureListener(e -> chatCallback.onFailure(e));
+                    Log.e("ololo", "getChatMessage: " + chat.size() );
+                });
     }
     //endregion
 }

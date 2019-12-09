@@ -16,15 +16,16 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setSplashScreenTime() {
-        new CountDownTimer(800, 800) {
+        new CountDownTimer(900, 450) {
             @Override
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+
+            }
             @Override
             public void onFinish() {
                 getRegistrationActivity();
             }
         }.start();
-
     }
 
     private void getRegistrationActivity() {

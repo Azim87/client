@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/radio_sex"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/radio_sex"
             android:layout_marginBottom="10dp"
-            android:text="Bозраст" />
+            android:text="Год рождения" />
 
         <EditText
             android:id="@+id/edit_text_age"
@@ -71,18 +71,46 @@
             android:layout_below="@+id/text_view_age"
             android:layout_gravity="center_horizontal"
             android:inputType="number"
-            android:maxLength="2"
+            android:maxLength="10"
             android:maxLines="1"
             android:padding="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_family_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_age"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_family_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radio_sex"
+            android:layout_marginBottom="10dp"
+            android:text="Фамилия" />
+
+        <EditText
+            android:id="@+id/edit_text_family_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_age"
+            android:layout_gravity="center_horizontal"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:padding="6dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_age"
+        android:layout_below="@+id/layout_family_name"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -91,17 +119,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/radio_sex"
             android:layout_marginBottom="10dp"
-            android:text="ФИО" />
+            android:text="Имя" />
 
         <EditText
             android:id="@+id/edit_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view_age"
+            android:layout_below="@+id/text_view_family_name"
             android:layout_gravity="center_horizontal"
             android:maxLength="20"
             android:maxLines="1"
-            android:padding="8dp" />
+            android:padding="6dp" />
     </LinearLayout>
 
     <Button
