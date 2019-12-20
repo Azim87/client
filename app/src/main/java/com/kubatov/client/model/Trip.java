@@ -14,8 +14,6 @@ public class Trip {
     private String carModel;
     private String carMark;
     private String carYear;
-    private String rating;
-    private boolean homeTohome;
     private String phoneNumber;
 
     //region Constructor
@@ -24,7 +22,7 @@ public class Trip {
 
     public Trip(String date, String from, String price, String seats, String carSeats, String to, String carImage,
                 String carImage1, String carImage2, String name, String carModel, String carMark,
-                String carYear, String rating, boolean homeTohome, String phoneNumber) {
+                String carYear, String phoneNumber) {
         this.date = date;
         this.from = from;
         this.price = price;
@@ -38,12 +36,9 @@ public class Trip {
         this.carModel = carModel;
         this.carMark = carMark;
         this.carYear = carYear;
-        this.rating = rating;
-        this.homeTohome = homeTohome;
         this.phoneNumber = phoneNumber;
     }
     //endregion
-
     //region Setters and Getters
 
     public String getCarSeats() {
@@ -150,22 +145,6 @@ public class Trip {
         this.carYear = carYear;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public boolean isHomeTohome() {
-        return homeTohome;
-    }
-
-    public void setHomeTohome(boolean homeTohome) {
-        this.homeTohome = homeTohome;
-    }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -175,5 +154,4 @@ public class Trip {
     }
 
     //endregion
-
 }

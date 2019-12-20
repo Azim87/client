@@ -1,9 +1,10 @@
 package com.kubatov.client.ui.trip.recycler;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,12 +23,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecyclerAdapter.DriversViewHolder> {
+public class DriversRecyclerAdapter
+        extends RecyclerView.Adapter<DriversRecyclerAdapter.DriversViewHolder>
+        implements Filterable {
     private List<Trip> mClient = new ArrayList<>();
+    private List<Trip> mClientSearch;
+
+
     private OnTripItemClickListener mItemClickListener;
 
     public DriversRecyclerAdapter(OnTripItemClickListener itemClickListener) {
         mItemClickListener = itemClickListener;
+        mClientSearch = mClient;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -52,6 +60,39 @@ public class DriversRecyclerAdapter extends RecyclerView.Adapter<DriversRecycler
     public int getItemCount() {
         return mClient.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return tripFilter;
+    }
+
+    private Filter tripFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            FilterResults results = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                List<Trip> filterList = new ArrayList<>();
+                for (int i = 0; i < mClientSearch.size(); i++) {
+                    if ((mClientSearch.get(i).getTo().toLowerCase()).contains(constraint.toString().toLowerCase())) {
+                        filterList.add(mClientSearch.get(i));
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = mClientSearch.size();
+                results.values = mClientSearch;
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mClient = (List<Trip>) results.values;
+            notifyDataSetChanged();
+        }
+    };
 
     public class DriversViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private OnTripItemClickListener mListener;

@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -55,6 +57,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private final static String TRIP_CAR_MARK = "mark";
     private final static String TRIP_DRIVERS_NAME = "name";
     public final static String TRIP_DRIVERS_NUMBER = "number";
+
     private TripAdapter adapter;
     private String tripDriversNumber;
     private Map<String, Object> tripMap = new HashMap<>();
@@ -76,8 +79,10 @@ public class TripDetailsActivity extends AppCompatActivity {
     @BindView(R.id.trip_view_pager) ViewPager tripImgViewPager;
     @BindView(R.id.call_to_driver) FloatingActionButton callToDriverButton;
     @BindView(R.id.worm_dots_indicator) WormDotsIndicator wormDotsIndicator;
-    @BindView(R.id.worm_dots_indicator) EditText quantityEdit;
-    @BindView(R.id.worm_dots_indicator) Button bookTripButton;
+    @BindView(R.id.book_layout)LinearLayout bookview;
+    @BindView(R.id.book_trip_seats_et) EditText bookEditText;
+    @BindView(R.id.book_trip_button) Button bookButton;
+    @BindView(R.id.trip_book_button) Button bookingButton;
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -127,8 +132,12 @@ public class TripDetailsActivity extends AppCompatActivity {
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
         tripMap.put("driversNumber", tripDriversNumber);
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
-        SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, tripDriversNumber);
+
+        SharedHelper
+                .setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, tripDriversNumber);
+
         adapter.setImageList(img);
+
         DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailSeats,
                 tripCarModel, tripCarMark, tripDriversName);
     }
@@ -213,10 +222,25 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.trip_book_button)
     void bookTripClick(View view) {
-        ShowToast.me("book trip");
-        App.clientRepository.getTripBookData(tripMap);
+        bookingButton.setVisibility(View.INVISIBLE);
+        bookview.setVisibility(View.VISIBLE);
     }
-    private void sendBookingInfo(){
-        String carSeats = quantityEdit.getText().toString().trim();
+
+    @OnClick(R.id.book_trip_button)
+    void sendBookTrip(View view) {
+        String carSeats = bookEditText.getText().toString().trim();
+        if (carSeats.equals("")){
+            bookEditText.setError("Вы не ввели даннные");
+            return;
+        }else {
+            tripMap.put("seats", carSeats);
+            App.clientRepository.getTripBookData(tripMap);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                bookview.setVisibility(View.INVISIBLE);
+                bookingButton.setVisibility(View.VISIBLE);
+                ShowToast.me("Заказ отправлен водителью");
+            }, 2000);
+        }
     }
 }

@@ -93,7 +93,6 @@ public class VerifyCodeActivity extends AppCompatActivity {
                 });
     }
 
-
     private void sendVerificationCode(String phoneNumber) {
         verificationUser();
         mProgressBar.setVisibility(View.VISIBLE);

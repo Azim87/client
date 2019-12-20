@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

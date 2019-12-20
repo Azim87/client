@@ -88,7 +88,7 @@ public class DriversRemoteData implements IDriversRemoteData {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database
-                .collection("Book")
+                .collection("book")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
                 .set(tripBook)
                 .addOnSuccessListener(documentReference -> {

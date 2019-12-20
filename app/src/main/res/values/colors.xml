@@ -11,4 +11,6 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorOfProfileViewLine">#686666</color>
+    <color name="colorBook">#DFDCDC</color>
+
 </resources>

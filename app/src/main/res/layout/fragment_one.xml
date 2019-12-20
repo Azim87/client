@@ -16,28 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/bottom_sheet_search"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorForwardButton"
-                android:padding="20dp"
-                android:text="Поиск машины"
-                android:textAlignment="center"
+                android:focusable="true"
                 android:textColor="@color/colorWhite"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="16dp"
-                android:src="@drawable/ic_search_black_24dp"
-                app:layout_constraintEnd_toEndOf="@+id/bottom_sheet_search"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:queryHint="искать здесь" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -53,40 +42,11 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/textView3"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_search" />
+                app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="15dp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <androidx.cardview.widget.CardView
-            app:cardCornerRadius="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/bottom_sheet_icon"
-                android:src="@drawable/ic_keyboard_arrow_up_white"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:background="@color/colorAccent" />
-
-        </androidx.cardview.widget.CardView>
-
-
-    </androidx.core.widget.NestedScrollView>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

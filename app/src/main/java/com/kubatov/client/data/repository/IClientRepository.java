@@ -20,7 +20,6 @@ public interface IClientRepository {
 
     void getTripBookData(Map<String, Object> tripMap);
 
-
     interface onClientCallback {
         void onSuccess(List<Trip> tripList);
 
