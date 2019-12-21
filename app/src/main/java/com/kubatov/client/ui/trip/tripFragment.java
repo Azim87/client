@@ -1,6 +1,7 @@
 package com.kubatov.client.ui.trip;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ServerValue;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.core.CoreFragment;
@@ -65,7 +67,6 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         refreshTrips();
         getTripData();
         progressBar.setVisibility(View.VISIBLE);
-
     }
 
     private void initRecyclerView() {

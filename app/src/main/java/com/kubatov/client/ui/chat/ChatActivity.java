@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.data.repository.IClientRepository;
@@ -70,11 +72,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
         mChatRecyclerView.setLayoutManager(linearLayoutManager);
         mChatRecyclerView.setAdapter(mAdapter);
-        mChatRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+
         getMessage();
     }
 
@@ -88,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
                         if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
                         }
+                        mChatRecyclerView.scrollToPosition(nChat.size() - 1);
                     }
                 }
                 mAdapter.setChatList(nChat, mNumber);
@@ -127,11 +129,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setMessageToChat(String message, String number) {
-        long milliseconds = System.currentTimeMillis();
+        long chatTime = System.currentTimeMillis();
         chatMap.put(MESSAGE, message);
         chatMap.put(MY_NUMBER, mNumber);
         chatMap.put(DRIVER_NUMBER, number);
-        chatMap.put(CHAT_TIME, milliseconds);
+        chatMap.put(CHAT_TIME, chatTime);
     }
 
     @OnClick(R.id.send_message)
