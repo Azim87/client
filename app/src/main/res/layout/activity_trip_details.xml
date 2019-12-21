@@ -9,7 +9,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/trip_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="220dp" />
+        android:layout_height="200dp" />
 
     <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
         android:id="@+id/worm_dots_indicator"
@@ -26,20 +26,13 @@
 
     <!--region Trip Views-->
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/trip_view_pager"
-        app:cardElevation="10dp">
-
         <TextView
             android:id="@+id/text_view_chat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card"
+            android:layout_below="@+id/trip_view_pager"
             android:background="@color/bottomNavigationBackground"
-            android:padding="14dp"
+            android:padding="11dp"
             android:text="Написать водителю"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -50,11 +43,11 @@
             android:id="@+id/chat_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:layout_marginEnd="12dp"
+            android:layout_alignParentRight="true"
             android:padding="12dp"
+            android:layout_below="@+id/trip_view_pager"
             android:src="@drawable/ic_email_black_24dp" />
-    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/book_layout"
@@ -102,19 +95,19 @@
         android:id="@+id/trip_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/card_view_chat"
+        android:layout_below="@+id/text_view_chat"
         android:layout_toStartOf="@+id/date"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="день поездки" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/card_view_chat"
+        android:layout_below="@id/text_view_chat"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="21.02.19" />
 
     <TextView
@@ -122,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_date"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="из г." />
 
     <TextView
@@ -132,7 +125,7 @@
         android:layout_below="@+id/trip_date"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="город" />
 
     <TextView
@@ -140,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_from"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="в г." />
 
     <TextView
@@ -150,7 +143,7 @@
         android:layout_below="@+id/trip_from"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="город" />
 
     <TextView
@@ -158,7 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_to"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="количество мест" />
 
     <TextView
@@ -168,7 +161,7 @@
         android:layout_below="@+id/trip_to"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="место" />
 
     <TextView
@@ -176,7 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_seats"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="цена поездки" />
 
     <TextView
@@ -186,7 +179,7 @@
         android:layout_below="@+id/trip_seats"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="цена" />
 
     <TextView
@@ -194,7 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_price"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="модель машины" />
 
     <TextView
@@ -204,7 +197,7 @@
         android:layout_below="@+id/trip_price"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="модель машины" />
 
     <TextView
@@ -212,7 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trip_car_model"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="имя водителя" />
 
     <TextView
@@ -222,7 +215,7 @@
         android:layout_below="@+id/trip_car_model"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12dp"
-        android:padding="12dp"
+        android:padding="6dp"
         android:text="имя" />
 
     <Button

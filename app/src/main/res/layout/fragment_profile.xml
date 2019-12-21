@@ -15,18 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ImageView
-        android:id="@+id/image_view_log_off"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/ic_exit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/profile_name_layout"
         android:layout_width="match_parent"
@@ -122,16 +110,4 @@
             android:text="13.02.2019"
             android:textSize="15sp" />
     </LinearLayout>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-
-        android:id="@+id/image_view_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:backgroundTint="@color/bottomNavigationBackground"
-        android:src="@drawable/ic_edit_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

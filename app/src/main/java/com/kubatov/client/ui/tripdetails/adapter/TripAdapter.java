@@ -50,6 +50,7 @@ public class TripAdapter extends PagerAdapter {
         ButterKnife.bind(this, v);
         Glide.with(imageView.getContext())
                 .load(stringList.get(position))
+                .centerCrop()
                 .into(imageView);
 
         container.addView(v, 0);

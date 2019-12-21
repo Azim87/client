@@ -58,10 +58,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     private final static String TRIP_DRIVERS_NAME = "name";
     public final static String TRIP_DRIVERS_NUMBER = "number";
 
-    private TripAdapter adapter;
-    private String tripDriversNumber;
-    private Map<String, Object> tripMap = new HashMap<>();
-
     @BindView(R.id.trip_date) TextView textViewDate;
     @BindView(R.id.date) TextView textDate;
     @BindView(R.id.trip_from) TextView textViewFrom;
@@ -83,6 +79,10 @@ public class TripDetailsActivity extends AppCompatActivity {
     @BindView(R.id.book_trip_seats_et) EditText bookEditText;
     @BindView(R.id.book_trip_button) Button bookButton;
     @BindView(R.id.trip_book_button) Button bookingButton;
+
+    private TripAdapter adapter;
+    private String tripDriversNumber;
+    private Map<String, Object> tripMap = new HashMap<>();
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -155,7 +155,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         textViewPrice.setText("цена поездки: ");
         textPrice.setText(tripPrice);
         textViewSeats.setText("свободных мест: ");
-        textSeats.setText(tripAvailSeats + " из " + tripSeats);
+        textSeats.setText(tripSeats + " из " + tripAvailSeats);
         textViewCarModel.setText("марка машины: ");
         textCarModel.setText(tripCarMark + " " + tripCarModel);
         textViewDriversName.setText("имя водителья: ");

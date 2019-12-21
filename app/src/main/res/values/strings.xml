@@ -15,4 +15,6 @@
     <string name="trip_from">from</string>
     <string name="trip_to">to</string>
     <string name="phone_number_text">номер телефона</string>
+    <string name="mess">Сообщение</string>
+    <string name="_12_33">12:33</string>
 </resources>

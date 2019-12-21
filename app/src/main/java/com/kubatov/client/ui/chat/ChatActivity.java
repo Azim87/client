@@ -70,9 +70,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
         mChatRecyclerView.setLayoutManager(linearLayoutManager);
         mChatRecyclerView.setAdapter(mAdapter);
+        mChatRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
         getMessage();
     }
 

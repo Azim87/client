@@ -1,8 +1,13 @@
 package com.kubatov.client.ui.profile;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,12 +21,12 @@ import com.kubatov.client.ui.auth.PhoneAuthActivity;
 import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.util.ShowToast;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class profileFragment extends CoreFragment {
-    @BindView(R.id.image_view_log_off) ImageView logOffImageView;
     @BindView(R.id.profile_image) ImageView clientsProfileImageView;
     @BindView(R.id.profile_name) TextView clientsName;
     @BindView(R.id.profile_age) TextView clientsAge;
@@ -50,7 +55,6 @@ public class profileFragment extends CoreFragment {
                 clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
                 clientsAge.setText(clientUploads.getAge());
                 clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
-
             }
 
             @Override
@@ -61,17 +65,35 @@ public class profileFragment extends CoreFragment {
     }
 
 
-    @OnClick(R.id.image_view_log_off)
-    void logOff(View view) {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().signOut();
-            PhoneAuthActivity.start(getContext());
-        }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.app_bar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @OnClick(R.id.image_view_edit)
-    void editProfile(View view) {
-        RegistrationActivity.start(getContext());
-        getActivity().finish();
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_search);
+        if (item != null)
+            item.setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                RegistrationActivity.start(Objects.requireNonNull(getContext()));
+                break;
+            case R.id.action_exit:
+                signOut();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+            PhoneAuthActivity.start(Objects.requireNonNull(getContext()));
+        }
     }
 }

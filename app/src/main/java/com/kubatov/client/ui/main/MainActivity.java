@@ -4,13 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -80,5 +75,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(new tripFragment());
         fragmentList.add(new profileFragment());
         return fragmentList;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() != 0) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+        } else {
+            finish();
+        }
     }
 }

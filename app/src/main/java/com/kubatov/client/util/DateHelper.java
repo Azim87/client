@@ -14,14 +14,9 @@ public class DateHelper {
         return date = sdf.format(new Date());
     }
 
-    public static String convertToShortDate(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        return date = sdf.format(new Date());
-    }
-
     public static String convertUnixToDate(long dt) {
         Date date = new Date(dt);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String formatted = sdf.format(date);
         return formatted;
     }
