@@ -1,9 +1,13 @@
 package com.kubatov.client.ui.trip;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,9 +39,6 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
-    @BindView(R.id.search)
-    androidx.appcompat.widget.SearchView searchView;
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_one;
@@ -50,8 +51,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         mTripList = new ArrayList<>();
         refreshTrips();
         getTripData();
-        searchData();
         progressBar.setVisibility(View.VISIBLE);
+        setHasOptionsMenu(true);
     }
 
     private void initRecyclerView() {
@@ -84,16 +85,17 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         });
     }
 
-    private void searchData() {
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.app_bar_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (mTripList.contains(query)) {
-                    ShowToast.me("результат: " + query);
-                }
-                return false;
+                adapter.getFilter().filter(query);
+                return true;
             }
 
             @Override
@@ -102,7 +104,27 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 return true;
             }
         });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
+
+   /* private void searchData() {
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+    }*/
 
     //region On Click
     @Override

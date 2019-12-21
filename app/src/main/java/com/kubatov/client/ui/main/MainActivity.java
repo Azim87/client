@@ -3,19 +3,19 @@ package com.kubatov.client.ui.main;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.kubatov.client.R;
-import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
 
@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
-
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
-            startActivity(new Intent(this, RegistrationActivity.class));
-        }
     }
     private void setUpViewPager() {
         SimpleViewPagerAdapter pagerAdapter = new SimpleViewPagerAdapter(getSupportFragmentManager());
@@ -61,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setUpBottomNavigation();
     }
 
+
     @SuppressLint("ResourceType")
     private void setUpBottomNavigation() {
-        bottomNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.bottom_nav_1:

@@ -13,9 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.kubatov.client.R;
+import com.kubatov.client.ui.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -84,11 +86,19 @@ public class VerifyCodeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        RegistrationActivity.start(this);
-                        finish();
-                        Toast.makeText(VerifyCodeActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
+                        FirebaseUser user = task.getResult().getUser();
+                        long creationTimestamp = user.getMetadata().getCreationTimestamp();
+                        long lastSignInTimestamp = user.getMetadata().getLastSignInTimestamp();
+                        if (creationTimestamp == lastSignInTimestamp) {
+                            RegistrationActivity.start(this);
+                            finish();
+                        } else {
+                            MainActivity.start(this);
+                            finish();
+                        }
+
                     } else {
-                        Toast.makeText(VerifyCodeActivity.this, "Не успешно", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VerifyCodeActivity.this, "Не успешно" + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

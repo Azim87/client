@@ -3,12 +3,10 @@ package com.kubatov.client.ui.auth;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -96,9 +94,13 @@ public class RegistrationActivity extends AppCompatActivity
                 break;
             case R.id.button_save_client:
                 saveToFireBase();
-
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void saveToFireBase() {
@@ -109,16 +111,11 @@ public class RegistrationActivity extends AppCompatActivity
             return;
         } else {
             initFireBase();
-
             MainActivity.start(this);
             finish();
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        saveToFireBase();
-    }
 
     private void initFireBase() {
         getClientSex();

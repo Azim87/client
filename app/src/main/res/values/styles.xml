@@ -1,13 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorForwardButton</item>
         <item name="android:statusBarColor" tools:targetApi="m">#FFF</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowBackground">@color/colorBackButton</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="ClientSplashScreen" parent="Theme.AppCompat.Light.DarkActionBar">
