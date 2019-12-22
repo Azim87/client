@@ -49,48 +49,6 @@
             android:layout_below="@+id/trip_view_pager"
             android:src="@drawable/ic_email_black_24dp" />
 
-    <LinearLayout
-        android:id="@+id/book_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/drivers_name"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:background="@color/colorBook"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:visibility="invisible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Выберите количество мест"
-            android:textAlignment="center" />
-
-        <EditText
-            android:id="@+id/book_trip_seats_et"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:hint="0"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/book_trip_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/trip_book_button_style"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="Отправить"
-            android:textColor="@color/colorWhite" />
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/trip_date"
         android:layout_width="match_parent"

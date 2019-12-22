@@ -3,11 +3,13 @@ package com.kubatov.client.ui.tripdetails;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +30,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.chat.ChatActivity;
+import com.kubatov.client.ui.dialog.Dialog;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
@@ -75,14 +78,12 @@ public class TripDetailsActivity extends AppCompatActivity {
     @BindView(R.id.trip_view_pager) ViewPager tripImgViewPager;
     @BindView(R.id.call_to_driver) FloatingActionButton callToDriverButton;
     @BindView(R.id.worm_dots_indicator) WormDotsIndicator wormDotsIndicator;
-    @BindView(R.id.book_layout)LinearLayout bookview;
-    @BindView(R.id.book_trip_seats_et) EditText bookEditText;
-    @BindView(R.id.book_trip_button) Button bookButton;
     @BindView(R.id.trip_book_button) Button bookingButton;
 
     private TripAdapter adapter;
     private String tripDriversNumber;
     private Map<String, Object> tripMap = new HashMap<>();
+    private int count = 0;
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -222,25 +223,34 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.trip_book_button)
     void bookTripClick(View view) {
-        bookingButton.setVisibility(View.INVISIBLE);
-        bookview.setVisibility(View.VISIBLE);
-    }
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.custom_dialog_layout, null);
 
-    @OnClick(R.id.book_trip_button)
-    void sendBookTrip(View view) {
-        String carSeats = bookEditText.getText().toString().trim();
-        if (carSeats.equals("")){
-            bookEditText.setError("Вы не ввели даннные");
-            return;
-        }else {
-            tripMap.put("seats", carSeats);
-            App.clientRepository.getTripBookData(tripMap);
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                bookview.setVisibility(View.INVISIBLE);
-                bookingButton.setVisibility(View.VISIBLE);
-                ShowToast.me("Заказ отправлен водителью");
-            }, 2000);
-        }
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+        TextView textView = promptView.findViewById(R.id.dialog_count);
+
+        Button btn_1= (Button)promptView.findViewById(R.id.dialog_minus);
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+            }
+        });
+
+
+        Button btn_2 = (Button)promptView.findViewById(R.id.dialog_plus);
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        alertDialogBuilder
+                .setTitle(tripDriversNumber)
+                .setCancelable(false);
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
     }
 }

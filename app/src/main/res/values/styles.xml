@@ -1,10 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionMenuTextColor">@color/colorBlack</item>
         <item name="colorPrimary">@color/bottomNavigationBackground</item>
-        <item name="android:colorSecondary" tools:targetApi="n_mr1">@color/colorForwardButton</item>
-        <item name="android:statusBarColor" tools:targetApi="m">#FFF</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
