@@ -9,11 +9,14 @@
 
     <ImageView
         android:id="@+id/client_profile_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_launcher_background" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorBook"
+        android:src="@drawable/ic_add_black_24dp" />
 
     <TextView
         android:id="@+id/text_view_sex"
@@ -27,6 +30,7 @@
         android:id="@+id/radio_sex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@+id/text_view_sex"
         android:layout_centerHorizontal="true">
 
@@ -140,7 +144,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="10dp"
-        android:visibility="invisible"
         android:text="Сохранить" />
 
     <ProgressBar

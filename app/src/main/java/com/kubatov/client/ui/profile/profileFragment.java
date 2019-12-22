@@ -47,7 +47,6 @@ public class profileFragment extends CoreFragment {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
-
                 Glide.with(clientsProfileImageView.getContext())
                         .load(clientUploads.getProfileImage())
                         .apply(RequestOptions.circleCropTransform())

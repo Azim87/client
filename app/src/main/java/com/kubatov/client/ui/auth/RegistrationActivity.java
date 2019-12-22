@@ -49,12 +49,12 @@ public class RegistrationActivity extends AppCompatActivity
     private static final String LOCATION = "avatar/";
     private static final int PICK_CLIENT_IMAGE_CODE = 1;
     private static final String CLIENTS = "clients";
+    private static final String TIME = "registrationTime";
 
     private Uri clientImageUri;
     private String gender;
     private String profileImageUri;
     private StorageReference mStorageReference;
-    private FirebaseAuth auth;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
@@ -101,10 +101,12 @@ public class RegistrationActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     private void saveToFireBase() {
-        if (editTextAge.getText().toString().equals("")) {
+        if (editTextAge.getText().toString().equals("") || clientImageView.getDrawable() == null) {
+            clientImageView.setTag("empty");
             editTextAge.setError("вы не ввели возраст");
         } else if (editTextName.getText().toString().equals("")) {
             editTextName.setError("вы не ввели имя");
@@ -115,7 +117,6 @@ public class RegistrationActivity extends AppCompatActivity
             finish();
         }
     }
-
 
     private void initFireBase() {
         getClientSex();
@@ -128,7 +129,7 @@ public class RegistrationActivity extends AppCompatActivity
         clients.put(FAMILY_NAME, familyName);
         clients.put(PROFILE, profileImageUri);
         long time = System.currentTimeMillis();
-        clients.put("registrationTime", DateHelper.convertToDate(String.valueOf(time)));
+        clients.put(TIME, DateHelper.convertToDate(String.valueOf(time)));
         String phoneNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
@@ -153,22 +154,12 @@ public class RegistrationActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_CLIENT_IMAGE_CODE && resultCode == RESULT_OK &&
                 data.getData() != null && data != null) {
-
             clientImageUri = data.getData();
-            Glide.with(this).load(clientImageUri).into(clientImageView);
-
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
-                bitmap.recycle();
-                byte[] byteArray = bao.toByteArray();
-                uploadClientImageToStorage(byteArray);
+            Glide.with(this)
+                    .load(clientImageUri)
+                    .centerCrop()
+                    .into(clientImageView);
+            uploadClientImageToStorage();
         }
     }
 
@@ -184,8 +175,18 @@ public class RegistrationActivity extends AppCompatActivity
         return typeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadClientImageToStorage(byte[] byteArray) {
-        mProgressBar.setVisibility(View.VISIBLE);
+    private void uploadClientImageToStorage() {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), clientImageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
+        bitmap.recycle();
+        byte[] byteArray = bao.toByteArray();
         mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
             String number = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
@@ -193,14 +194,11 @@ public class RegistrationActivity extends AppCompatActivity
             storageReference.putBytes(byteArray)
                     .addOnSuccessListener(taskSnapshot -> {
                         mProgressBar.setVisibility(View.GONE);
-                        saveClientInfoButton.setVisibility(View.GONE);
                         storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                             if (uri != null) {
                                 profileImageUri = uri.toString();
                             }
                         });
-                        saveClientInfoButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(this, "Фотография успешно сохранен!", Toast.LENGTH_SHORT).show();
                     }).addOnFailureListener(e -> {
                 e.getLocalizedMessage();
                 Toast.makeText(this, "Не удалось сохранить фото!", Toast.LENGTH_SHORT).show();
