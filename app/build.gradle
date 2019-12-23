@@ -38,7 +38,7 @@ dependencies {
     /* fireBase */
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
-    implementation 'com.google.firebase:firebase-firestore:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
     implementation 'com.google.firebase:firebase-database:19.2.0'
 
     /* material design*/
@@ -53,4 +53,7 @@ dependencies {
 
     /* view pager dots indicator*/
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+
+    /* nice spinner */
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 }

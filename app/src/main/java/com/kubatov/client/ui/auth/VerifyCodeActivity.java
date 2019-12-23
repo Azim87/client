@@ -3,22 +3,30 @@ package com.kubatov.client.ui.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -31,6 +39,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
     private String code;
+    private  FirebaseFirestore db;
 
     @BindView(R.id.edit_text_phone_number)
     EditText mEditTextCode;
@@ -85,18 +94,9 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private void newUserSignIn(final PhoneAuthCredential authCredential) {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = task.getResult().getUser();
-                        long creationTimestamp = user.getMetadata().getCreationTimestamp();
-                        long lastSignInTimestamp = user.getMetadata().getLastSignInTimestamp();
-                        if (creationTimestamp == lastSignInTimestamp) {
-                            RegistrationActivity.start(this);
-                            finish();
-                        } else {
-                            MainActivity.start(this);
-                            finish();
-                        }
-
+                    if (task.isSuccessful()){
+                        RegistrationActivity.start(this);
+                        finish();
                     } else {
                         Toast.makeText(VerifyCodeActivity.this, "Не успешно" + task.getException(), Toast.LENGTH_SHORT).show();
                     }

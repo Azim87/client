@@ -14,6 +14,14 @@ public class SharedHelper {
         sharedPref.apply();
     }
 
+    public static void setSharedState(Context context, String sharedKey, String key, String key2,String key3, String value){
+        SharedPreferences.Editor sharedPref = context.getSharedPreferences(sharedKey, MODE_PRIVATE).edit();
+        sharedPref.putString(key, value);
+        sharedPref.putString(key2, value);
+        sharedPref.putString(key3, value);
+        sharedPref.apply();
+    }
+
     public static String getShared(Context context, String sharedKey, String key ){
         SharedPreferences prefs = context.getSharedPreferences(sharedKey, MODE_PRIVATE);
         return prefs.getString(key, null);

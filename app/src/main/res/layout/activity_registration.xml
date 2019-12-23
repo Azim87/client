@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".ui.auth.RegistrationActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/client_profile_image"
@@ -64,19 +68,14 @@
             android:id="@+id/text_view_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/radio_sex"
             android:layout_marginBottom="10dp"
             android:text="Год рождения" />
 
-        <EditText
+        <org.angmarch.views.NiceSpinner
             android:id="@+id/edit_text_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view_age"
             android:layout_gravity="center_horizontal"
-            android:inputType="number"
-            android:maxLength="10"
-            android:maxLines="1"
             android:padding="8dp" />
     </LinearLayout>
 
@@ -149,8 +148,9 @@
     <ProgressBar
         android:id="@+id/progress_bar"
         android:visibility="invisible"
-        android:layout_below="@+id/button_save_client"
+        android:layout_below="@+id/layout_age"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

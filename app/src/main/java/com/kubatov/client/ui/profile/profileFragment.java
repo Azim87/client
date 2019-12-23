@@ -1,5 +1,7 @@
 package com.kubatov.client.ui.profile;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,10 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class profileFragment extends CoreFragment {
-    @BindView(R.id.profile_image) ImageView clientsProfileImageView;
-    @BindView(R.id.profile_name) TextView clientsName;
-    @BindView(R.id.profile_age) TextView clientsAge;
-    @BindView(R.id.profile_registration) TextView clientsRegistrationDate;
+    @BindView(R.id.profile_image)
+    ImageView clientsProfileImageView;
+    @BindView(R.id.profile_name)
+    TextView clientsName;
+    @BindView(R.id.profile_age)
+    TextView clientsAge;
+    @BindView(R.id.profile_registration)
+    TextView clientsRegistrationDate;
 
     @Override
     protected int getLayoutId() {
@@ -52,7 +58,7 @@ public class profileFragment extends CoreFragment {
                         .apply(RequestOptions.circleCropTransform())
                         .into(clientsProfileImageView);
                 clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
-                clientsAge.setText(clientUploads.getAge());
+                clientsAge.setText(String.valueOf(clientUploads.getAge()));
                 clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
             }
 
@@ -62,7 +68,6 @@ public class profileFragment extends CoreFragment {
             }
         });
     }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -84,7 +89,13 @@ public class profileFragment extends CoreFragment {
                 RegistrationActivity.start(Objects.requireNonNull(getContext()));
                 break;
             case R.id.action_exit:
-                signOut();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Программадан чыгуу!")
+                        .setPositiveButton("Ооба", (dialog, which) -> signOut())
+                        .setNegativeButton("Жок", (dialog, which) -> {
+                        });
+                builder.create();
+                builder.show();
         }
         return super.onOptionsItemSelected(item);
     }

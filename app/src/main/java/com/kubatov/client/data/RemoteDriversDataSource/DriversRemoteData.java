@@ -1,5 +1,7 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -7,10 +9,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kubatov.client.App;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.model.Chat;
+import com.kubatov.client.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;

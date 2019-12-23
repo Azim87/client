@@ -105,6 +105,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "892281713275-3loqe7sd2fs2jhvlemvpg2r52bg7sj0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kubatov.client",
+            "certificate_hash": "f040bd1c4c3d5528b95334fd72477afe88a833a4"
+          }
+        },
+        {
           "client_id": "892281713275-s9re4i0u2bdfm2a9i0skgovjt0f42vkp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

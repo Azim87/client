@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -61,29 +63,52 @@ public class TripDetailsActivity extends AppCompatActivity {
     private final static String TRIP_DRIVERS_NAME = "name";
     public final static String TRIP_DRIVERS_NUMBER = "number";
 
-    @BindView(R.id.trip_date) TextView textViewDate;
-    @BindView(R.id.date) TextView textDate;
-    @BindView(R.id.trip_from) TextView textViewFrom;
-    @BindView(R.id.from) TextView textFrom;
-    @BindView(R.id.trip_to) TextView textViewTo;
-    @BindView(R.id.to) TextView textTo;
-    @BindView(R.id.trip_price) TextView textViewPrice;
-    @BindView(R.id.price) TextView textPrice;
-    @BindView(R.id.trip_seats) TextView textViewSeats;
-    @BindView(R.id.seats) TextView textSeats;
-    @BindView(R.id.trip_car_model) TextView textViewCarModel;
-    @BindView(R.id.car_model) TextView textCarModel;
-    @BindView(R.id.trip_drivers_name) TextView textViewDriversName;
-    @BindView(R.id.drivers_name) TextView textDriversName;
-    @BindView(R.id.trip_view_pager) ViewPager tripImgViewPager;
-    @BindView(R.id.call_to_driver) FloatingActionButton callToDriverButton;
-    @BindView(R.id.worm_dots_indicator) WormDotsIndicator wormDotsIndicator;
-    @BindView(R.id.trip_book_button) Button bookingButton;
+    @BindView(R.id.trip_date)
+    TextView textViewDate;
+    @BindView(R.id.date)
+    TextView textDate;
+    @BindView(R.id.trip_from)
+    TextView textViewFrom;
+    @BindView(R.id.from)
+    TextView textFrom;
+    @BindView(R.id.trip_to)
+    TextView textViewTo;
+    @BindView(R.id.to)
+    TextView textTo;
+    @BindView(R.id.trip_price)
+    TextView textViewPrice;
+    @BindView(R.id.price)
+    TextView textPrice;
+    @BindView(R.id.trip_seats)
+    TextView textViewSeats;
+    @BindView(R.id.seats)
+    TextView textSeats;
+    @BindView(R.id.trip_car_model)
+    TextView textViewCarModel;
+    @BindView(R.id.car_model)
+    TextView textCarModel;
+    @BindView(R.id.trip_drivers_name)
+    TextView textViewDriversName;
+    @BindView(R.id.drivers_name)
+    TextView textDriversName;
+    @BindView(R.id.trip_view_pager)
+    ViewPager tripImgViewPager;
+    @BindView(R.id.call_to_driver)
+    FloatingActionButton callToDriverButton;
+    @BindView(R.id.worm_dots_indicator)
+    WormDotsIndicator wormDotsIndicator;
+    @BindView(R.id.trip_book_button)
+    Button bookingButton;
+    @BindView(R.id.trip_progress)
+    ProgressBar progressBar;
+    private Button buttonDecrement;
+    private TextView textView;
 
     private TripAdapter adapter;
     private String tripDriversNumber;
     private Map<String, Object> tripMap = new HashMap<>();
-    private int count = 0;
+    private int mCount;
+
 
     public static void start(
             Context context, String tripDate, String tripTo, String tripFrom,
@@ -133,11 +158,13 @@ public class TripDetailsActivity extends AppCompatActivity {
         tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
         tripMap.put("driversNumber", tripDriversNumber);
         ArrayList<String> img = intent.getStringArrayListExtra(IMG);
-
-        SharedHelper
-                .setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, tripDriversNumber);
-
         adapter.setImageList(img);
+
+        SharedHelper.setShared(TripDetailsActivity.this,
+                SHARED_KEY,
+                DRIVER_NUMBERS,
+                tripDriversNumber);
+
 
         DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailSeats,
                 tripCarModel, tripCarMark, tripDriversName);
@@ -226,31 +253,65 @@ public class TripDetailsActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.custom_dialog_layout, null);
 
+        textView = promptView.findViewById(R.id.dialog_count);
+        Button buttonIncrement = promptView.findViewById(R.id.dialog_plus);
+        buttonDecrement = promptView.findViewById(R.id.dialog_minus);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
-        TextView textView = promptView.findViewById(R.id.dialog_count);
-
-        Button btn_1= (Button)promptView.findViewById(R.id.dialog_minus);
-        btn_1.setOnClickListener(new View.OnClickListener() {
+        alertDialogBuilder.setMessage("выберите количество мест и отравьте водителю");
+        alertDialogBuilder.setPositiveButton("Отправить", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(DialogInterface dialog, int which) {
+
+                new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        ShowToast.me("Успешно отправлено");
+                        tripMap.put("seats", mCount);
+                        App.clientRepository.getTripBookData(tripMap);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }.start();
+
             }
         });
+        alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
 
-
-        Button btn_2 = (Button)promptView.findViewById(R.id.dialog_plus);
-        btn_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        buttonIncrement.setOnClickListener(view1 -> increment());
+        buttonDecrement.setOnClickListener(view12 -> decrement());
 
         alertDialogBuilder
                 .setTitle(tripDriversNumber)
                 .setCancelable(false);
 
-        AlertDialog alertD = alertDialogBuilder.create();
-        alertD.show();
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+    }
+
+    private void increment() {
+        mCount++;
+        textView.setText(String.valueOf(mCount));
+        if (mCount == 1) {
+            buttonDecrement.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void decrement() {
+        mCount--;
+        if (mCount == 1) {
+            textView.setText(String.valueOf(mCount));
+        } else {
+            textView.setText(String.valueOf(mCount));
+            if (mCount == 0) {
+                buttonDecrement.setVisibility(View.INVISIBLE);
+            }
+
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.kubatov.client.ui.trip;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -129,7 +131,12 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 RegistrationActivity.start(Objects.requireNonNull(getContext()));
                 break;
             case R.id.action_exit:
-                signOut();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Программадан чыгуу!")
+                        .setPositiveButton("Ооба", (dialog, which) -> signOut())
+                        .setNegativeButton("Жок", (dialog, which) -> {});
+                builder.create();
+                builder.show();
         }
         return super.onOptionsItemSelected(item);
     }

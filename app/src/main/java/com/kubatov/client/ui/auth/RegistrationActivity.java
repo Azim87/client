@@ -3,10 +3,13 @@ package com.kubatov.client.ui.auth;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -28,10 +31,17 @@ import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.util.DateHelper;
+import com.kubatov.client.util.SharedHelper;
+
+import org.angmarch.views.NiceSpinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -55,6 +65,7 @@ public class RegistrationActivity extends AppCompatActivity
     private String gender;
     private String profileImageUri;
     private StorageReference mStorageReference;
+    private SharedPreferences.Editor sharedPref;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
@@ -62,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity
     @BindView(R.id.radio_sex)
     RadioGroup radioGroup;
     @BindView(R.id.edit_text_age)
-    EditText editTextAge;
+    NiceSpinner ageSpinner;
     @BindView(R.id.edit_text_name)
     EditText editTextName;
     @BindView(R.id.edit_text_family_name)
@@ -84,6 +95,30 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
         clientImageView.setOnClickListener(this);
         saveClientInfoButton.setOnClickListener(this);
+
+        SharedPreferences prefs = getSharedPreferences("clients", MODE_PRIVATE);
+        String age = prefs.getString("age", null);
+        String name = prefs.getString("name", null);
+        String familyName = prefs.getString("familyName", null);
+        String profile = prefs.getString("profile", null);
+
+        Glide.with(this)
+                .load(profile)
+                .centerCrop()
+                .into(clientImageView);
+        ageSpinner.setText(age);
+        editTextName.setText(name);
+        editTextFamilyName.setText(familyName);
+        initSpinner();
+    }
+
+    private void initSpinner() {
+        List<String> dataset = new LinkedList<>(Arrays.asList("год рождения"));
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = currentYear; i >= 1900; i--) {
+            dataset.add(Integer.toString(i));
+        }
+        ageSpinner.attachDataSource(dataset);
     }
 
     @Override
@@ -93,8 +128,24 @@ public class RegistrationActivity extends AppCompatActivity
                 getClientImageFromStorage();
                 break;
             case R.id.button_save_client:
-                saveToFireBase();
+                new CountDownTimer(5000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        saveClientInfoButton.setClickable(false);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        initFireBase();
+                        saveToFireBase();
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                        finish();
+                    }
+                }.start();
+                mProgressBar.setVisibility(View.INVISIBLE);
                 break;
+
         }
     }
 
@@ -105,24 +156,28 @@ public class RegistrationActivity extends AppCompatActivity
     }
 
     private void saveToFireBase() {
-        if (editTextAge.getText().toString().equals("") || clientImageView.getDrawable() == null) {
+        if (clientImageView.getDrawable() == null) {
             clientImageView.setTag("empty");
-            editTextAge.setError("вы не ввели возраст");
         } else if (editTextName.getText().toString().equals("")) {
             editTextName.setError("вы не ввели имя");
-            return;
         } else {
-            initFireBase();
-            MainActivity.start(this);
+            MainActivity.start(RegistrationActivity.this);
             finish();
         }
     }
 
     private void initFireBase() {
         getClientSex();
-        String age = editTextAge.getText().toString().trim();
+        String age = ageSpinner.getSelectedItem().toString().trim();
         String name = editTextName.getText().toString().trim();
         String familyName = editTextFamilyName.getText().toString().trim();
+
+        sharedPref = getSharedPreferences("clients", MODE_PRIVATE).edit();
+        sharedPref.putString("age", age);
+        sharedPref.putString("name", name);
+        sharedPref.putString("familyName", familyName);
+        sharedPref.putString("profile", clientImageUri.toString());
+        sharedPref.apply();
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
@@ -137,7 +192,8 @@ public class RegistrationActivity extends AppCompatActivity
                 .collection(CLIENTS)
                 .document(phoneNumber)
                 .set(clients)
-                .addOnSuccessListener(documentReference -> {})
+                .addOnSuccessListener(documentReference -> {
+                })
                 .addOnFailureListener(e -> {
                 });
     }

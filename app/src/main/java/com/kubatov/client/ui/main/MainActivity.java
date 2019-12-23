@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         setUpBottomNavigation();
     }
 
-
     @SuppressLint("ResourceType")
     private void setUpBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {

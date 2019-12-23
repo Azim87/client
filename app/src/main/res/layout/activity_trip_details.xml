@@ -26,28 +26,28 @@
 
     <!--region Trip Views-->
 
-        <TextView
-            android:id="@+id/text_view_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/trip_view_pager"
-            android:background="@color/bottomNavigationBackground"
-            android:padding="11dp"
-            android:text="Написать водителю"
-            android:textAlignment="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            android:textStyle="bold|italic" />
+    <TextView
+        android:id="@+id/text_view_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_view_pager"
+        android:background="@color/bottomNavigationBackground"
+        android:padding="11dp"
+        android:text="Написать водителю"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:textStyle="bold|italic" />
 
-        <ImageView
-            android:id="@+id/chat_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_alignParentRight="true"
-            android:padding="12dp"
-            android:layout_below="@+id/trip_view_pager"
-            android:src="@drawable/ic_email_black_24dp" />
+    <ImageView
+        android:id="@+id/chat_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trip_view_pager"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_email_black_24dp" />
 
     <TextView
         android:id="@+id/trip_date"
@@ -175,6 +175,13 @@
         android:layout_marginEnd="12dp"
         android:padding="6dp"
         android:text="имя" />
+
+    <ProgressBar
+        android:id="@+id/trip_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/trip_book_button"
