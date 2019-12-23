@@ -23,6 +23,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 
@@ -39,7 +40,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private String mVerification;
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
     private String code;
-    private  FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     @BindView(R.id.edit_text_phone_number)
     EditText mEditTextCode;
@@ -94,9 +95,10 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private void newUserSignIn(final PhoneAuthCredential authCredential) {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        RegistrationActivity.start(this);
+                    if (task.isSuccessful()) {
+                        RegistrationActivity.start(VerifyCodeActivity.this);
                         finish();
+
                     } else {
                         Toast.makeText(VerifyCodeActivity.this, "Не успешно" + task.getException(), Toast.LENGTH_SHORT).show();
                     }

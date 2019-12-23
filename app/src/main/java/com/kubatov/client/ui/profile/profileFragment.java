@@ -53,13 +53,17 @@ public class profileFragment extends CoreFragment {
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
-                Glide.with(clientsProfileImageView.getContext())
-                        .load(clientUploads.getProfileImage())
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(clientsProfileImageView);
-                clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
-                clientsAge.setText(String.valueOf(clientUploads.getAge()));
-                clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
+                if (clientUploads.getProfileImage() == null) {
+                    clientsProfileImageView.getResources().getDrawable(R.drawable.ic_face_black_24dp);
+                } else {
+                    Glide.with(clientsProfileImageView.getContext())
+                            .load(clientUploads.getProfileImage())
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(clientsProfileImageView);
+                    clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
+                    clientsAge.setText(String.valueOf(clientUploads.getAge()));
+                    clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
+                }
             }
 
             @Override

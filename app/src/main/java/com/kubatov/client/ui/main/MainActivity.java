@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kubatov.client.R;
+import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
 
@@ -38,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
+
     }
+
+
     private void setUpViewPager() {
         SimpleViewPagerAdapter pagerAdapter = new SimpleViewPagerAdapter(getSupportFragmentManager());
         pagerAdapter.setFragment(sendFragment());
@@ -75,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(new profileFragment());
         return fragmentList;
     }
+
+
 
     @Override
     public void onBackPressed() {
