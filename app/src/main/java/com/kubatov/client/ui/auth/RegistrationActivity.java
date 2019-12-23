@@ -68,20 +68,13 @@ public class RegistrationActivity extends AppCompatActivity
     private SharedPreferences.Editor sharedPref;
 
     private Map<String, Object> clients = new HashMap<>();
-    @BindView(R.id.client_profile_image)
-    ImageView clientImageView;
-    @BindView(R.id.radio_sex)
-    RadioGroup radioGroup;
-    @BindView(R.id.edit_text_age)
-    NiceSpinner ageSpinner;
-    @BindView(R.id.edit_text_name)
-    EditText editTextName;
-    @BindView(R.id.edit_text_family_name)
-    EditText editTextFamilyName;
-    @BindView(R.id.button_save_client)
-    Button saveClientInfoButton;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
+    @BindView(R.id.client_profile_image) ImageView clientImageView;
+    @BindView(R.id.radio_sex) RadioGroup radioGroup;
+    @BindView(R.id.edit_text_age) NiceSpinner ageSpinner;
+    @BindView(R.id.edit_text_name) EditText editTextName;
+    @BindView(R.id.edit_text_family_name) EditText editTextFamilyName;
+    @BindView(R.id.button_save_client) Button saveClientInfoButton;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, RegistrationActivity.class));
