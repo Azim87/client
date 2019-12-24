@@ -18,7 +18,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.chat.ChatActivity"/>
         <activity android:name=".ui.tripdetails.TripDetailsActivity" />
-        <activity android:name=".ui.auth.PhoneAuthActivity" />
+        <activity android:name=".ui.auth.PhoneAuthActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".ui.splash.SplashActivity"
             android:theme="@style/ClientSplashScreen">
@@ -27,8 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.VerifyCodeActivity" />
-        <activity android:name=".ui.auth.RegistrationActivity" />
+        <activity android:name=".ui.auth.VerifyCodeActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity android:name=".ui.auth.RegistrationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity android:name=".ui.main.MainActivity" />
     </application>
 

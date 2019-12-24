@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -108,6 +109,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private String tripDriversNumber;
     private Map<String, Object> tripMap = new HashMap<>();
     private int mCount;
+    private  String tripAvailableSeats;
 
 
     public static void start(
@@ -150,8 +152,9 @@ public class TripDetailsActivity extends AppCompatActivity {
         String tripTo = intent.getStringExtra(TRIP_TO);
         String tripFrom = intent.getStringExtra(TRIP_FROM);
         String tripPrice = intent.getStringExtra(TRIP_PRICE);
-        String tripAllSeats = intent.getStringExtra(TRIP_ALL_SEATS);
-        String tripAvailSeats = intent.getStringExtra(TRIP_AVAILABLE_SEATS);
+        tripAvailableSeats = intent.getStringExtra(TRIP_ALL_SEATS);
+        Log.d("ololo", "getDetailedTripInfo: " + tripAvailableSeats);
+        String tripAllSeats = intent.getStringExtra(TRIP_AVAILABLE_SEATS);
         String tripCarModel = intent.getStringExtra(TRIP_CAR_MODEL);
         String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
         String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
@@ -166,12 +169,12 @@ public class TripDetailsActivity extends AppCompatActivity {
                 tripDriversNumber);
 
 
-        DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailSeats,
+        DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailableSeats,
                 tripCarModel, tripCarMark, tripDriversName);
     }
 
     private void DisplayTripDetailsInfo(String tripDate, String tripTo, String tripFrom,
-                                        String tripPrice, String tripSeats, String tripAvailSeats,
+                                        String tripPrice, String tripAllSeats, String tripAvailSeats,
                                         String tripCarModel, String tripCarMark, String tripDriversName) {
 
         textViewDate.setText("День поездки:");
@@ -183,7 +186,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         textViewPrice.setText("цена поездки: ");
         textPrice.setText(tripPrice);
         textViewSeats.setText("свободных мест: ");
-        textSeats.setText(tripSeats + " из " + tripAvailSeats);
+        textSeats.setText(tripAvailSeats + " из " + tripAllSeats);
         textViewCarModel.setText("марка машины: ");
         textCarModel.setText(tripCarMark + " " + tripCarModel);
         textViewDriversName.setText("имя водителья: ");
@@ -259,7 +262,11 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setMessage("выберите количество мест и отравьте водителю");
+        alertDialogBuilder.setMessage("*нужно указать количество мест");
+        alertDialogBuilder.setIcon(R.drawable.ic_send_black_24dp);
+        alertDialogBuilder
+                .setTitle(tripDriversNumber)
+                .setCancelable(false);
         alertDialogBuilder.setPositiveButton("Отправить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -272,10 +279,19 @@ public class TripDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
-                        ShowToast.me("Успешно отправлено");
-                        tripMap.put("seats", mCount);
-                        App.clientRepository.getTripBookData(tripMap);
-                        progressBar.setVisibility(View.INVISIBLE);
+                        int number = Integer.parseInt(tripAvailableSeats);
+                        Log.d("ololo", "onFinish: " + number);
+
+                        if (mCount > number) {
+                            ShowToast.me("свободно только " + number + " мест");
+                            progressBar.setVisibility(View.INVISIBLE);
+                            return;
+                        } else {
+                            tripMap.put("seats", mCount);
+                            App.clientRepository.getTripBookData(tripMap);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            ShowToast.me("вы забронировали " + mCount + " мест");
+                        }
                     }
                 }.start();
 
@@ -285,10 +301,6 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         buttonIncrement.setOnClickListener(view1 -> increment());
         buttonDecrement.setOnClickListener(view12 -> decrement());
-
-        alertDialogBuilder
-                .setTitle(tripDriversNumber)
-                .setCancelable(false);
 
         alertDialogBuilder.create();
         alertDialogBuilder.show();

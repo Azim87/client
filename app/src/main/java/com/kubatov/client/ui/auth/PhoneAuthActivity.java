@@ -39,7 +39,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
     private void getUserPhoneNumber() {
         String phoneNumber = mPhoneEditText.getText().toString().trim();
         if (phoneNumber.isEmpty() || phoneNumber.length() < 13) {
-            mPhoneEditText.setError("Номер должен быть не менее 13ти симфолов");
+            mPhoneEditText.setError("Номер должен содержать не менее 13-ти символов");
             return;
         }
         VerifyCodeActivity.start(this, phoneNumber);
