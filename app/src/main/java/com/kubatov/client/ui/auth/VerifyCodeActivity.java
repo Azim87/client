@@ -96,7 +96,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        RegistrationActivity.start(VerifyCodeActivity.this);
+                        MainActivity.start(this);
                         finish();
 
                     } else {

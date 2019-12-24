@@ -32,6 +32,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
+import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.dialog.Dialog;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
@@ -112,24 +113,24 @@ public class TripDetailsActivity extends AppCompatActivity {
     private  String tripAvailableSeats;
 
 
-    public static void start(
-            Context context, String tripDate, String tripTo, String tripFrom,
-            String tripPrice, String tripAllSeats, String tripAvailSeats, String tripCarModel,
-            String tripCarMark, String tripDriversName, String tripDriversNumber, List<String> imageList) {
-        Intent intent = new Intent(context, TripDetailsActivity.class);
-        intent.putExtra(TRIP_DATE, tripDate);
-        intent.putExtra(TRIP_TO, tripTo);
-        intent.putExtra(TRIP_FROM, tripFrom);
-        intent.putExtra(TRIP_PRICE, tripPrice);
-        intent.putExtra(TRIP_ALL_SEATS, tripAllSeats);
-        intent.putExtra(TRIP_AVAILABLE_SEATS, tripAvailSeats);
-        intent.putExtra(TRIP_CAR_MODEL, tripCarModel);
-        intent.putExtra(TRIP_CAR_MARK, tripCarMark);
-        intent.putExtra(TRIP_DRIVERS_NAME, tripDriversName);
-        intent.putExtra(TRIP_DRIVERS_NUMBER, tripDriversNumber);
-        intent.putStringArrayListExtra(IMG, (ArrayList<String>) imageList);
-        context.startActivity(intent);
-    }
+//    public static void start(
+//            Context context, String tripDate, String tripTo, String tripFrom,
+//            String tripPrice, String tripAllSeats, String tripAvailSeats, String tripCarModel,
+//            String tripCarMark, String tripDriversName, String tripDriversNumber, List<String> imageList) {
+//        Intent intent = new Intent(context, TripDetailsActivity.class);
+//        intent.putExtra(TRIP_DATE, tripDate);
+//        intent.putExtra(TRIP_TO, tripTo);
+//        intent.putExtra(TRIP_FROM, tripFrom);
+//        intent.putExtra(TRIP_PRICE, tripPrice);
+//        intent.putExtra(TRIP_ALL_SEATS, tripAllSeats);
+//        intent.putExtra(TRIP_AVAILABLE_SEATS, tripAvailSeats);
+//        intent.putExtra(TRIP_CAR_MODEL, tripCarModel);
+//        intent.putExtra(TRIP_CAR_MARK, tripCarMark);
+//        intent.putExtra(TRIP_DRIVERS_NAME, tripDriversName);
+//        intent.putExtra(TRIP_DRIVERS_NUMBER, tripDriversNumber);
+//        intent.putStringArrayListExtra(IMG, (ArrayList<String>) imageList);
+//        context.startActivity(intent);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,21 +148,22 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getDetailedTripInfo() {
-        Intent intent = getIntent();
-        String tripDate = intent.getStringExtra(TRIP_DATE);
-        String tripTo = intent.getStringExtra(TRIP_TO);
-        String tripFrom = intent.getStringExtra(TRIP_FROM);
-        String tripPrice = intent.getStringExtra(TRIP_PRICE);
-        tripAvailableSeats = intent.getStringExtra(TRIP_ALL_SEATS);
-        Log.d("ololo", "getDetailedTripInfo: " + tripAvailableSeats);
-        String tripAllSeats = intent.getStringExtra(TRIP_AVAILABLE_SEATS);
-        String tripCarModel = intent.getStringExtra(TRIP_CAR_MODEL);
-        String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
-        String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
-        tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
-        tripMap.put("driversNumber", tripDriversNumber);
-        ArrayList<String> img = intent.getStringArrayListExtra(IMG);
-        adapter.setImageList(img);
+        Trip trip = (Trip) getIntent().getSerializableExtra("trip");
+//        Intent intent = getIntent();
+//        String tripDate = intent.getStringExtra(TRIP_DATE);
+//        String tripTo = intent.getStringExtra(TRIP_TO);
+//        String tripFrom = intent.getStringExtra(TRIP_FROM);
+//        String tripPrice = intent.getStringExtra(TRIP_PRICE);
+//        tripAvailableSeats = intent.getStringExtra(TRIP_ALL_SEATS);
+//        Log.d("ololo", "getDetailedTripInfo: " + tripAvailableSeats);
+//        String tripAllSeats = intent.getStringExtra(TRIP_AVAILABLE_SEATS);
+//        String tripCarModel = intent.getStringExtra(TRIP_CAR_MODEL);
+//        String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
+//        String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
+//        tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
+//        tripMap.put("driversNumber", tripDriversNumber);
+//        ArrayList<String> img = intent.getStringArrayListExtra(IMG);
+        adapter.setImageList(trip.getCarImage());
 
         SharedHelper.setShared(TripDetailsActivity.this,
                 SHARED_KEY,
@@ -287,10 +289,11 @@ public class TripDetailsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.INVISIBLE);
                             return;
                         } else {
-                            tripMap.put("seats", mCount);
+                            tripMap.put("seats", String.valueOf(mCount));
                             App.clientRepository.getTripBookData(tripMap);
                             progressBar.setVisibility(View.INVISIBLE);
                             ShowToast.me("вы забронировали " + mCount + " мест");
+                            mCount = 0;
                         }
                     }
                 }.start();

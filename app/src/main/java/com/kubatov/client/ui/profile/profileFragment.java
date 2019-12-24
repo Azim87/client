@@ -1,12 +1,12 @@
 package com.kubatov.client.ui.profile;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +37,9 @@ public class profileFragment extends CoreFragment {
     TextView clientsAge;
     @BindView(R.id.profile_registration)
     TextView clientsRegistrationDate;
+    @BindView(R.id.image_load_progress)
+    ProgressBar mProfileImgLoad;
+
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +53,7 @@ public class profileFragment extends CoreFragment {
     }
 
     private void getProfileData() {
+        mProfileImgLoad.setVisibility(View.VISIBLE);
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
@@ -60,10 +64,10 @@ public class profileFragment extends CoreFragment {
                             .load(clientUploads.getProfileImage())
                             .apply(RequestOptions.circleCropTransform())
                             .into(clientsProfileImageView);
-                    clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
-                    clientsAge.setText(String.valueOf(clientUploads.getAge()));
-                    clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
                 }
+                clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
+                clientsAge.setText(String.valueOf(clientUploads.getAge()));
+                clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
             }
 
             @Override
@@ -94,9 +98,9 @@ public class profileFragment extends CoreFragment {
                 break;
             case R.id.action_exit:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Программадан чыгуу!")
-                        .setPositiveButton("Ооба", (dialog, which) -> signOut())
-                        .setNegativeButton("Жок", (dialog, which) -> {
+                builder.setMessage("Вы хотите выйти?")
+                        .setPositiveButton("Да", (dialog, which) -> signOut())
+                        .setNegativeButton("Нет", (dialog, which) -> {
                         });
                 builder.create();
                 builder.show();

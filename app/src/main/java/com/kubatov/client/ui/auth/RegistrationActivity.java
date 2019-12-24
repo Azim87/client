@@ -71,6 +71,7 @@ public class RegistrationActivity extends AppCompatActivity
     private String profileImageUri;
     private StorageReference mStorageReference;
     private SharedPreferences.Editor sharedPref;
+    private float rotateRotationAngle = 0f;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)
@@ -229,8 +230,14 @@ public class RegistrationActivity extends AppCompatActivity
 
     private void uploadClientImageToStorage() {
         Bitmap bitmap = null;
+        bitmap = BitmapFactory.decodeFile(profileImageUri);
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), clientImageUri);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -239,6 +246,8 @@ public class RegistrationActivity extends AppCompatActivity
         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
         bitmap.recycle();
         byte[] byteArray = bao.toByteArray();
+
+
         mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
             String number = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();

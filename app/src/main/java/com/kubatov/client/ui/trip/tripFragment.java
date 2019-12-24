@@ -2,6 +2,7 @@ package com.kubatov.client.ui.trip;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -132,9 +133,9 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 break;
             case R.id.action_exit:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Программадан чыгуу!")
-                        .setPositiveButton("Ооба", (dialog, which) -> signOut())
-                        .setNegativeButton("Жок", (dialog, which) -> {});
+                builder.setMessage("Вы хотитие выйти?")
+                        .setPositiveButton("Да", (dialog, which) -> signOut())
+                        .setNegativeButton("Нет", (dialog, which) -> {});
                 builder.create();
                 builder.show();
         }
@@ -148,29 +149,31 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
         }
     }
 
-
-
     //region On Click
     @Override
     public void onTripClick(int position) {
-        String tripDate = mTripList.get(position).getDate();
-        String tripTo = mTripList.get(position).getTo();
-        String tripFrom = mTripList.get(position).getFrom();
-        String tripPrice = mTripList.get(position).getPrice();
-        String tripAllSeats = mTripList.get(position).getSeats();
-        String tripAvailSeats = mTripList.get(position).getCarSeats();
-        String tripCarModel = mTripList.get(position).getCarModel();
-        String tripCarMark = mTripList.get(position).getCarMark();
-        String tripDriversName = mTripList.get(position).getName();
-        String tripDriverNumber = mTripList.get(position).getPhoneNumber();
-        List<String> imageList = new ArrayList<>();
-        imageList.add(mTripList.get(position).getCarImage());
-        imageList.add(mTripList.get(position).getCarImage1());
-        imageList.add(mTripList.get(position).getCarImage2());
+        Intent intent = new Intent(getContext(), TripDetailsActivity.class);
+        intent.putExtra("trip", mTripList.get(position));
+        startActivity(intent);
 
-        TripDetailsActivity.start(getContext(), tripDate, tripTo, tripFrom,
-                tripPrice, tripAllSeats, tripAvailSeats, tripCarModel, tripCarMark,
-                tripDriversName, tripDriverNumber, imageList);
+//        String tripDate = mTripList.get(position).getDate();
+//        String tripTo = mTripList.get(position).getTo();
+//        String tripFrom = mTripList.get(position).getFrom();
+//        String tripPrice = mTripList.get(position).getPrice();
+//        String tripAllSeats = mTripList.get(position).getSeats();
+//        String tripAvailSeats = mTripList.get(position).getCarSeats();
+//        String tripCarModel = mTripList.get(position).getCarModel();
+//        String tripCarMark = mTripList.get(position).getCarMark();
+//        String tripDriversName = mTripList.get(position).getName();
+//        String tripDriverNumber = mTripList.get(position).getPhoneNumber();
+//        List<String> imageList = new ArrayList<>();
+//        imageList.add(mTripList.get(position).getCarImage());
+//        imageList.add(mTripList.get(position).getCarImage1());
+//        imageList.add(mTripList.get(position).getCarImage2());
+//
+//        TripDetailsActivity.start(getContext(), tripDate, tripTo, tripFrom,
+//                tripPrice, tripAllSeats, tripAvailSeats, tripCarModel, tripCarMark,
+//                tripDriversName, tripDriverNumber, imageList);
     }
     //endregion
 }

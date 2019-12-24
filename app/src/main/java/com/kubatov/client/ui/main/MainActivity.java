@@ -4,14 +4,21 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.ui.profile.profileFragment;
@@ -24,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseFirestore db;
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -42,6 +50,31 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setUpViewPager();
 
+        db = FirebaseFirestore.getInstance();
+        db.collection("clients")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(task.getResult().size() > 0) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    if (document.exists()){
+                                        Log.d("ololo", "Room already exists, start the chat");
+
+                                    } else {
+                                        RegistrationActivity.start(MainActivity.this);
+                                    }
+                                }
+                            } else {
+                                Log.d("olol", "room doesn't exist create a new room");
+
+                            }
+                        } else {
+                            Log.d("ololo", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 

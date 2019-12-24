@@ -1,6 +1,8 @@
 package com.kubatov.client.model;
 
-public class Trip {
+import java.io.Serializable;
+
+public class Trip implements Serializable {
     private String date;
     private String from;
     private String price;
