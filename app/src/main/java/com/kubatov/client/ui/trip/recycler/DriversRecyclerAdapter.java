@@ -117,10 +117,10 @@ public class DriversRecyclerAdapter
         }
 
         private void onBind(Trip trip) {
-            mTextTo.setText("To -> " + trip.getTo());
-            mTextFrom.setText("From -> " + trip.getFrom());
-            mTextPrice.setText("Price -> " + trip.getPrice());
-            mTextDate.setText("Date -> " + trip.getDate());
+            mTextTo.setText("Куда -> " + trip.getTo());
+            mTextFrom.setText("Откуда -> " + trip.getFrom());
+            mTextPrice.setText("Цена -> " + trip.getPrice());
+            mTextDate.setText("Дата поездки -> " + trip.getDate());
             Glide.with(App.instance)
                     .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
                     .load(trip.getCarImage())

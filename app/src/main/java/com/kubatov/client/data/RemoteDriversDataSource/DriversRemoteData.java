@@ -37,7 +37,6 @@ public class DriversRemoteData implements IDriversRemoteData {
                         tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
                     }
                 });
-
     }
     //endregion
 
