@@ -33,6 +33,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.model.Trip;
+import com.kubatov.client.model.TripImage;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.dialog.Dialog;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
@@ -53,17 +54,7 @@ import static com.kubatov.client.util.Constants.DRIVER_NUMBERS;
 import static com.kubatov.client.util.Constants.SHARED_KEY;
 
 public class TripDetailsActivity extends AppCompatActivity {
-    private final static String IMG = "img";
-    private final static String TRIP_DATE = "date";
-    private final static String TRIP_TO = "to";
-    private final static String TRIP_FROM = "from";
-    private final static String TRIP_PRICE = "price";
-    private final static String TRIP_ALL_SEATS = "seats";
-    private final static String TRIP_AVAILABLE_SEATS = "all_seats";
-    private final static String TRIP_CAR_MODEL = "model";
-    private final static String TRIP_CAR_MARK = "mark";
-    private final static String TRIP_DRIVERS_NAME = "name";
-    public final static String TRIP_DRIVERS_NUMBER = "number";
+    public final static String TRIP = "trip";
 
     @BindView(R.id.trip_date)
     TextView textViewDate;
@@ -107,30 +98,10 @@ public class TripDetailsActivity extends AppCompatActivity {
     private TextView textView;
 
     private TripAdapter adapter;
-    private String tripDriversNumber;
     private Map<String, Object> tripMap = new HashMap<>();
     private int mCount;
-    private  String tripAvailableSeats;
-
-
-//    public static void start(
-//            Context context, String tripDate, String tripTo, String tripFrom,
-//            String tripPrice, String tripAllSeats, String tripAvailSeats, String tripCarModel,
-//            String tripCarMark, String tripDriversName, String tripDriversNumber, List<String> imageList) {
-//        Intent intent = new Intent(context, TripDetailsActivity.class);
-//        intent.putExtra(TRIP_DATE, tripDate);
-//        intent.putExtra(TRIP_TO, tripTo);
-//        intent.putExtra(TRIP_FROM, tripFrom);
-//        intent.putExtra(TRIP_PRICE, tripPrice);
-//        intent.putExtra(TRIP_ALL_SEATS, tripAllSeats);
-//        intent.putExtra(TRIP_AVAILABLE_SEATS, tripAvailSeats);
-//        intent.putExtra(TRIP_CAR_MODEL, tripCarModel);
-//        intent.putExtra(TRIP_CAR_MARK, tripCarMark);
-//        intent.putExtra(TRIP_DRIVERS_NAME, tripDriversName);
-//        intent.putExtra(TRIP_DRIVERS_NUMBER, tripDriversNumber);
-//        intent.putStringArrayListExtra(IMG, (ArrayList<String>) imageList);
-//        context.startActivity(intent);
-//    }
+    private String tripDriversNumber;
+    private String tripAvailableSeats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,51 +119,36 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getDetailedTripInfo() {
-        Trip trip = (Trip) getIntent().getSerializableExtra("trip");
-//        Intent intent = getIntent();
-//        String tripDate = intent.getStringExtra(TRIP_DATE);
-//        String tripTo = intent.getStringExtra(TRIP_TO);
-//        String tripFrom = intent.getStringExtra(TRIP_FROM);
-//        String tripPrice = intent.getStringExtra(TRIP_PRICE);
-//        tripAvailableSeats = intent.getStringExtra(TRIP_ALL_SEATS);
-//        Log.d("ololo", "getDetailedTripInfo: " + tripAvailableSeats);
-//        String tripAllSeats = intent.getStringExtra(TRIP_AVAILABLE_SEATS);
-//        String tripCarModel = intent.getStringExtra(TRIP_CAR_MODEL);
-//        String tripCarMark = intent.getStringExtra(TRIP_CAR_MARK);
-//        String tripDriversName = intent.getStringExtra(TRIP_DRIVERS_NAME);
-//        tripDriversNumber = intent.getStringExtra(TRIP_DRIVERS_NUMBER);
-//        tripMap.put("driversNumber", tripDriversNumber);
-//        ArrayList<String> img = intent.getStringArrayListExtra(IMG);
-        adapter.setImageList(trip.getCarImage());
+        Trip trip = (Trip) getIntent().getSerializableExtra(TRIP);
+        tripAvailableSeats = trip.getSeats();
+        tripDriversNumber = trip.getPhoneNumber();
+
+        textViewDate.setText("День поездки:");
+        textDate.setText(trip.getDate());
+        textViewFrom.setText("из города -> ");
+        textFrom.setText(trip.getFrom());
+        textViewTo.setText("в город ->");
+        textTo.setText(trip.getTo());
+        textViewPrice.setText("цена поездки: ");
+        textPrice.setText(trip.getPrice());
+        textViewSeats.setText("свободных мест: ");
+        textSeats.setText(trip.getSeats() + " из " + trip.getCarSeats());
+        textViewCarModel.setText("марка машины: ");
+        textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
+        textViewDriversName.setText("имя водителья: ");
+        textDriversName.setText(trip.getName());
+
+        tripMap.put("driversNumber", trip.getPhoneNumber());
+        ArrayList<String> images = new ArrayList<>();
+        images.add(trip.getCarImage());
+        images.add(trip.getCarImage1());
+        images.add(trip.getCarImage2());
+        adapter.setImageList(images);
 
         SharedHelper.setShared(TripDetailsActivity.this,
                 SHARED_KEY,
                 DRIVER_NUMBERS,
-                tripDriversNumber);
-
-
-        DisplayTripDetailsInfo(tripDate, tripTo, tripFrom, tripPrice, tripAllSeats, tripAvailableSeats,
-                tripCarModel, tripCarMark, tripDriversName);
-    }
-
-    private void DisplayTripDetailsInfo(String tripDate, String tripTo, String tripFrom,
-                                        String tripPrice, String tripAllSeats, String tripAvailSeats,
-                                        String tripCarModel, String tripCarMark, String tripDriversName) {
-
-        textViewDate.setText("День поездки:");
-        textDate.setText(tripDate);
-        textViewFrom.setText("из города -> ");
-        textFrom.setText(tripFrom);
-        textViewTo.setText("в город ->");
-        textTo.setText(tripTo);
-        textViewPrice.setText("цена поездки: ");
-        textPrice.setText(tripPrice);
-        textViewSeats.setText("свободных мест: ");
-        textSeats.setText(tripAvailSeats + " из " + tripAllSeats);
-        textViewCarModel.setText("марка машины: ");
-        textCarModel.setText(tripCarMark + " " + tripCarModel);
-        textViewDriversName.setText("имя водителья: ");
-        textDriversName.setText(tripDriversName);
+                trip.getPhoneNumber());
     }
 
     @SuppressLint("MissingPermission")
@@ -282,10 +238,8 @@ public class TripDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         int number = Integer.parseInt(tripAvailableSeats);
-                        Log.d("ololo", "onFinish: " + number);
-
                         if (mCount > number) {
-                            ShowToast.me("свободно только " + number + " мест");
+                            ShowToast.me("свободных мест " + number);
                             progressBar.setVisibility(View.INVISIBLE);
                             return;
                         } else {
@@ -297,7 +251,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }.start();
-
             }
         });
         alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
@@ -326,7 +279,6 @@ public class TripDetailsActivity extends AppCompatActivity {
             if (mCount == 0) {
                 buttonDecrement.setVisibility(View.INVISIBLE);
             }
-
         }
     }
 }

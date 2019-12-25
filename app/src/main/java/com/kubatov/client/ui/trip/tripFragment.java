@@ -1,10 +1,7 @@
 package com.kubatov.client.ui.trip;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,15 +10,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ServerValue;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.core.CoreFragment;
@@ -41,6 +35,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.kubatov.client.ui.tripdetails.TripDetailsActivity.TRIP;
+
 public class tripFragment extends CoreFragment implements OnTripItemClickListener {
     private DriversRecyclerAdapter adapter;
     private List<Trip> mTripList;
@@ -51,15 +47,10 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_one;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
     }
 
     @Override
@@ -135,7 +126,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Вы хотитие выйти?")
                         .setPositiveButton("Да", (dialog, which) -> signOut())
-                        .setNegativeButton("Нет", (dialog, which) -> {});
+                        .setNegativeButton("Нет", (dialog, which) -> {
+                        });
                 builder.create();
                 builder.show();
         }
@@ -153,27 +145,8 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     @Override
     public void onTripClick(int position) {
         Intent intent = new Intent(getContext(), TripDetailsActivity.class);
-        intent.putExtra("trip", mTripList.get(position));
+        intent.putExtra(TRIP, mTripList.get(position));
         startActivity(intent);
-
-//        String tripDate = mTripList.get(position).getDate();
-//        String tripTo = mTripList.get(position).getTo();
-//        String tripFrom = mTripList.get(position).getFrom();
-//        String tripPrice = mTripList.get(position).getPrice();
-//        String tripAllSeats = mTripList.get(position).getSeats();
-//        String tripAvailSeats = mTripList.get(position).getCarSeats();
-//        String tripCarModel = mTripList.get(position).getCarModel();
-//        String tripCarMark = mTripList.get(position).getCarMark();
-//        String tripDriversName = mTripList.get(position).getName();
-//        String tripDriverNumber = mTripList.get(position).getPhoneNumber();
-//        List<String> imageList = new ArrayList<>();
-//        imageList.add(mTripList.get(position).getCarImage());
-//        imageList.add(mTripList.get(position).getCarImage1());
-//        imageList.add(mTripList.get(position).getCarImage2());
-//
-//        TripDetailsActivity.start(getContext(), tripDate, tripTo, tripFrom,
-//                tripPrice, tripAllSeats, tripAvailSeats, tripCarModel, tripCarMark,
-//                tripDriversName, tripDriverNumber, imageList);
     }
     //endregion
 }

@@ -11,6 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.kubatov.client.R;
+import com.kubatov.client.model.TripImage;
 
 import java.util.ArrayList;
 
