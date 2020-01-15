@@ -41,6 +41,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken mResendingToken;
     private String code;
     private FirebaseFirestore db;
+    private String phoneNumber;
 
     @BindView(R.id.edit_text_phone_number)
     EditText mEditTextCode;
@@ -67,7 +68,7 @@ public class VerifyCodeActivity extends AppCompatActivity {
     }
 
     private void getPhoneNumber() {
-        String phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
+        phoneNumber = getIntent().getStringExtra(PHONE_NUMBER);
         sendVerificationCode(phoneNumber);
     }
 
@@ -94,12 +95,11 @@ public class VerifyCodeActivity extends AppCompatActivity {
     }
 
     private void newUserSignIn(final PhoneAuthCredential authCredential) {
-        String clientNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         FirebaseAuth.getInstance().signInWithCredential(authCredential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         db.collection(CLIENT)
-                                .document(clientNumber)
+                                .document(phoneNumber)
                                 .addSnapshotListener((documentSnapshot, e) -> {
                                     if (documentSnapshot != null &&
                                             documentSnapshot.exists() &&

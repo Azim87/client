@@ -1,6 +1,5 @@
 package com.kubatov.client.ui.chat;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +7,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,14 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.firestore.ServerTimestamp;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.ui.chat.model.Chat;
-import com.kubatov.client.util.Constants;
-import com.kubatov.client.util.DateHelper;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 
@@ -55,14 +51,10 @@ public class ChatActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
     private String driverNumber;
     private String mNumber;
-    private String chatTitle;
 
-    @BindView(R.id.chat_recycler_view)
-    RecyclerView mChatRecyclerView;
-    @BindView(R.id.edit_text_chat)
-    EditText mEditMessage;
-    @BindView(R.id.send_message)
-    ImageView mMessageSend;
+    @BindView(R.id.chat_recycler_view) RecyclerView mChatRecyclerView;
+    @BindView(R.id.edit_text_chat) EditText mEditMessage;
+    @BindView(R.id.send_message)ImageView mMessageSend;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, ChatActivity.class));
@@ -77,9 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initRecycler();
         getChatMessage();
-        setTitle(chatTitle);
         driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
-
     }
 
     private void initRecycler() {
@@ -87,7 +77,6 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         mChatRecyclerView.setLayoutManager(linearLayoutManager);
         mChatRecyclerView.setAdapter(mAdapter);
-
         getMessage();
     }
 
@@ -100,7 +89,6 @@ public class ChatActivity extends AppCompatActivity {
                     if (chat.getMessageFrom().equals(mNumber) || chat.getMessageTo().equals(mNumber)) {
                         if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
-                            chatTitle = chat.getMessageFrom();
                             getChatNotification(chat.getMessage(), chat.getMessageFrom());
                         }
                         mChatRecyclerView.scrollToPosition(nChat.size() - 1);
@@ -119,22 +107,22 @@ public class ChatActivity extends AppCompatActivity {
     private void getChatNotification(String message, String messageFrom) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_launcher)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(ChatActivity.this, CHANNEL_ID);
+            notification.setSmallIcon(R.drawable.ic_email_black_24dp)
                     .setContentTitle(messageFrom)
-                    .setContentText(message)
                     .setSound(soundUri)
                     .setAutoCancel(true)
-                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setVibrate(new long[] { 100, 100, 100, 100, 100})
                     .setContentIntent(pendingIntent)
-                    .build();
-            notificationManager.notify(1, notification);
+                    .setContentText(message);
+
+            notificationManager = NotificationManagerCompat.from(ChatActivity.this);
+            notificationManager.notify(0, notification.build());
         }
     }
 
@@ -145,7 +133,6 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             mMessageSend.setVisibility(View.VISIBLE);
         }
-
         mEditMessage.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -159,9 +146,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         /*GET DRIVERS NUMBERS FROM TRIP DETAILS ACTIVITY*/
-
         setMessageToChat(message, driverNumber);
-
     }
 
     private void setMessageToChat(String message, String number) {

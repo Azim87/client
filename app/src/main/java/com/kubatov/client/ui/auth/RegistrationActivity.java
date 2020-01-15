@@ -7,11 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -35,11 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.util.DateHelper;
-import com.kubatov.client.util.SharedHelper;
-import com.kubatov.client.util.ShowToast;
-
 import org.angmarch.views.NiceSpinner;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -74,20 +68,13 @@ public class RegistrationActivity extends AppCompatActivity
     private float rotateRotationAngle = 0f;
 
     private Map<String, Object> clients = new HashMap<>();
-    @BindView(R.id.client_profile_image)
-    ImageView clientImageView;
-    @BindView(R.id.radio_sex)
-    RadioGroup radioGroup;
-    @BindView(R.id.edit_text_age)
-    NiceSpinner ageSpinner;
-    @BindView(R.id.edit_text_name)
-    EditText editTextName;
-    @BindView(R.id.edit_text_family_name)
-    EditText editTextFamilyName;
-    @BindView(R.id.button_save_client)
-    Button saveClientInfoButton;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
+    @BindView(R.id.client_profile_image)ImageView clientImageView;
+    @BindView(R.id.radio_sex) RadioGroup radioGroup;
+    @BindView(R.id.edit_text_age) NiceSpinner ageSpinner;
+    @BindView(R.id.edit_text_name) EditText editTextName;
+    @BindView(R.id.edit_text_family_name) EditText editTextFamilyName;
+    @BindView(R.id.button_save_client) Button saveClientInfoButton;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, RegistrationActivity.class);

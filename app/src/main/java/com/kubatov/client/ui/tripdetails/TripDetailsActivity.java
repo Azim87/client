@@ -2,10 +2,13 @@ package com.kubatov.client.ui.tripdetails;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -21,6 +24,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,6 +41,7 @@ import com.kubatov.client.model.Trip;
 import com.kubatov.client.model.TripImage;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.dialog.Dialog;
+import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
