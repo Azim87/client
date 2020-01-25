@@ -115,8 +115,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
             @Override
             public void onSuccess(BookTrip bookList) {
-                Log.e("ololo", tripDriversNumber+"/"+bookList.getDriversNumber());
-               if (bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
+               if (bookList!= null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
                    bookingButton.setEnabled(false);
                }
             }
@@ -250,7 +249,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "df", "fdf");
+                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "Котоков Коток");
                     int number = Integer.parseInt(tripAvailableSeats);
                     Log.d("ololo", "onFinish: " + number);
 

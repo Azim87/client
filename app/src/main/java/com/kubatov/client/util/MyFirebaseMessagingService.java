@@ -2,6 +2,7 @@ package com.kubatov.client.util;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
@@ -35,18 +36,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Автобекет")
-                    .setContentText(messageBody)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID);
+            notification.setSmallIcon(R.drawable.ic_email_black_24dp)
+                    .setContentTitle("")
                     .setAutoCancel(true)
-                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setVibrate(new long[] { 100, 100, 100, 100, 100})
                     .setContentIntent(pendingIntent)
-                    .build();
-            notificationManager.notify(1, notification);
+                    .setContentText(messageBody);
+
+            notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(0, notification.build());
         }
         /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

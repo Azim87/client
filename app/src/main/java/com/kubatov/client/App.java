@@ -26,7 +26,7 @@ public class App extends Application {
     }
 
     private void createNotificationChannel() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             NotificationChannel mChannel = new NotificationChannel(
                     CHANNEL_ID,
                     NAME,
