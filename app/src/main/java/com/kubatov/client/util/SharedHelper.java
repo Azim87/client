@@ -1,6 +1,5 @@
 package com.kubatov.client.util;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -32,5 +31,10 @@ public class SharedHelper {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("booleanKey", isFirstTime);
         editor.apply();
+    }
+
+    public static boolean getSavedState(Context context, String prefKey, boolean isFirstTime) {
+        SharedPreferences preferences = context.getSharedPreferences(prefKey, MODE_PRIVATE);
+        return preferences.getBoolean(prefKey, isFirstTime);
     }
 }

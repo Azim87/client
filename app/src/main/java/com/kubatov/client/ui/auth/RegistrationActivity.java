@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -33,8 +34,11 @@ import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.util.DateHelper;
+
 import org.angmarch.views.NiceSpinner;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -65,7 +69,6 @@ public class RegistrationActivity extends AppCompatActivity
     private String profileImageUri;
     private StorageReference mStorageReference;
     private SharedPreferences.Editor sharedPref;
-    private float rotateRotationAngle = 0f;
 
     private Map<String, Object> clients = new HashMap<>();
     @BindView(R.id.client_profile_image)ImageView clientImageView;
@@ -90,15 +93,18 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
         clientImageView.setOnClickListener(this);
         saveClientInfoButton.setOnClickListener(this);
+        initSpinner();
+        getDataFromShared();
+    }
 
-        SharedPreferences prefs = getSharedPreferences("clients", MODE_PRIVATE);
-        String age = prefs.getString("age", null);
-        String name = prefs.getString("name", null);
-        String familyName = prefs.getString("familyName", null);
+    private void getDataFromShared(){
+        SharedPreferences prefs = getSharedPreferences(CLIENTS, MODE_PRIVATE);
+        String age = prefs.getString(AGE, null);
+        String name = prefs.getString(NAME, null);
+        String familyName = prefs.getString(FAMILY_NAME, null);
         ageSpinner.setText(age);
         editTextName.setText(name);
         editTextFamilyName.setText(familyName);
-        initSpinner();
     }
 
     private void initSpinner() {
@@ -157,12 +163,10 @@ public class RegistrationActivity extends AppCompatActivity
         String age = ageSpinner.getSelectedItem().toString().trim();
         String name = editTextName.getText().toString().trim();
         String familyName = editTextFamilyName.getText().toString().trim();
-        sharedPref = getSharedPreferences("clients", MODE_PRIVATE).edit();
-        sharedPref.putString("age", age);
-        sharedPref.putString("name", name);
-        sharedPref.putString("familyName", familyName);
-        sharedPref.apply();
-
+        saverToShared(
+                age,
+                name,
+                familyName);
         clients.put(AGE, age);
         clients.put(NAME, name);
         clients.put(GENDER, gender);
@@ -182,6 +186,14 @@ public class RegistrationActivity extends AppCompatActivity
                 });
     }
 
+    private void saverToShared(String age, String name, String familyName){
+        sharedPref = getSharedPreferences(CLIENTS, MODE_PRIVATE).edit();
+        sharedPref.putString(AGE, age);
+        sharedPref.putString(NAME, name);
+        sharedPref.putString(FAMILY_NAME, familyName);
+        sharedPref.apply();
+    }
+
     private void getClientImageFromStorage() {
         Intent getImageIntent = new Intent();
         getImageIntent.setType(IMAGE_TYPE);
@@ -199,7 +211,7 @@ public class RegistrationActivity extends AppCompatActivity
                     .load(clientImageUri)
                     .centerCrop()
                     .into(clientImageView);
-            uploadClientImageToStorage();
+                compressImageToSaveDataBase();
         }
     }
 
@@ -215,26 +227,24 @@ public class RegistrationActivity extends AppCompatActivity
         return typeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadClientImageToStorage() {
-        Bitmap bitmap = null;
+    private void compressImageToSaveDataBase() {
+        Bitmap bitmap;
         bitmap = BitmapFactory.decodeFile(profileImageUri);
 
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), clientImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), clientImageUri);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
+                bitmap.recycle();
+                byte[] byteArray = bao.toByteArray();
+                uploadClientImageToStorage(byteArray);
+    }
 
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, bao);
-        bitmap.recycle();
-        byte[] byteArray = bao.toByteArray();
-
-
+    private void uploadClientImageToStorage(byte[] byteArray) {
         mStorageReference = FirebaseStorage.getInstance().getReference(LOCATION);
         if (clientImageUri != null) {
             String number = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();

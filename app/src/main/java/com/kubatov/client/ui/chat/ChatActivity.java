@@ -19,11 +19,13 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.ui.chat.model.Chat;
+import com.kubatov.client.util.FirebaseNotificationMessageSender;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 
@@ -67,6 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         mNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         mAdapter = new ChatAdapter();
         ButterKnife.bind(this);
+        new FirebaseNotificationMessageSender(Volley.newRequestQueue(this));
         initRecycler();
         getChatMessage();
         driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
@@ -89,7 +92,6 @@ public class ChatActivity extends AppCompatActivity {
                     if (chat.getMessageFrom().equals(mNumber) || chat.getMessageTo().equals(mNumber)) {
                         if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
-                            getChatNotification(chat.getMessage(), chat.getMessageFrom());
                         }
                         mChatRecyclerView.scrollToPosition(nChat.size() - 1);
                     }
@@ -102,28 +104,6 @@ public class ChatActivity extends AppCompatActivity {
                 ShowToast.me(e.getMessage());
             }
         });
-    }
-
-    private void getChatNotification(String message, String messageFrom) {
-        Intent intent = new Intent(this, ChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(ChatActivity.this, CHANNEL_ID);
-            notification.setSmallIcon(R.drawable.ic_email_black_24dp)
-                    .setContentTitle(messageFrom)
-                    .setSound(soundUri)
-                    .setAutoCancel(true)
-                    .setVibrate(new long[] { 100, 100, 100, 100, 100})
-                    .setContentIntent(pendingIntent)
-                    .setContentText(message);
-
-            notificationManager = NotificationManagerCompat.from(ChatActivity.this);
-            notificationManager.notify(0, notification.build());
-        }
     }
 
     private void getMessage() {
@@ -165,5 +145,6 @@ public class ChatActivity extends AppCompatActivity {
             mEditMessage.getText().clear();
         }
         getChatMessage();
+        FirebaseNotificationMessageSender.sendMessage(driverNumber, "кеттикпи?", "новый клиент");
     }
 }

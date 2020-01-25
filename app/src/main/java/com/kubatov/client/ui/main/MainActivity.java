@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.profile.profileFragment;
 import com.kubatov.client.ui.trip.tripFragment;
@@ -38,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Автобекет");
         ButterKnife.bind(this);
         setUpViewPager();
+        subscribeToFirebaseMessaging();
+    }
+
+    private void subscribeToFirebaseMessaging(){
+        FirebaseMessaging.getInstance().subscribeToTopic("+996555006191".replace("+", ""));
     }
 
     private void setUpViewPager() {

@@ -49,25 +49,30 @@ public class profileFragment extends CoreFragment {
     @Override
     protected void setUpView(View view) {
         ButterKnife.bind(this, view);
+        mProfileImgLoad.setVisibility(View.VISIBLE);
         getProfileData();
     }
 
     private void getProfileData() {
-        mProfileImgLoad.setVisibility(View.VISIBLE);
         App.clientRepository.getClientInfo(new IClientRepository.clientCallback() {
             @Override
             public void onSuccess(ClientUpload clientUploads) {
+                mProfileImgLoad.setVisibility(View.INVISIBLE);
                 if (clientUploads.getProfileImage() == null) {
-                    clientsProfileImageView.getResources().getDrawable(R.drawable.ic_face_black_24dp);
+                    Glide.with(clientsProfileImageView.getContext())
+                            .load(R.drawable.ic_face_black_24dp)
+                            .centerCrop()
+                            .into(clientsProfileImageView);
                 } else {
                     Glide.with(clientsProfileImageView.getContext())
                             .load(clientUploads.getProfileImage())
+                            .centerCrop()
                             .apply(RequestOptions.circleCropTransform())
                             .into(clientsProfileImageView);
+                    clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
+                    clientsAge.setText(String.valueOf(clientUploads.getAge()));
+                    clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
                 }
-                clientsName.setText(clientUploads.getName() + " " + clientUploads.getFamilyName());
-                clientsAge.setText(String.valueOf(clientUploads.getAge()));
-                clientsRegistrationDate.setText(clientUploads.getRegistrationTime());
             }
 
             @Override

@@ -2,32 +2,28 @@ package com.kubatov.client.ui.tripdetails;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -38,18 +34,17 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.model.Trip;
-import com.kubatov.client.model.TripImage;
 import com.kubatov.client.ui.chat.ChatActivity;
-import com.kubatov.client.ui.dialog.Dialog;
-import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
+import com.kubatov.client.util.FirebaseNotificationMessageSender;
 import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -108,12 +103,15 @@ public class TripDetailsActivity extends AppCompatActivity {
     private int mCount;
     private String tripDriversNumber;
     private String tripAvailableSeats;
+    private RequestQueue mRequestQueue;
+    private boolean isClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
         ButterKnife.bind(this);
+        new FirebaseNotificationMessageSender(Volley.newRequestQueue(this));
         adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
@@ -231,33 +229,32 @@ public class TripDetailsActivity extends AppCompatActivity {
         alertDialogBuilder
                 .setTitle(tripDriversNumber)
                 .setCancelable(false);
-        alertDialogBuilder.setPositiveButton("Отправить", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialogBuilder.setPositiveButton("Отправить", (dialog, which) -> {
 
-                new CountDownTimer(2000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
+            new CountDownTimer(2000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
 
-                    @Override
-                    public void onFinish() {
-                        int number = Integer.parseInt(tripAvailableSeats);
-                        if (mCount > number) {
-                            ShowToast.me("свободных мест " + number);
-                            progressBar.setVisibility(View.INVISIBLE);
-                            return;
-                        } else {
-                            tripMap.put("seats", String.valueOf(mCount));
-                            App.clientRepository.getTripBookData(tripMap);
-                            progressBar.setVisibility(View.INVISIBLE);
-                            ShowToast.me("вы забронировали " + mCount + " мест");
-                            mCount = 0;
-                        }
+                @Override
+                public void onFinish() {
+                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "df", "fdf");
+                    int number = Integer.parseInt(tripAvailableSeats);
+                    if (mCount > number) {
+                        ShowToast.me("свободных мест " + number);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        return;
+                    } else {
+                        tripMap.put("seats", String.valueOf(mCount));
+                        App.clientRepository.getTripBookData(tripMap);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        ShowToast.me("вы забронировали " + mCount + " местo");
+                        mCount = 0;
+                        bookingButton.setEnabled(false);
                     }
-                }.start();
-            }
+                }
+            }.start();
         });
         alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
 
