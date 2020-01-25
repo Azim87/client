@@ -1,6 +1,7 @@
 package com.kubatov.client.data.repository;
 
 
+import com.kubatov.client.model.BookTrip;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.model.Chat;
@@ -20,6 +21,8 @@ public interface IClientRepository {
 
     void getTripBookData(Map<String, Object> tripMap);
 
+    void getTripBookData(onBookedCallback bookedCallback);
+
     interface onClientCallback {
         void onSuccess(List<Trip> tripList);
 
@@ -37,4 +40,10 @@ public interface IClientRepository {
 
         void onFailure(Exception e);
     }
+
+    interface onBookedCallback {
+        void onSuccess(BookTrip bookList);
+
+        void onFailure(Exception e);
+    };
 }

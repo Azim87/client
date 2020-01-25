@@ -1,13 +1,22 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.data.repository.IClientRepository;
+import com.kubatov.client.model.BookTrip;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.model.Chat;
@@ -18,6 +27,7 @@ import java.util.Map;
 
 public class DriversRemoteData implements IDriversRemoteData {
     private final static String TRIP = "trip";
+    private final static String BOOK = "book";
     private final static String CHAT = "chat";
     private final static String CLIENT = "clients";
     private final static String CHAT_TIME = "chatTime";
@@ -85,11 +95,11 @@ public class DriversRemoteData implements IDriversRemoteData {
 
     //region Book trip
     @Override
-    public void getTripBookData(Map<String, Object> tripBook) {
+    public void setTripBookData(Map<String, Object> tripBook) {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database
-                .collection("book")
+                .collection(BOOK)
                 .document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
                 .set(tripBook)
                 .addOnSuccessListener(documentReference -> {
@@ -97,4 +107,20 @@ public class DriversRemoteData implements IDriversRemoteData {
         });
     }
     //endregion
+
+
+    @Override
+    public void getBookedTrip(IClientRepository.onBookedCallback bookedCallback) {
+        FirebaseFirestore bookedTrip = FirebaseFirestore.getInstance();
+        bookedTrip
+                .collection(BOOK).document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        BookTrip bookTrips = documentSnapshot.toObject(BookTrip.class);
+                        bookedCallback.onSuccess(bookTrips);
+                        Log.d("-------------", "onEvent: " + bookedTrip);
+                    }
+        });
+    }
 }

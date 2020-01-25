@@ -14,6 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="-"
+        android:visibility="invisible"
         android:textColor="@color/colorWhite"
         android:textSize="16dp"/>
 
@@ -24,7 +25,7 @@
         android:layout_margin="18dp"
         android:background="@drawable/count_style"
         android:padding="20dp"
-        android:text="0"
+        android:text="1"
         android:textSize="28sp" />
 
     <Button

@@ -1,22 +1,28 @@
 package com.kubatov.client.model;
 
 public class BookTrip {
-    private String clientNumber;
-    private int carSeats;
+    private String driversNumber;
+    private int carseats;
+    private boolean accept;
 
     public BookTrip() {
     }
 
-    public BookTrip(String clientNumber, int carSeats) {
-        this.clientNumber = clientNumber;
-        this.carSeats = carSeats;
+    public BookTrip(String driversNumber, int carSeats, boolean accept) {
+        this.driversNumber = driversNumber;
+        this.carseats = carSeats;
+        this.accept = accept;
     }
 
-    public String getClientNumber() {
-        return clientNumber;
+    public String getDriversNumber() {
+        return driversNumber;
     }
 
     public int getCarSeats() {
-        return carSeats;
+        return carseats;
+    }
+
+    public boolean isAccept() {
+        return accept;
     }
 }

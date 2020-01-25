@@ -18,11 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
@@ -33,6 +28,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.client.App;
 import com.kubatov.client.R;
+import com.kubatov.client.data.repository.IClientRepository;
+import com.kubatov.client.model.BookTrip;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
@@ -41,10 +38,9 @@ import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -96,15 +92,14 @@ public class TripDetailsActivity extends AppCompatActivity {
     @BindView(R.id.trip_progress)
     ProgressBar progressBar;
     private Button buttonDecrement;
+    private Button buttonIncrement;
     private TextView textView;
 
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
-    private int mCount;
+    private int mCount = 1;
     private String tripDriversNumber;
     private String tripAvailableSeats;
-    private RequestQueue mRequestQueue;
-    private boolean isClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +110,22 @@ public class TripDetailsActivity extends AppCompatActivity {
         adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
+
+
+        App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
+            @Override
+            public void onSuccess(BookTrip bookList) {
+                Log.e("ololo", tripDriversNumber+"/"+bookList.getDriversNumber());
+               if (bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
+                   bookingButton.setEnabled(false);
+               }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     private void initViewPager() {
@@ -219,7 +230,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         View promptView = layoutInflater.inflate(R.layout.custom_dialog_layout, null);
 
         textView = promptView.findViewById(R.id.dialog_count);
-        Button buttonIncrement = promptView.findViewById(R.id.dialog_plus);
+        buttonIncrement = promptView.findViewById(R.id.dialog_plus);
         buttonDecrement = promptView.findViewById(R.id.dialog_minus);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -241,6 +252,8 @@ public class TripDetailsActivity extends AppCompatActivity {
                 public void onFinish() {
                     FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "df", "fdf");
                     int number = Integer.parseInt(tripAvailableSeats);
+                    Log.d("ololo", "onFinish: " + number);
+
                     if (mCount > number) {
                         ShowToast.me("свободных мест " + number);
                         progressBar.setVisibility(View.INVISIBLE);
@@ -250,8 +263,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                         App.clientRepository.getTripBookData(tripMap);
                         progressBar.setVisibility(View.INVISIBLE);
                         ShowToast.me("вы забронировали " + mCount + " местo");
-                        mCount = 0;
-                        bookingButton.setEnabled(false);
                     }
                 }
             }.start();
@@ -268,20 +279,20 @@ public class TripDetailsActivity extends AppCompatActivity {
     private void increment() {
         mCount++;
         textView.setText(String.valueOf(mCount));
-        if (mCount == 1) {
+        if (mCount >= 1) {
             buttonDecrement.setVisibility(View.VISIBLE);
+        } if (mCount >= Integer.parseInt(tripAvailableSeats)) {
+            buttonIncrement.setVisibility(View.INVISIBLE);
         }
     }
 
     private void decrement() {
         mCount--;
-        if (mCount == 1) {
-            textView.setText(String.valueOf(mCount));
-        } else {
-            textView.setText(String.valueOf(mCount));
-            if (mCount == 0) {
-                buttonDecrement.setVisibility(View.INVISIBLE);
-            }
+        textView.setText(String.valueOf(mCount));
+        if (mCount > 0) {
+            buttonDecrement.setVisibility(View.INVISIBLE);
+        } if (mCount <= Integer.parseInt(tripAvailableSeats)){
+            buttonIncrement.setVisibility(View.VISIBLE);
         }
     }
 }

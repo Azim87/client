@@ -3,6 +3,7 @@ package com.kubatov.client.data.repository;
 import androidx.annotation.Nullable;
 
 import com.kubatov.client.data.RemoteDriversDataSource.DriversRemoteData;
+import com.kubatov.client.model.BookTrip;
 import com.kubatov.client.model.ClientUpload;
 import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.model.Chat;
@@ -72,6 +73,21 @@ public class ClientRepository implements IClientRepository {
 
     @Override
     public void getTripBookData(Map<String, Object> tripMap) {
-        mDriversRemoteData.getTripBookData(tripMap);
+        mDriversRemoteData.setTripBookData(tripMap);
+    }
+
+    @Override
+    public void getTripBookData(onBookedCallback bookedCallback) {
+        mDriversRemoteData.getBookedTrip(new onBookedCallback() {
+            @Override
+            public void onSuccess(BookTrip bookList) {
+                bookedCallback.onSuccess(bookList);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 }
