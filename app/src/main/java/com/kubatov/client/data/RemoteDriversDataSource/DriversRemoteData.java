@@ -82,7 +82,7 @@ public class DriversRemoteData implements IDriversRemoteData {
         FirebaseFirestore chatData = FirebaseFirestore.getInstance();
         chatData
                 .collection(CHAT)
-                .orderBy(CHAT_TIME, Query.Direction.DESCENDING)
+                .orderBy(CHAT_TIME, Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     List<Chat> chat = snapshots.toObjects(Chat.class);
                     chatCallback.onSuccess(chat);

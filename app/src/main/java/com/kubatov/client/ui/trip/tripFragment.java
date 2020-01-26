@@ -145,6 +145,7 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     @Override
     public void onTripClick(int position) {
         Intent intent = new Intent(getContext(), TripDetailsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(TRIP, mTripList.get(position));
         startActivity(intent);
     }

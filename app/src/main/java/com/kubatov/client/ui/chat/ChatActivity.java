@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setReverseLayout(false);
         mChatRecyclerView.setLayoutManager(linearLayoutManager);
         mChatRecyclerView.setAdapter(mAdapter);
         getMessage();
@@ -94,10 +94,10 @@ public class ChatActivity extends AppCompatActivity {
                         if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
                         }
-                        mChatRecyclerView.scrollToPosition(nChat.size() - 1);
                     }
                 }
                 mAdapter.setChatList(nChat, mNumber);
+                mChatRecyclerView.scrollToPosition(nChat.size() - 1);
             }
 
             @Override

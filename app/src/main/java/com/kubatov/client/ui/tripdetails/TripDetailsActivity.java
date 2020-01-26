@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -93,6 +92,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private Button buttonDecrement;
     private Button buttonIncrement;
     private TextView textView;
+    private boolean isClicked;
 
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
@@ -109,14 +109,16 @@ public class TripDetailsActivity extends AppCompatActivity {
         adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
-
-
         App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
             @Override
             public void onSuccess(BookTrip bookList) {
-               if (bookList!= null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
-                   bookingButton.setEnabled(false);
-               }
+                if (bookList != null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
+                    bookingButton.setEnabled(false);
+                    bookingButton.setText("Заказ принят");
+                } else {
+                    bookingButton.setEnabled(true);
+                    bookingButton.setText("Забронировать");
+                }
             }
 
             @Override
@@ -135,7 +137,6 @@ public class TripDetailsActivity extends AppCompatActivity {
         Trip trip = (Trip) getIntent().getSerializableExtra(TRIP);
         tripAvailableSeats = trip.getSeats();
         tripDriversNumber = trip.getPhoneNumber();
-
         textViewDate.setText("День поездки:");
         textDate.setText(trip.getDate());
         textViewFrom.setText("из города -> ");
@@ -226,7 +227,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     void bookTripClick(View view) {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.custom_dialog_layout, null);
-
         textView = promptView.findViewById(R.id.dialog_count);
         buttonIncrement = promptView.findViewById(R.id.dialog_plus);
         buttonDecrement = promptView.findViewById(R.id.dialog_minus);
@@ -240,6 +240,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .setCancelable(false);
         alertDialogBuilder.setPositiveButton("Отправить", (dialog, which) -> {
 
+
             new CountDownTimer(2000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -250,8 +251,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                 public void onFinish() {
                     FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "Kotokov Kotokbash");
                     int number = Integer.parseInt(tripAvailableSeats);
-                    Log.d("ololo", "onFinish: " + number);
-
                     if (mCount > number) {
                         ShowToast.me("свободных мест " + number);
                         progressBar.setVisibility(View.INVISIBLE);
@@ -261,10 +260,21 @@ public class TripDetailsActivity extends AppCompatActivity {
                         App.clientRepository.getTripBookData(tripMap);
                         progressBar.setVisibility(View.INVISIBLE);
                         ShowToast.me("вы забронировали " + mCount + " местo");
+                        isClicked=false;
+                        if (isClicked = true){
+                            bookingButton.setText("Запрос оправлен");
+                            bookingButton.setEnabled(false);
+                        } else {
+                            bookingButton.setEnabled(true);
+                        }
                     }
                 }
+
             }.start();
+
+
         });
+
         alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
 
         buttonIncrement.setOnClickListener(view1 -> increment());
