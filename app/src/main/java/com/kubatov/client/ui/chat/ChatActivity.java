@@ -53,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
     private String driverNumber;
     private String mNumber;
+    private String messages;
 
     @BindView(R.id.chat_recycler_view) RecyclerView mChatRecyclerView;
     @BindView(R.id.edit_text_chat) EditText mEditMessage;
@@ -131,6 +132,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setMessageToChat(String message, String number) {
         long chatTime = System.currentTimeMillis();
+        messages = message;
         chatMap.put(MESSAGE, message);
         chatMap.put(MY_NUMBER, mNumber);
         chatMap.put(DRIVER_NUMBER, number);
@@ -145,6 +147,6 @@ public class ChatActivity extends AppCompatActivity {
             mEditMessage.getText().clear();
         }
         getChatMessage();
-        FirebaseNotificationMessageSender.sendMessage(driverNumber, "кеттикпи?", "новый клиент");
+        FirebaseNotificationMessageSender.sendMessage(driverNumber, messages, mNumber);
     }
 }

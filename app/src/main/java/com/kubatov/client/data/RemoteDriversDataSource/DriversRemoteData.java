@@ -58,12 +58,9 @@ public class DriversRemoteData implements IDriversRemoteData {
         data.collection(CLIENT)
                 .document(clientNumber)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot snapshot) {
-                        ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
-                        clientCallback.onSuccess(clientUpload);
-                    }
+                .addOnSuccessListener(snapshot -> {
+                    ClientUpload clientUpload = snapshot.toObject(ClientUpload.class);
+                    clientCallback.onSuccess(clientUpload);
                 });
     }
     //endregion
@@ -108,19 +105,16 @@ public class DriversRemoteData implements IDriversRemoteData {
     }
     //endregion
 
-
+    //region Booking Detail
     @Override
     public void getBookedTrip(IClientRepository.onBookedCallback bookedCallback) {
         FirebaseFirestore bookedTrip = FirebaseFirestore.getInstance();
         bookedTrip
                 .collection(BOOK).document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        BookTrip bookTrips = documentSnapshot.toObject(BookTrip.class);
-                        bookedCallback.onSuccess(bookTrips);
-                        Log.d("-------------", "onEvent: " + bookedTrip);
-                    }
-        });
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    BookTrip bookTrips = documentSnapshot.toObject(BookTrip.class);
+                    bookedCallback.onSuccess(bookTrips);
+                });
     }
+    //endregion
 }

@@ -62,4 +62,7 @@ dependencies {
 
     /* firebase messaging*/
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    /* ucrop */
+    implementation 'com.github.yalantis:ucrop:2.2.4'
 }

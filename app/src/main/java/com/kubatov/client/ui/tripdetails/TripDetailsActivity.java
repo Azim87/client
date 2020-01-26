@@ -40,7 +40,6 @@ import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -249,7 +248,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "Котоков Коток");
+                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "Kotokov Kotokbash");
                     int number = Integer.parseInt(tripAvailableSeats);
                     Log.d("ololo", "onFinish: " + number);
 

@@ -1,5 +1,6 @@
 package com.kubatov.client.util;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,8 +28,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         sendNotification(remoteMessage.getNotification().getBody());
-        Log.d("ololo", "onMessageReceived: " + remoteMessage.getNotification().getBody());
-
+        Log.d("ololo", "onMessageReceived: " + remoteMessage.getNotification().getBody() );
     }
 
     private void sendNotification(String messageBody) {
@@ -39,10 +39,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID);
             notification.setSmallIcon(R.drawable.ic_email_black_24dp)
-                    .setContentTitle("")
+                    .setContentTitle("Автобекет")
                     .setAutoCancel(true)
                     .setVibrate(new long[] { 100, 100, 100, 100, 100})
                     .setContentIntent(pendingIntent)
+                    .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                     .setContentText(messageBody);
 
             notificationManager = NotificationManagerCompat.from(this);

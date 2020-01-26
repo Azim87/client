@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -34,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
 import com.kubatov.client.util.DateHelper;
+import com.yalantis.ucrop.UCrop;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -204,15 +203,41 @@ public class RegistrationActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_CLIENT_IMAGE_CODE && resultCode == RESULT_OK &&
-                data.getData() != null && data != null) {
+        if (requestCode == PICK_CLIENT_IMAGE_CODE && resultCode == RESULT_OK && data.getData() != null && data != null) {
             clientImageUri = data.getData();
-            Glide.with(this)
-                    .load(clientImageUri)
-                    .centerCrop()
-                    .into(clientImageView);
+            startCrop(clientImageUri);
+        } if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+         clientImageUri = UCrop.getOutput(data);
+            if (clientImageUri != null) {
+                Glide.with(this)
+                        .load(clientImageUri)
+                        .centerCrop()
+                        .into(clientImageView);
                 compressImageToSaveDataBase();
+            }
         }
+    }
+
+    private void startCrop(Uri clientImageUri) {
+        String fileName = "sampleCroping";
+        fileName += ".jpg";
+        fileName += ".png";
+
+        UCrop uCrop = UCrop.of(clientImageUri, Uri.fromFile(new File(getCacheDir(), fileName)));
+        uCrop.withAspectRatio(1, 1);
+        uCrop.withAspectRatio(3, 4);
+        uCrop.withAspectRatio(16, 9);
+        uCrop.withAspectRatio(2, 3);
+        uCrop.withMaxResultSize(900, 900);
+        uCrop.withOptions(getOptions());
+        uCrop.start(RegistrationActivity.this);
+    }
+
+    private UCrop.Options getOptions() {
+        UCrop.Options options = new UCrop.Options();
+        options.setFreeStyleCropEnabled(true);
+        options.setCompressionQuality(70);
+        return options;
     }
 
     private void getClientSex() {

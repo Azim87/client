@@ -36,6 +36,10 @@
         <activity android:name=".ui.auth.RegistrationActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity android:name=".ui.main.MainActivity" />
+        
+        <activity android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_email_black_24dp" />
