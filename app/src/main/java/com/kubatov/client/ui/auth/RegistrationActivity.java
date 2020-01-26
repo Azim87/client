@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -63,7 +64,7 @@ public class RegistrationActivity extends AppCompatActivity
     private static final String CLIENTS = "clients";
     private static final String TIME = "registrationTime";
 
-    private Uri clientImageUri;
+    private Uri clientImageUri = null;
     private String gender;
     private String profileImageUri;
     private StorageReference mStorageReference;
@@ -94,6 +95,7 @@ public class RegistrationActivity extends AppCompatActivity
         saveClientInfoButton.setOnClickListener(this);
         initSpinner();
         getDataFromShared();
+
     }
 
     private void getDataFromShared(){
@@ -203,27 +205,32 @@ public class RegistrationActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_CLIENT_IMAGE_CODE && resultCode == RESULT_OK && data.getData() != null && data != null) {
-            clientImageUri = data.getData();
-            startCrop(clientImageUri);
-        } if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-         clientImageUri = UCrop.getOutput(data);
-            if (clientImageUri != null) {
-                Glide.with(this)
-                        .load(clientImageUri)
-                        .centerCrop()
-                        .into(clientImageView);
-                compressImageToSaveDataBase();
+        if (requestCode == PICK_CLIENT_IMAGE_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri clientUri = data.getData();
+                startCrop(clientUri);
             }
+        } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            handleCropImage(data);
         }
     }
 
-    private void startCrop(Uri clientImageUri) {
+    private void handleCropImage(Intent data) {
+        clientImageUri = UCrop.getOutput(data);
+        Glide.with(this)
+                .load(clientImageUri)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(clientImageView);
+        compressImageToSaveDataBase();
+    }
+
+    private void startCrop(Uri clientUri) {
         String fileName = "sampleCroping";
         fileName += ".jpg";
         fileName += ".png";
-
-        UCrop uCrop = UCrop.of(clientImageUri, Uri.fromFile(new File(getCacheDir(), fileName)));
+        UCrop uCrop = UCrop.of(clientUri, Uri.fromFile(new File(getCacheDir(), fileName)));
         uCrop.withAspectRatio(1, 1);
         uCrop.withAspectRatio(3, 4);
         uCrop.withAspectRatio(16, 9);
