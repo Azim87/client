@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String MY_NUMBER = "+996555006191";
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -43,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void subscribeToFirebaseMessaging(){
-        FirebaseMessaging.getInstance().subscribeToTopic("+996555006191".replace("+", ""));
+        FirebaseMessaging.getInstance()
+                .subscribeToTopic(
+                        MY_NUMBER.replace("+", ""));
     }
 
     private void setUpViewPager() {

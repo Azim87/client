@@ -16,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setSplashScreenTime() {
-        new CountDownTimer(900, 450) {
+        new CountDownTimer(600, 300) {
             @Override
             public void onTick(long millisUntilFinished) {
 

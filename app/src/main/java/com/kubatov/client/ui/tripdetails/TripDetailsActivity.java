@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +29,6 @@ import com.kubatov.client.App;
 import com.kubatov.client.R;
 import com.kubatov.client.data.repository.IClientRepository;
 import com.kubatov.client.model.BookTrip;
-import com.kubatov.client.model.Trip;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.FirebaseNotificationMessageSender;
@@ -95,6 +93,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private TextView textView;
     private boolean isClicked;
 
+    private IClientRepository clientRepository = App.clientRepository;
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
     private int mCount = 1;
@@ -108,11 +107,12 @@ public class TripDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         new FirebaseNotificationMessageSender(Volley.newRequestQueue(this));
         adapter = new TripAdapter();
-        getDetailedTripInfo();
+
         initViewPager();
         getTripBookIsAccepted();
         Intent intent = getIntent();
         tripDriversNumber = intent.getStringExtra(TRIP);
+        getDetailedTripInfo();
     }
 
     private void initViewPager() {
@@ -121,36 +121,30 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getDetailedTripInfo() {
-        App.clientRepository.getTripDetailsData(tripDriversNumber, new IClientRepository.onTripDetails() {
-            @Override
-            public void onTripSuccess(Trip trip) {
-                Log.d("ololo", "onTripSuccess: " + trip.getCarModel());
-                tripAvailableSeats = trip.getSeats();
-                tripDriversNumber = trip.getPhoneNumber();
-                textViewDate.setText("День поездки:");
-                textDate.setText(trip.getDate());
-                textViewFrom.setText("из города -> ");
-                textFrom.setText(trip.getFrom());
-                textViewTo.setText("в город ->");
-                textTo.setText(trip.getTo());
-                textViewPrice.setText("цена поездки: ");
-                textPrice.setText(trip.getPrice());
-                textViewSeats.setText("свободных мест: ");
-                textSeats.setText(trip.getSeats() + " из " + trip.getCarSeats());
-                textViewCarModel.setText("марка машины: ");
-                textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
-                textViewDriversName.setText("имя водителья: ");
-                textDriversName.setText(trip.getName());
-
-                tripMap.put("driversNumber", trip.getPhoneNumber());
-                ArrayList<String> images = new ArrayList<>();
-                images.add(trip.getCarImage());
-                images.add(trip.getCarImage1());
-                images.add(trip.getCarImage2());
-                adapter.setImageList(images);
-
-                SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, trip.getPhoneNumber());
-            }
+        clientRepository.getTripDetailsData(tripDriversNumber, trip -> {
+            tripAvailableSeats = trip.getSeats();
+            tripDriversNumber = trip.getPhoneNumber();
+            textViewDate.setText("День поездки:");
+            textDate.setText(trip.getDate());
+            textViewFrom.setText("из города -> ");
+            textFrom.setText(trip.getFrom());
+            textViewTo.setText("в город ->");
+            textTo.setText(trip.getTo());
+            textViewPrice.setText("цена поездки: ");
+            textPrice.setText(trip.getPrice());
+            textViewSeats.setText("свободных мест: ");
+            textSeats.setText(trip.getSeats());
+            textViewCarModel.setText("марка машины: ");
+            textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
+            textViewDriversName.setText("имя водителья: ");
+            textDriversName.setText(trip.getName());
+            tripMap.put("driversNumber", trip.getPhoneNumber());
+            ArrayList<String> images = new ArrayList<>();
+            images.add(trip.getCarImage());
+            images.add(trip.getCarImage1());
+            images.add(trip.getCarImage2());
+            adapter.setImageList(images);
+            SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, trip.getPhoneNumber());
         });
     }
 
@@ -180,7 +174,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getTripBookIsAccepted() {
-        App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
+        clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
             @Override
             public void onSuccess(BookTrip bookList) {
                 if (bookList != null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
@@ -249,7 +243,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .setCancelable(false);
         alertDialogBuilder.setPositiveButton("Отправить", (dialog, which) -> {
 
-
             new CountDownTimer(2000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -266,7 +259,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         return;
                     } else {
                         tripMap.put("seats", String.valueOf(mCount));
-                        App.clientRepository.getTripBookData(tripMap);
+                        clientRepository.getTripBookData(tripMap);
                         progressBar.setVisibility(View.INVISIBLE);
                         ShowToast.me("вы забронировали " + mCount + " местo");
                         isClicked=false;
@@ -278,14 +271,11 @@ public class TripDetailsActivity extends AppCompatActivity {
                         }
                     }
                 }
-
             }.start();
         });
-
         alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
         buttonIncrement.setOnClickListener(view1 -> increment());
         buttonDecrement.setOnClickListener(view12 -> decrement());
-
         alertDialogBuilder.create();
         alertDialogBuilder.show();
     }
