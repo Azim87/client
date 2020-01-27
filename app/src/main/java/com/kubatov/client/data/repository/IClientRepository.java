@@ -23,6 +23,8 @@ public interface IClientRepository {
 
     void getTripBookData(onBookedCallback bookedCallback);
 
+    void getTripDetailsData(String phoneNumber, onTripDetails onTripDetails);
+
     interface onClientCallback {
         void onSuccess(List<Trip> tripList);
 
@@ -46,4 +48,8 @@ public interface IClientRepository {
 
         void onFailure(Exception e);
     };
+
+    interface onTripDetails {
+        void onTripSuccess(Trip trip);
+    }
 }

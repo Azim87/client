@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 
 import static com.kubatov.client.ui.tripdetails.TripDetailsActivity.TRIP;
 
-public class tripFragment extends CoreFragment implements OnTripItemClickListener {
+public class TripFragment extends CoreFragment implements OnTripItemClickListener {
     private DriversRecyclerAdapter adapter;
     private List<Trip> mTripList;
 
@@ -71,7 +71,7 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
 
     private void refreshTrips() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            tripFragment.this.getTripData();
+            TripFragment.this.getTripData();
             swipeRefreshLayout.setRefreshing(true);
         });
     }
@@ -145,8 +145,7 @@ public class tripFragment extends CoreFragment implements OnTripItemClickListene
     @Override
     public void onTripClick(int position) {
         Intent intent = new Intent(getContext(), TripDetailsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(TRIP, mTripList.get(position));
+        intent.putExtra(TRIP, mTripList.get(position).getPhoneNumber());
         startActivity(intent);
     }
     //endregion

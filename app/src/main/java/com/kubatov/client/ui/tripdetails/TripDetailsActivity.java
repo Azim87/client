@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -109,23 +110,9 @@ public class TripDetailsActivity extends AppCompatActivity {
         adapter = new TripAdapter();
         getDetailedTripInfo();
         initViewPager();
-        App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
-            @Override
-            public void onSuccess(BookTrip bookList) {
-                if (bookList != null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
-                    bookingButton.setEnabled(false);
-                    bookingButton.setText("Заказ принят");
-                } else {
-                    bookingButton.setEnabled(true);
-                    bookingButton.setText("Забронировать");
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        });
+        getTripBookIsAccepted();
+        Intent intent = getIntent();
+        tripDriversNumber = intent.getStringExtra(TRIP);
     }
 
     private void initViewPager() {
@@ -134,35 +121,37 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getDetailedTripInfo() {
-        Trip trip = (Trip) getIntent().getSerializableExtra(TRIP);
-        tripAvailableSeats = trip.getSeats();
-        tripDriversNumber = trip.getPhoneNumber();
-        textViewDate.setText("День поездки:");
-        textDate.setText(trip.getDate());
-        textViewFrom.setText("из города -> ");
-        textFrom.setText(trip.getFrom());
-        textViewTo.setText("в город ->");
-        textTo.setText(trip.getTo());
-        textViewPrice.setText("цена поездки: ");
-        textPrice.setText(trip.getPrice());
-        textViewSeats.setText("свободных мест: ");
-        textSeats.setText(trip.getSeats() + " из " + trip.getCarSeats());
-        textViewCarModel.setText("марка машины: ");
-        textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
-        textViewDriversName.setText("имя водителья: ");
-        textDriversName.setText(trip.getName());
+        App.clientRepository.getTripDetailsData(tripDriversNumber, new IClientRepository.onTripDetails() {
+            @Override
+            public void onTripSuccess(Trip trip) {
+                Log.d("ololo", "onTripSuccess: " + trip.getCarModel());
+                tripAvailableSeats = trip.getSeats();
+                tripDriversNumber = trip.getPhoneNumber();
+                textViewDate.setText("День поездки:");
+                textDate.setText(trip.getDate());
+                textViewFrom.setText("из города -> ");
+                textFrom.setText(trip.getFrom());
+                textViewTo.setText("в город ->");
+                textTo.setText(trip.getTo());
+                textViewPrice.setText("цена поездки: ");
+                textPrice.setText(trip.getPrice());
+                textViewSeats.setText("свободных мест: ");
+                textSeats.setText(trip.getSeats() + " из " + trip.getCarSeats());
+                textViewCarModel.setText("марка машины: ");
+                textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
+                textViewDriversName.setText("имя водителья: ");
+                textDriversName.setText(trip.getName());
 
-        tripMap.put("driversNumber", trip.getPhoneNumber());
-        ArrayList<String> images = new ArrayList<>();
-        images.add(trip.getCarImage());
-        images.add(trip.getCarImage1());
-        images.add(trip.getCarImage2());
-        adapter.setImageList(images);
+                tripMap.put("driversNumber", trip.getPhoneNumber());
+                ArrayList<String> images = new ArrayList<>();
+                images.add(trip.getCarImage());
+                images.add(trip.getCarImage1());
+                images.add(trip.getCarImage2());
+                adapter.setImageList(images);
 
-        SharedHelper.setShared(TripDetailsActivity.this,
-                SHARED_KEY,
-                DRIVER_NUMBERS,
-                trip.getPhoneNumber());
+                SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, trip.getPhoneNumber());
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -188,6 +177,26 @@ public class TripDetailsActivity extends AppCompatActivity {
                         showSettingsDialog();
                     }
                 }).check();
+    }
+
+    private void getTripBookIsAccepted() {
+        App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
+            @Override
+            public void onSuccess(BookTrip bookList) {
+                if (bookList != null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
+                    bookingButton.setEnabled(false);
+                    bookingButton.setText("Заказ принят");
+                } else {
+                    bookingButton.setEnabled(true);
+                    bookingButton.setText("Забронировать");
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     private void showSettingsDialog() {
@@ -271,12 +280,9 @@ public class TripDetailsActivity extends AppCompatActivity {
                 }
 
             }.start();
-
-
         });
 
         alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
-
         buttonIncrement.setOnClickListener(view1 -> increment());
         buttonDecrement.setOnClickListener(view12 -> decrement());
 

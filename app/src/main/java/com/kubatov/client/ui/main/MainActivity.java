@@ -11,10 +11,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.profile.profileFragment;
-import com.kubatov.client.ui.trip.tripFragment;
+import com.kubatov.client.ui.trip.TripFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.bottom_nav_1:
                     viewPager.setCurrentItem(0);
-                    new tripFragment();
+                    new TripFragment();
                     break;
                 case R.id.bottom_nav_4:
                     viewPager.setCurrentItem(1);
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Fragment> sendFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new tripFragment());
+        fragmentList.add(new TripFragment());
         fragmentList.add(new profileFragment());
         return fragmentList;
     }

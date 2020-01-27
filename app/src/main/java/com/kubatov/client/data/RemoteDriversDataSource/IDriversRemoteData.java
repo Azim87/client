@@ -11,4 +11,6 @@ public interface IDriversRemoteData {
     void getChatMessage(IClientRepository.chatCallback chatCallback);
     void setTripBookData(Map<String, Object> trip);
     void getBookedTrip(IClientRepository.onBookedCallback bookedCallback);
+    void getTripDetails(String phoneNumber, IClientRepository.onTripDetails onTripDetails);
+
 }

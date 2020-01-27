@@ -1,18 +1,10 @@
 package com.kubatov.client.data.RemoteDriversDataSource;
 
-import android.util.Log;
+import android.content.Context;
 
-import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kubatov.client.data.repository.IClientRepository;
@@ -32,6 +24,11 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String CLIENT = "clients";
     private final static String CHAT_TIME = "chatTime";
     private List<Trip> tripList = new ArrayList<>();
+    Context context;
+    private String myNumber = FirebaseAuth
+            .getInstance()
+            .getCurrentUser()
+            .getPhoneNumber();
 
     //region Read trip data from fireBase dataBase
     @Override
@@ -46,6 +43,19 @@ public class DriversRemoteData implements IDriversRemoteData {
                     for (int i = 0; i < snapshots.getDocuments().size(); i++) {
                         tripList.get(i).setPhoneNumber(snapshots.getDocuments().get(i).getId());
                     }
+                });
+    }
+    //endregion
+
+    //region get trips details data
+    @Override
+    public void getTripDetails(String phoneNumber, IClientRepository.onTripDetails onTripDetails) {
+        FirebaseFirestore tripData = FirebaseFirestore.getInstance();
+        tripData.collection(TRIP)
+                .document(phoneNumber)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    Trip trip = documentSnapshot.toObject(Trip.class);
+                    onTripDetails.onTripSuccess(trip);
                 });
     }
     //endregion
@@ -110,7 +120,8 @@ public class DriversRemoteData implements IDriversRemoteData {
     public void getBookedTrip(IClientRepository.onBookedCallback bookedCallback) {
         FirebaseFirestore bookedTrip = FirebaseFirestore.getInstance();
         bookedTrip
-                .collection(BOOK).document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
+                .collection(BOOK)
+                .document(myNumber)
                 .addSnapshotListener((documentSnapshot, e) -> {
                     BookTrip bookTrips = documentSnapshot.toObject(BookTrip.class);
                     bookedCallback.onSuccess(bookTrips);

@@ -90,4 +90,14 @@ public class ClientRepository implements IClientRepository {
             }
         });
     }
+
+    @Override
+    public void getTripDetailsData(String phoneNumber, onTripDetails onTripDetails) {
+       mDriversRemoteData.getTripDetails(phoneNumber, new onTripDetails() {
+           @Override
+           public void onTripSuccess(Trip trip) {
+               onTripDetails.onTripSuccess(trip);
+           }
+       });
+    }
 }
