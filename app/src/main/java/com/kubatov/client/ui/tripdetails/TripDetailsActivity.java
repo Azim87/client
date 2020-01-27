@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -93,7 +94,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     private TextView textView;
     private boolean isClicked;
 
-    private IClientRepository clientRepository = App.clientRepository;
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
     private int mCount = 1;
@@ -112,6 +112,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         getTripBookIsAccepted();
         Intent intent = getIntent();
         tripDriversNumber = intent.getStringExtra(TRIP);
+        tripMap.put("driversNumber", tripDriversNumber);
         getDetailedTripInfo();
     }
 
@@ -121,7 +122,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getDetailedTripInfo() {
-        clientRepository.getTripDetailsData(tripDriversNumber, trip -> {
+        App.clientRepository.getTripDetailsData(tripDriversNumber, trip -> {
             tripAvailableSeats = trip.getSeats();
             tripDriversNumber = trip.getPhoneNumber();
             textViewDate.setText("День поездки:");
@@ -138,13 +139,11 @@ public class TripDetailsActivity extends AppCompatActivity {
             textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
             textViewDriversName.setText("имя водителья: ");
             textDriversName.setText(trip.getName());
-            tripMap.put("driversNumber", trip.getPhoneNumber());
             ArrayList<String> images = new ArrayList<>();
             images.add(trip.getCarImage());
             images.add(trip.getCarImage1());
             images.add(trip.getCarImage2());
             adapter.setImageList(images);
-            SharedHelper.setShared(TripDetailsActivity.this, SHARED_KEY, DRIVER_NUMBERS, trip.getPhoneNumber());
         });
     }
 
@@ -174,7 +173,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
 
     private void getTripBookIsAccepted() {
-        clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
+        App.clientRepository.getTripBookData(new IClientRepository.onBookedCallback() {
             @Override
             public void onSuccess(BookTrip bookList) {
                 if (bookList != null && bookList.isAccept() == true && tripDriversNumber.equals(bookList.getDriversNumber())) {
@@ -251,17 +250,17 @@ public class TripDetailsActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "Kotokov Kotokbash");
+                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "hello ");
                     int number = Integer.parseInt(tripAvailableSeats);
                     if (mCount > number) {
                         ShowToast.me("свободных мест " + number);
                         progressBar.setVisibility(View.INVISIBLE);
-                        return;
                     } else {
                         tripMap.put("seats", String.valueOf(mCount));
-                        clientRepository.getTripBookData(tripMap);
+                        Log.d("ololo", "drivers number : " + tripDriversNumber);
+                        App.clientRepository.getTripBookData(tripMap);
                         progressBar.setVisibility(View.INVISIBLE);
-                        ShowToast.me("вы забронировали " + mCount + " местo");
+                        ShowToast.me("Ваш запрос отправлен ");
                         isClicked=false;
                         if (isClicked = true){
                             bookingButton.setText("Запрос оправлен");

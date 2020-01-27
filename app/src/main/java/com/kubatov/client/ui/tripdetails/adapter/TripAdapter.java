@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kubatov.client.R;
 import com.kubatov.client.model.TripImage;
 
@@ -51,7 +52,9 @@ public class TripAdapter extends PagerAdapter {
         ButterKnife.bind(this, v);
         Glide.with(imageView.getContext())
                 .load(stringList.get(position))
-                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .optionalCenterCrop()
                 .into(imageView);
 
         container.addView(v, 0);

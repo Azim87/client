@@ -105,9 +105,11 @@ public class VerifyCodeActivity extends AppCompatActivity {
                                             documentSnapshot.exists() &&
                                             documentSnapshot.getData() != null) {
                                         MainActivity.start(VerifyCodeActivity.this);
+                                        finish();
 
                                     } else {
                                         RegistrationActivity.start(VerifyCodeActivity.this);
+                                        finish();
                                     }
                                 });
                     } else {

@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() != 0) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 3, true);
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 }

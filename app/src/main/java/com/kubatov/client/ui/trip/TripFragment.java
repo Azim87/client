@@ -2,6 +2,7 @@ package com.kubatov.client.ui.trip;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.kubatov.client.ui.auth.RegistrationActivity;
 import com.kubatov.client.ui.trip.recycler.DriversRecyclerAdapter;
 import com.kubatov.client.ui.trip.recycler.OnTripItemClickListener;
 import com.kubatov.client.ui.tripdetails.TripDetailsActivity;
+import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kubatov.client.ui.tripdetails.TripDetailsActivity.TRIP;
+import static com.kubatov.client.util.Constants.DRIVER_NUMBERS;
+import static com.kubatov.client.util.Constants.SHARED_KEY;
 
 public class TripFragment extends CoreFragment implements OnTripItemClickListener {
     private DriversRecyclerAdapter adapter;
@@ -146,6 +150,10 @@ public class TripFragment extends CoreFragment implements OnTripItemClickListene
     public void onTripClick(int position) {
         Intent intent = new Intent(getContext(), TripDetailsActivity.class);
         intent.putExtra(TRIP, mTripList.get(position).getPhoneNumber());
+        SharedHelper.setShared(getContext(),
+                SHARED_KEY,
+                DRIVER_NUMBERS,
+                mTripList.get(position).getPhoneNumber());
         startActivity(intent);
     }
     //endregion

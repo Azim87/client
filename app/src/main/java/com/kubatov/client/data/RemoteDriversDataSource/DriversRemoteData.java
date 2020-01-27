@@ -24,11 +24,7 @@ public class DriversRemoteData implements IDriversRemoteData {
     private final static String CLIENT = "clients";
     private final static String CHAT_TIME = "chatTime";
     private List<Trip> tripList = new ArrayList<>();
-    Context context;
-    private String myNumber = FirebaseAuth
-            .getInstance()
-            .getCurrentUser()
-            .getPhoneNumber();
+
 
     //region Read trip data from fireBase dataBase
     @Override
@@ -121,7 +117,7 @@ public class DriversRemoteData implements IDriversRemoteData {
         FirebaseFirestore bookedTrip = FirebaseFirestore.getInstance();
         bookedTrip
                 .collection(BOOK)
-                .document(myNumber)
+                .document(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
                 .addSnapshotListener((documentSnapshot, e) -> {
                     BookTrip bookTrips = documentSnapshot.toObject(BookTrip.class);
                     bookedCallback.onSuccess(bookTrips);

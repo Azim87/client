@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,7 +48,6 @@ public class ChatActivity extends AppCompatActivity {
     private static final String MY_NUMBER = "messageFrom";
     private static final String DRIVER_NUMBER = "messageTo";
     private static final String CHAT_TIME = "chatTime";
-    private IClientRepository repository = App.clientRepository;
     private ChatAdapter mAdapter;
     private Map<String, Object> chatMap = new HashMap<>();
     private NotificationManagerCompat notificationManager;
@@ -74,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         initRecycler();
         getChatMessage();
         driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
+        Log.d("-------------", "driver number: " + driverNumber);
     }
 
     private void initRecycler() {
@@ -85,13 +86,13 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getChatMessage() {
-        repository.getChatMessage(new IClientRepository.chatCallback() {
+        App.clientRepository.getChatMessage(new IClientRepository.chatCallback() {
             @Override
             public void onSuccess(List<Chat> chatList) {
                 List<Chat> nChat = new ArrayList<>();
                 for (Chat chat : chatList) {
                     if (chat.getMessageFrom().equals(mNumber) || chat.getMessageTo().equals(mNumber)) {
-                        if (chat.getMessageFrom().equals(driverNumber) || chat.getMessageTo().equals(driverNumber)) {
+                        if (chat.getMessageFrom() == driverNumber || chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
                         }
                     }
@@ -142,7 +143,7 @@ public class ChatActivity extends AppCompatActivity {
     @OnClick(R.id.send_message)
     void sentMessage(View view) {
         getMessage();
-        repository.sendChatMessage(chatMap);
+        App.clientRepository.sendChatMessage(chatMap);
         if (mEditMessage.getText() != null) {
             mEditMessage.getText().clear();
         }
