@@ -33,7 +33,6 @@ import com.kubatov.client.model.BookTrip;
 import com.kubatov.client.ui.chat.ChatActivity;
 import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.FirebaseNotificationMessageSender;
-import com.kubatov.client.util.SharedHelper;
 import com.kubatov.client.util.ShowToast;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -44,9 +43,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.kubatov.client.util.Constants.DRIVER_NUMBERS;
-import static com.kubatov.client.util.Constants.SHARED_KEY;
 
 public class TripDetailsActivity extends AppCompatActivity {
     public final static String TRIP = "trip";
@@ -107,18 +103,17 @@ public class TripDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         new FirebaseNotificationMessageSender(Volley.newRequestQueue(this));
         adapter = new TripAdapter();
-
         initViewPager();
         getTripBookIsAccepted();
-        Intent intent = getIntent();
-        tripDriversNumber = intent.getStringExtra(TRIP);
-        tripMap.put("driversNumber", tripDriversNumber);
         getDetailedTripInfo();
     }
 
     private void initViewPager() {
         tripImgViewPager.setAdapter(adapter);
         wormDotsIndicator.setViewPager(tripImgViewPager);
+        Intent intent = getIntent();
+        tripDriversNumber = intent.getStringExtra(TRIP);
+        tripMap.put("driversNumber", tripDriversNumber);
     }
 
     private void getDetailedTripInfo() {
@@ -281,21 +276,21 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private void increment() {
         mCount++;
-        textView.setText(String.valueOf(mCount));
         if (mCount >= 1) {
             buttonDecrement.setVisibility(View.VISIBLE);
         } if (mCount >= Integer.parseInt(tripAvailableSeats)) {
             buttonIncrement.setVisibility(View.INVISIBLE);
         }
+        textView.setText(String.valueOf(mCount));
     }
 
     private void decrement() {
         mCount--;
-        textView.setText(String.valueOf(mCount));
-        if (mCount > 0) {
+        if (mCount == 1) {
             buttonDecrement.setVisibility(View.INVISIBLE);
         } if (mCount <= Integer.parseInt(tripAvailableSeats)){
             buttonIncrement.setVisibility(View.VISIBLE);
         }
+        textView.setText(String.valueOf(mCount));
     }
 }
