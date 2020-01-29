@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -88,7 +87,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     private Button buttonDecrement;
     private Button buttonIncrement;
     private TextView textView;
-    private boolean isClicked;
 
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
@@ -227,6 +225,10 @@ public class TripDetailsActivity extends AppCompatActivity {
         textView = promptView.findViewById(R.id.dialog_count);
         buttonIncrement = promptView.findViewById(R.id.dialog_plus);
         buttonDecrement = promptView.findViewById(R.id.dialog_minus);
+        int number = Integer.parseInt(tripAvailableSeats);
+        if (number == 1) {
+            buttonIncrement.setVisibility(View.INVISIBLE);
+        }
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
@@ -245,29 +247,26 @@ public class TripDetailsActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "hello ");
-                    int number = Integer.parseInt(tripAvailableSeats);
+                    FirebaseNotificationMessageSender.sendMessage(tripDriversNumber, "кеттик?", "hello");
+
                     if (mCount > number) {
                         ShowToast.me("свободных мест " + number);
                         progressBar.setVisibility(View.INVISIBLE);
                     } else {
                         tripMap.put("seats", String.valueOf(mCount));
-                        Log.d("ololo", "drivers number : " + tripDriversNumber);
                         App.clientRepository.getTripBookData(tripMap);
                         progressBar.setVisibility(View.INVISIBLE);
                         ShowToast.me("Ваш запрос отправлен ");
-                        isClicked=false;
-                        if (isClicked = true){
-                            bookingButton.setText("Запрос оправлен");
-                            bookingButton.setEnabled(false);
-                        } else {
-                            bookingButton.setEnabled(true);
-                        }
+                        mCount = 1;
                     }
                 }
             }.start();
         });
-        alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> ShowToast.me("Отмена"));
+        alertDialogBuilder.setNegativeButton("Отмена", (dialog, which) -> {
+            ShowToast.me("Отмена");
+            mCount = 1;
+        });
+
         buttonIncrement.setOnClickListener(view1 -> increment());
         buttonDecrement.setOnClickListener(view12 -> decrement());
         alertDialogBuilder.create();
