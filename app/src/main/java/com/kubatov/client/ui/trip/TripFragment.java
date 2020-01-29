@@ -150,6 +150,7 @@ public class TripFragment extends CoreFragment implements OnTripItemClickListene
     public void onTripClick(int position) {
         Intent intent = new Intent(getContext(), TripDetailsActivity.class);
         intent.putExtra(TRIP, mTripList.get(position).getPhoneNumber());
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         SharedHelper.setShared(getContext(),
                 SHARED_KEY,
                 DRIVER_NUMBERS,
