@@ -2,7 +2,6 @@ package com.kubatov.client.ui.trip;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -102,7 +101,7 @@ public class TripFragment extends CoreFragment implements OnTripItemClickListene
         inflater.inflate(R.menu.app_bar_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("каяка жылайлы???");
+        searchView.setQueryHint("куда поедем?");
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

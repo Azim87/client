@@ -116,27 +116,31 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private void getDetailedTripInfo() {
         App.clientRepository.getTripDetailsData(tripDriversNumber, trip -> {
-            tripAvailableSeats = trip.getSeats();
-            tripDriversNumber = trip.getPhoneNumber();
-            textViewDate.setText("День поездки:");
-            textDate.setText(trip.getDate());
-            textViewFrom.setText("из города -> ");
-            textFrom.setText(trip.getFrom());
-            textViewTo.setText("в город ->");
-            textTo.setText(trip.getTo());
-            textViewPrice.setText("цена поездки: ");
-            textPrice.setText(trip.getPrice());
-            textViewSeats.setText("свободных мест: ");
-            textSeats.setText(trip.getSeats());
-            textViewCarModel.setText("марка машины: ");
-            textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
-            textViewDriversName.setText("имя водителья: ");
-            textDriversName.setText(trip.getName());
-            ArrayList<String> images = new ArrayList<>();
-            images.add(trip.getCarImage());
-            images.add(trip.getCarImage1());
-            images.add(trip.getCarImage2());
-            adapter.setImageList(images);
+            if(trip !=null) {
+
+
+                tripAvailableSeats = trip.getSeats();
+                tripDriversNumber = trip.getPhoneNumber();
+                textViewDate.setText("День поездки:");
+                textDate.setText(trip.getDate());
+                textViewFrom.setText("из города -> ");
+                textFrom.setText(trip.getFrom());
+                textViewTo.setText("в город ->");
+                textTo.setText(trip.getTo());
+                textViewPrice.setText("цена поездки: ");
+                textPrice.setText(trip.getPrice());
+                textViewSeats.setText("свободных мест: ");
+                textSeats.setText(trip.getSeats());
+                textViewCarModel.setText("марка машины: ");
+                textCarModel.setText(trip.getCarMark() + " " + trip.getCarModel());
+                textViewDriversName.setText("имя водителья: ");
+                textDriversName.setText(trip.getName());
+                ArrayList<String> images = new ArrayList<>();
+                images.add(trip.getCarImage());
+                images.add(trip.getCarImage1());
+                images.add(trip.getCarImage2());
+                adapter.setImageList(images);
+            }
         });
     }
 
