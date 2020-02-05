@@ -74,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         initRecycler();
         getChatMessage();
         driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
-        Log.d("-------------", "driver number: " + driverNumber);
+        Log.d("ololo", "driver number: " + driverNumber);
     }
 
     private void initRecycler() {
@@ -92,13 +92,13 @@ public class ChatActivity extends AppCompatActivity {
                 List<Chat> nChat = new ArrayList<>();
                 for (Chat chat : chatList) {
                     if (chat.getMessageFrom().equals(mNumber) || chat.getMessageTo().equals(mNumber)) {
-                        if (chat.getMessageFrom() == driverNumber || chat.getMessageTo().equals(driverNumber)) {
+                        if (chat.getMessageFrom().equals(driverNumber )|| chat.getMessageTo().equals(driverNumber)) {
                             nChat.add(chat);
                         }
                     }
                 }
-                mAdapter.setChatList(nChat, mNumber);
                 mChatRecyclerView.scrollToPosition(nChat.size() - 1);
+                mAdapter.setChatList(nChat);
             }
 
             @Override

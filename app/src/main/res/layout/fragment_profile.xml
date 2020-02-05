@@ -50,7 +50,7 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Azim Kubatov"
+            android:hint="Ваше имя"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -84,7 +84,7 @@
             android:id="@+id/profile_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1987"
+            android:hint="1900"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -118,7 +118,7 @@
             android:id="@+id/profile_registration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="13.02.2019"
+            android:hint="02.02.2020"
             android:textSize="15sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.chat.model.Chat;
 import com.kubatov.client.util.DateHelper;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,7 @@ import butterknife.ButterKnife;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private List<Chat> mChat = new ArrayList<>();
-    private String myNumber;
+     String myNumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
 
     @NonNull
     @Override
@@ -31,8 +34,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return new ChatViewHolder(view);
     }
 
-    public void setChatList(List<Chat> chatList, String number) {
-        myNumber = number;
+    public void setChatList(List<Chat> chatList) {
         mChat.clear();
         mChat.addAll(chatList);
         notifyDataSetChanged();
@@ -41,6 +43,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         holder.onBind(mChat.get(position));
+        Log.d("ololo", "onBind: " + mChat.get(position).getMessage());
+        Log.d("ololo", "onBind: " + mChat.get(position).getMessageTo());
     }
 
     @Override
@@ -49,7 +53,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.text_message_1) TextView textViewClient;
         @BindView(R.id.text_message_2) TextView textViewDriver;
         @BindView(R.id.chat_time_1) TextView textViewClientTime;
