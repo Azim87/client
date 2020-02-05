@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,11 +35,9 @@ import com.kubatov.client.ui.tripdetails.adapter.TripAdapter;
 import com.kubatov.client.util.FirebaseNotificationMessageSender;
 import com.kubatov.client.util.ShowToast;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -84,10 +83,10 @@ public class TripDetailsActivity extends AppCompatActivity {
     Button bookingButton;
     @BindView(R.id.trip_progress)
     ProgressBar progressBar;
+
     private Button buttonDecrement;
     private Button buttonIncrement;
     private TextView textView;
-
     private TripAdapter adapter;
     private Map<String, Object> tripMap = new HashMap<>();
     private int mCount = 1;
@@ -116,9 +115,9 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private void getDetailedTripInfo() {
         App.clientRepository.getTripDetailsData(tripDriversNumber, trip -> {
-            if(trip !=null) {
-
-
+            if(trip == null) {
+                return;
+            }
                 tripAvailableSeats = trip.getSeats();
                 tripDriversNumber = trip.getPhoneNumber();
                 textViewDate.setText("День поездки:");
@@ -140,7 +139,6 @@ public class TripDetailsActivity extends AppCompatActivity {
                 images.add(trip.getCarImage1());
                 images.add(trip.getCarImage2());
                 adapter.setImageList(images);
-            }
         });
     }
 
@@ -184,7 +182,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
-
+                Log.d("ololo", "onFailure: " + e.getLocalizedMessage());
             }
         });
     }

@@ -12,7 +12,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kubatov.client.R;
-import com.kubatov.client.model.TripImage;
 
 import java.util.ArrayList;
 
@@ -26,8 +25,7 @@ public class TripAdapter extends PagerAdapter {
     ImageView imageView;
 
     public void setImageList(ArrayList<String> imageList) {
-        stringList.clear();
-        stringList.addAll(imageList);
+        stringList = imageList;
         notifyDataSetChanged();
     }
 
