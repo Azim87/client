@@ -43,8 +43,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         holder.onBind(mChat.get(position));
-        Log.d("ololo", "onBind: " + mChat.get(position).getMessage());
-        Log.d("ololo", "onBind: " + mChat.get(position).getMessageTo());
     }
 
     @Override

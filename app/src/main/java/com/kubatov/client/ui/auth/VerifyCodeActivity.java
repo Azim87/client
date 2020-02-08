@@ -3,35 +3,24 @@ package com.kubatov.client.ui.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.kubatov.client.R;
 import com.kubatov.client.ui.main.MainActivity;
-import com.kubatov.client.util.Constants;
 import com.kubatov.client.util.ShowToast;
-
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.kubatov.client.util.Constants.CLIENT;
 
 public class VerifyCodeActivity extends AppCompatActivity {
@@ -101,14 +90,16 @@ public class VerifyCodeActivity extends AppCompatActivity {
                         db.collection(CLIENT)
                                 .document(phoneNumber)
                                 .addSnapshotListener((documentSnapshot, e) -> {
-                                    if (documentSnapshot != null &&
-                                            documentSnapshot.exists() &&
-                                            documentSnapshot.getData() != null) {
-                                        MainActivity.start(VerifyCodeActivity.this);
-                                        finish();
+                                    if (documentSnapshot == null && documentSnapshot.exists()) {
+                                        if (documentSnapshot.get("age") == null &&
+                                                documentSnapshot.get("familyName") == null &&
+                                                documentSnapshot.get("name") == null) {
+                                            RegistrationActivity.start(VerifyCodeActivity.this);
+                                            finish();
+                                        }
 
                                     } else {
-                                        RegistrationActivity.start(VerifyCodeActivity.this);
+                                        MainActivity.start(VerifyCodeActivity.this);
                                         finish();
                                     }
                                 });

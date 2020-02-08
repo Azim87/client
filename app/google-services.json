@@ -15,101 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "892281713275-djnsdthps1oeeoifrh9uta8qtg1mucd4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.vokzal",
-            "certificate_hash": "5978d6540ab945b9300d81ba4e0ba996946d6415"
-          }
-        },
-        {
-          "client_id": "892281713275-h5ho0ekh6tkv9b9qsrppdo6t7kcef33d.apps.googleusercontent.com",
+          "client_id": "892281713275-rqmrl6j04lobavj7n35o1bvc5n78tdhf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.vokzal",
             "certificate_hash": "3779a98361fe6ec5777664b2ed76a2ee0ddcb449"
-          }
-        },
-        {
-          "client_id": "892281713275-0viq5e3lkeb9j9uqbhbnhoh71om7afsh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.vokzal",
-            "certificate_hash": "94719788b1a65d69db5f3f94b298f41d9d236f6e"
-          }
-        },
-        {
-          "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB0ctyP5SOUD5oKUm1n3HJC83rMxS9Qx04"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:892281713275:android:7f6a7984759999ce27a8de",
-        "android_client_info": {
-          "package_name": "com.joma.testclient"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "892281713275-t8uns5s2g9dpu4gk1d2322elvomdq7v5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.joma.testclient",
-            "certificate_hash": "3779a98361fe6ec5777664b2ed76a2ee0ddcb449"
-          }
-        },
-        {
-          "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB0ctyP5SOUD5oKUm1n3HJC83rMxS9Qx04"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "892281713275-5b1fn66004a7i8vhkhlvmdvjigf7noge.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:892281713275:android:e4c7f2976308da4027a8de",
-        "android_client_info": {
-          "package_name": "com.kubat.client"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "892281713275-6boae9vo3rrhs1e3k0kro5rb60tage0j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kubat.client",
-            "certificate_hash": "5978d6540ab945b9300d81ba4e0ba996946d6415"
           }
         },
         {
@@ -142,7 +52,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "892281713275-3loqe7sd2fs2jhvlemvpg2r52bg7sj0f.apps.googleusercontent.com",
+          "client_id": "892281713275-e9qi6edu5ngahd1rhpra8i9t5rjfuaqj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kubatov.client",
@@ -150,19 +60,11 @@
           }
         },
         {
-          "client_id": "892281713275-s9re4i0u2bdfm2a9i0skgovjt0f42vkp.apps.googleusercontent.com",
+          "client_id": "892281713275-diqub45sevsq3dt19hk8ftoabif8r8uq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kubatov.client",
-            "certificate_hash": "6fe3687f2d347ef51946c7d23385f6b96dc46abb"
-          }
-        },
-        {
-          "client_id": "892281713275-ij0jadsoi9c1tgi2afsvg1j29qggel6o.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kubatov.client",
-            "certificate_hash": "5978d6540ab945b9300d81ba4e0ba996946d6415"
+            "certificate_hash": "3779a98361fe6ec5777664b2ed76a2ee0ddcb449"
           }
         },
         {

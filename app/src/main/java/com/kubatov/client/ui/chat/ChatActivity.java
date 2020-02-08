@@ -74,7 +74,6 @@ public class ChatActivity extends AppCompatActivity {
         initRecycler();
         getChatMessage();
         driverNumber = SharedHelper.getShared(ChatActivity.this, SHARED_KEY, DRIVER_NUMBERS);
-        Log.d("ololo", "driver number: " + driverNumber);
     }
 
     private void initRecycler() {

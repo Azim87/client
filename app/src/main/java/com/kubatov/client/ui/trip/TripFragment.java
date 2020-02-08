@@ -137,6 +137,13 @@ public class TripFragment extends CoreFragment implements OnTripItemClickListene
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_edit);
+        if (item != null)
+            item.setVisible(false);
+    }
+
     private void signOut() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().signOut();

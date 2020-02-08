@@ -13,7 +13,7 @@
         android:id="@+id/action_edit"
         android:title="Редактировать"
         android:icon="@drawable/ic_edit_black_24dp"
-        app:showAsAction="collapseActionView"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_exit"
